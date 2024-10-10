@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Attenzio</title>
+    <style>
+        /* Estilo global */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #000; /* Fondo negro */
+            color: #fff; /* Texto blanco */
+        }
+
+        /* Encabezado */
+        h2 {
+            text-align: center;
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #1e90ff; /* Azul para el título */
+        }
+
+        /* Menú de navegación */
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+            text-align: center;
+            background-color: #1e90ff; /* Fondo azul para el menú */
+            border-radius: 8px;
+            display: inline-block;
+            width: 80%;
+            max-width: 600px;
+            padding: 10px;
+        }
+
+        ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        ul li:last-child {
+            margin-right: 0;
+        }
+
+        ul li a {
+            text-decoration: none;
+            color: #fff; /* Texto blanco */
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        /* Efecto hover en los enlaces */
+        ul li a:hover {
+            background-color: #000; /* Fondo negro al pasar sobre el enlace */
+            color: #1e90ff; /* Color azul para el texto */
+        }
+
+        /* Bloque de contenido */
+        .content {
+            text-align: center;
+            margin: 50px 20px;
+            padding: 20px;
+            background-color: #111; /* Fondo gris oscuro */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Estilo de los botones */
+        button {
+            background-color: #1e90ff; /* Azul */
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1em;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #000; /* Negro al pasar el cursor */
+            color: #1e90ff; /* Texto azul */
+        }
+    </style>
+</head>
+
+<body>
+<h2>Inicio</h2>
+<ul>
+    <li><a href="{% url 'home' %}">Inicio</a></li>
+    <li><a href="{% url 'teachers' %}">Teachers</a></li>
+    {% if request.user.is_authenticated %}
+        <li><a href="{% url 'exit' %}">Salir</a></li>
+    {% else %}
+        <li><a href="{% url 'login' %}">Ingresar</a></li>
+    {% endif %}
+</ul>
+
+<div class="content">
+    {% block content %}
+        <!-- Aquí irá el contenido dinámico -->
+    {% endblock %}
+</div>
+</body>
+
+</html>
