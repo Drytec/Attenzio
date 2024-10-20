@@ -1,0 +1,14 @@
+{% extends 'core/base.html' %}
+{% block content %}
+    <h3>Teachers</h3>
+    <div style="display: flex; flex-wrap: wrap; margin-bottom: 10px;">
+    <!-- Aun hay que configurar bien el formato de la hora para posteriormente mostrarlo aca y que se evidencie bien
+     cual sera la duracion de la clase y cuando es ya que sera necesario para habilitar el qr y las preguntas-->
+        {% for aula in aula1 %}
+            <div style="margin-right: 20px; margin-bottom: 10px;">
+                <strong>Aula:</strong> {{ aula.nombre_aula }} <br>
+                <strong>Profesor:</strong>:</strong> {{ aula.user.username }}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
