@@ -20,13 +20,14 @@ class teacher(models.Model):
 
     #definimos los atributos de las entidades
 class aula(models.Model):
+    aula_id = models.IntegerField(default=0)
     nombre_aula = models.CharField(max_length=100)
     descripcion = models.TextField(max_length=100)
     #created= models.DateTimeField(auto_now_add=True)
-    fecha_inicio = models.DateField(null=True)
-    fecha_fin = models.DateField(null=True)
+    fecha_inicio = models.DateTimeField(null=True)
+    fecha_fin = models.DateTimeField(null=True)
     #archivos_aula = models.FileField(max_length=100, null=True, blank=True)
     #hay que cambiar la llave foranea de user a teacher
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     def __str__(self):
-        return self.nombre_aula + '-por: ' + self.user.username
+        return self.nombre_aula + ' -por: ' + self.user.username
