@@ -1,13 +1,19 @@
-from django.shortcuts import render, redirect
+import json
+
+from django.http import JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth import login,authenticate
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth.models import User
+from django.views.decorators.csrf import csrf_exempt
+
 from core.forms import aulaForm
 from core.models import aula
 from django.db import IntegrityError
-
+from django.utils import timezone
+import pytz
 
 def home(request):
     return render(request,'core/home.html')
@@ -43,8 +49,6 @@ def create_aula(request):
                 'form': form,
                 'errors': form.errors
             })
-
-
 
 def exit(request):
     logout(request)
@@ -88,3 +92,31 @@ def login1(request):
         else:
             login(request, user)
             return redirect('aula')
+@csrf_exempt
+@login_required
+def aula_online(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            aula_id = data.get('aula_id')
+            colombia_tz = pytz.timezone('America/Bogota')
+            ahora = timezone.now().astimezone(colombia_tz)
+
+            aula_selected = get_object_or_404(aula, aula_id=aula_id, user=request.user)
+
+            # Agrega estos prints para depurar
+            print("Ahora:", ahora)
+            print("Fecha de inicio:", aula_selected.fecha_inicio.astimezone(colombia_tz))
+            print("Fecha de fin:", aula_selected.fecha_fin.astimezone(colombia_tz))
+
+            if aula_selected.fecha_inicio <= ahora <= aula_selected.fecha_fin:
+                return JsonResponse({'success': True, 'redirect_url': '/aula/online/'})
+            else:
+                return JsonResponse({'success': False, 'error': 'La clase no está en horario.'})
+
+        except json.JSONDecodeError:
+            return JsonResponse({'success': False, 'error': 'Error al decodificar el JSON.'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+
+    return render(request, 'core/aula_online.html')
