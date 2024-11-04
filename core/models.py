@@ -1,33 +1,37 @@
+from django.conf import settings
 from django.db import models
-from django.contrib.auth.models import User
-# Create your models here.
+from django.contrib.auth.models import AbstractUser
 
-
-#definimos los atributos de las entidades
-class teacher(models.Model):
-    documento = models.IntegerField()
-    nombre = models.CharField(max_length=100,default='Nombre')
-    apellidos = models.CharField(max_length=100,default='Apellidos')
+class Teacher(AbstractUser):
+    documento = models.IntegerField(unique=True)
+    username = models.CharField(max_length=50, unique=True)
+    nombre = models.CharField(max_length=100)
+    apellidos = models.CharField(max_length=100)
     direccion = models.CharField(max_length=100)
-    telefono = models.IntegerField(default=000000000)
-    #esta funcion registra la hora en la que se crea pero esta dando error
-    #created= models.DateTimeField(auto_now_add=True)
-    foto = models.ImageField(max_length=100)
-    password = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100)
-    def __str__(self):
-        return self.nombre
+    telefono = models.IntegerField(default=0)
+    validar = models.BooleanField(default=False, null=True, blank=True)
+    foto = models.ImageField(max_length=100, blank=True)
+    email = models.EmailField(max_length=100,unique=True)
+    # esta es la verificacion para el administrador, aun no se implementa por facilidad para pruebas
+    #no se añade al formulario
+    #verificado = models.BooleanField(default=False, null=True, blank=True)
 
-    #definimos los atributos de las entidades
+    # Cambiar el campo de identificación principal
+    USERNAME_FIELD = 'documento'
+    REQUIRED_FIELDS = ['nombre', 'apellidos', 'email']
+
+    def __str__(self):
+        return f'{self.nombre} {self.apellidos}'
+
+
+# Modelo aula con ForeignKey a Teacher
 class aula(models.Model):
     aula_id = models.IntegerField(default=0)
     nombre_aula = models.CharField(max_length=100)
     descripcion = models.TextField(max_length=100)
-    #created= models.DateTimeField(auto_now_add=True)
     fecha_inicio = models.DateTimeField(null=True)
     fecha_fin = models.DateTimeField(null=True)
-    #archivos_aula = models.FileField(max_length=100, null=True, blank=True)
-    #hay que cambiar la llave foranea de user a teacher
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
     def __str__(self):
-        return self.nombre_aula + ' -por: ' + self.user.username
+        return f'{self.nombre_aula} - por: {self.user.nombre}'

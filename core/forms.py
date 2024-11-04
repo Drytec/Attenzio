@@ -1,7 +1,11 @@
 from django.forms import ModelForm, forms
 from django import  forms
-from core.models import aula, teacher
+from core.models import aula, Teacher
+from django.contrib.auth import get_user_model
+from django import forms
+from core.models import Teacher
 
+User = get_user_model()
 class aulaForm(ModelForm):
     class Meta:
         model = aula
@@ -9,7 +13,11 @@ class aulaForm(ModelForm):
         widgets = {
             'fecha_inicio': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'fecha_fin': forms.DateTimeInput(attrs={'type': 'datetime-local'}),}
-class teacherForm(ModelForm):
+
+
+class TeacherForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput)
+
     class Meta:
-        model = teacher
-        fields = ['documento','nombre','apellidos','direccion','telefono','email','password','foto']
+        model = Teacher
+        fields = ['documento', 'nombre', 'apellidos', 'email', 'direccion', 'telefono', 'foto', 'password']

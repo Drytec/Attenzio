@@ -4,7 +4,7 @@
     {% if request.user.is_authenticated %}
         <hr>
         <h4>
-            {{ user.username | upper }}, bienvenido
+            {{ user| upper }}, bienvenido
         </h4>
     {% endif %}
 
