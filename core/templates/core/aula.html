@@ -6,41 +6,15 @@
         {% for aula in aula1 %}
             <div style="margin-right: 20px; margin-bottom: 10px;">
                 <strong>Aula:</strong>
-                <form id="form-aula-{{ aula.aula_id }}" style="display:inline;" onsubmit="return false;">
+                <form action="{% url 'aula_online' aula.aula_id %}" method="get">
                     {% csrf_token %}
-                    <input type="hidden" name="aula_id" value="{{ aula.aula_id }}">
-                    <button type="button" onclick="entrarAula({{ aula.aula_id }}, '{{ aula.nombre_aula }}')">Entrar a {{ aula.nombre_aula }}</button>
+                    <button type="submit">Entrar a {{ aula.nombre_aula }}</button>
                 </form>
                 <br>
                 <strong>Fecha:</strong> {{ aula.fecha_inicio }}<br>
                 <strong>ID de clase:</strong> {{ aula.aula_id }}<br>
-                <strong>Profesor:</strong> {{ aula.user.username }}
+                <strong>Profesor:</strong> {{ aula.user }}
             </div>
         {% endfor %}
     </div>
-
-    <script>
-        function entrarAula(aulaId, aulaNombre) {
-            console.log("Botón presionado para el aula: " + aulaId);
-            const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-
-            fetch("{% url 'aula_online' %}", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": csrfToken
-                },
-                body: JSON.stringify({ aula_id: aulaId })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        window.location.href = data.redirect_url;
-                    } else {
-                        alert(data.error);
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        }
-    </script>
 {% endblock %}

@@ -1,7 +1,8 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-    <h3>Clase actual</h3>
-
-
+    <h3>Clase actual: {{ aula1.nombre_aula }} (ID: {{ aula1.aula_id }})</h3>
+    <p><strong>Fecha de Inicio:</strong> {{ aula1.fecha_inicio }}</p>
+    <p><strong>Fecha de Fin:</strong> {{ aula1.fecha_fin }}</p>
+    <p><strong>Creador:</strong> {{ aula1.user}}</p>
 {% endblock %}

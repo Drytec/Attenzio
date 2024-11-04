@@ -1,27 +1,17 @@
 {% extends 'core/base.html' %}
 
-{% block content %}
-    <h3>Registrarse</h3>
-    {{ error }}
-    <form action="/signup/" method="POST" class="signup-form">
-        {% csrf_token %}
-        <div class="form-group">
-            {{ form.username.label_tag }}
-            {{ form.username }}
-        </div>
-        <div class="form-group">
-            {{ form.password1.label_tag }}
-            {{ form.password1 }}
-        </div>
-        <div class="form-group">
-            {{ form.password2.label_tag }}
-            {{ form.password2 }}
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn">Registrarse</button>
-        </div>
-    </form>
 
+{% block content %}
+    {{ error}}
+    <form action="/signup/" method="POST" enctype="multipart/form-data" >
+
+        {% csrf_token %}
+        {{form.as_p}}
+        <button>
+            login
+        </button>
+
+    </form>
     <style>
         .signup-form {
             max-width: 400px;
