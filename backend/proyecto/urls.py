@@ -18,7 +18,10 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('',include('core.urls')),
+    # aqui definen a que ruta va renderizar las urls definidas en cada carpeta
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls'))
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('sesion/', include('apps.sesion.urls')),
+  #  path('student/', include('apps.student.urls')),
+    path('', include('apps.teacher.urls')),
 ]
