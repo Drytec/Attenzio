@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1> Crear Nueva Aula</h1>
-    <form action="/aula/create/" method="POST">
+    <form action="/sesion/create/" method="POST">
         {% csrf_token %}
         {{ form.as_p }}
         <button>
