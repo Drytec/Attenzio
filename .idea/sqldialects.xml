@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/91c51d78-cd7f-4aa5-8b06-d07c80b4b7c8/console.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/database/db/database.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/database/db/plpsql.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/database/db/schema.sql" dialect="PostgreSQL" />

@@ -1,0 +1,8 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <h3>Clase actual: {{ sesion1.nombre_aula }} (ID: {{ sesion1.aula_id }})</h3>
+    <p><strong>Fecha de Inicio:</strong> {{ sesion1.fecha_inicio }}</p>
+    <p><strong>Fecha de Fin:</strong> {{ sesion1.fecha_fin }}</p>
+    <p><strong>Creador:</strong> {{ sesion1.user}}</p>
+{% endblock %}

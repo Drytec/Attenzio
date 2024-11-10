@@ -32,11 +32,11 @@ def register(request):
 
 
 @login_required
-def create_aula(request):
+def create_sesion(request):
     print(f'User ID: {request.user.id}')  # Esto debería imprimir el ID del usuario actual
 
     if request.method == 'GET':
-        return render(request,'core/create_aula.html',{
+        return render(request,'core/create_sesion.html',{
             'form':sesionForm
         })
     else:
@@ -48,7 +48,7 @@ def create_aula(request):
             return redirect('home')
 
         else:
-            return render(request, 'core/create_aula.html', {
+            return render(request, 'core/create_sesion.html', {
                 'form': form,
                 'errors': form.errors
             })
@@ -69,10 +69,10 @@ def signup(request):
         teacher = form.save(commit=False)
 
         # Asigna un valor único a username
-        teacher.username = f"{teacher.nombre}{teacher.documento}{get_random_string(length=5)}"
+        teacher.username = f"{teacher.name}{teacher.document}{get_random_string(length=5)}"
 
         # Validar que documento y email sean únicos
-        if Teacher.objects.filter(documento=teacher.documento).exists():
+        if Teacher.objects.filter(document=teacher.document).exists():
             form.add_error('documento', 'El documento ya existe. Por favor, utiliza otro.')
             return render(request, 'core/signup.html', {'form': form})
 
@@ -100,13 +100,13 @@ def login1(request):
             'form': AuthenticationForm()
         })
     else:
-        documento = request.POST['username']  # Usa 'documento' como nombre de usuario
+        document = request.POST['username']  # Usa 'documento' como nombre de usuario
         password = request.POST['password']
-        user = authenticate(request, username=documento, password=password)
+        user = authenticate(request, username=document, password=password)
         if user is None:
             return render(request, 'core/login1.html', {
                 'form': AuthenticationForm(), 'error': 'Usuario o Contraseña incorrecto'
             })
         else:
             login(request, user)
-            return redirect('aula')
+            return redirect('sesion')
