@@ -1,11 +1,11 @@
 from django.forms import ModelForm
-from .models import sesion
+from .models import Session
 from django import forms
 from django.contrib.auth.models import User
 
 class sessionForm(ModelForm):
     class Meta:
-        model = sesion
+        model = Session
         #aqui definimos lo s atributos que seran solicitados en el formulario
         fields = ['session_name', 'description', 'date_start', 'date_end']
 
