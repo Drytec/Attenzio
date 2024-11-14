@@ -19,7 +19,7 @@ from django.utils import timezone
 import pytz
 
 from .models import Teacher
-from ..sesion.forms import sesionForm
+from ..session.forms import sessionForm
 
 
 def home(request):
@@ -36,19 +36,19 @@ def create_sesion(request):
     print(f'User ID: {request.user.id}')  # Esto debería imprimir el ID del usuario actual
 
     if request.method == 'GET':
-        return render(request,'core/create_sesion.html',{
-            'form':sesionForm
+        return render(request,'core/create_session.html',{
+            'form':sessionForm
         })
     else:
-        form = sesionForm(request.POST)
+        form = sessionForm(request.POST)
         if form.is_valid():
-            new_aula= form.save(commit=False)
-            new_aula.user = request.user
-            new_aula.save()
+            new_session= form.save(commit=False)
+            new_session.user = request.user
+            new_session.save()
             return redirect('home')
 
         else:
-            return render(request, 'core/create_sesion.html', {
+            return render(request, 'core/create_session.html', {
                 'form': form,
                 'errors': form.errors
             })
@@ -100,13 +100,13 @@ def login1(request):
             'form': AuthenticationForm()
         })
     else:
-        document = request.POST['username']  # Usa 'documento' como nombre de usuario
+        email = request.POST['username']  # Usa 'documento' como nombre de usuario
         password = request.POST['password']
-        user = authenticate(request, username=document, password=password)
+        user = authenticate(request, username=email, password=password)
         if user is None:
             return render(request, 'core/login1.html', {
                 'form': AuthenticationForm(), 'error': 'Usuario o Contraseña incorrecto'
             })
         else:
             login(request, user)
-            return redirect('sesion')
+            return redirect('session')

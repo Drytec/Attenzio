@@ -2,8 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class Teacher(AbstractUser):
-    name = models.CharField(max_length=100)
-    lastName = models.CharField(max_length=100)
+    fullName = models.CharField(max_length=100)
     document = models.IntegerField(unique=True)
     id = models.IntegerField(unique=True, primary_key=True)
     address = models.CharField(max_length=100)
@@ -13,9 +12,11 @@ class Teacher(AbstractUser):
     email = models.EmailField(max_length=100, unique=True)
 
     # Cambiar el campo de identificación principal
-    USERNAME_FIELD = 'document'
-    REQUIRED_FIELDS = ['name', 'lastName', 'email']
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['fullName', 'document']
+
+    class Meta:
+        db_table = "teacher"
 
     def __str__(self):
-        return f'{self.name} {self.lastName}'
-#e
+        return self.fullName
