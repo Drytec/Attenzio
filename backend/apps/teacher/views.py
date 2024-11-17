@@ -13,7 +13,7 @@ from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.utils.crypto import get_random_string
 from django.views.decorators.csrf import csrf_exempt
 
-from .forms import TeacherForm
+from .forms import TeacherRegisterForm
 from django.db import IntegrityError
 from django.utils import timezone
 import pytz
@@ -25,11 +25,6 @@ from ..session.forms import sessionForm
 def home(request):
     print(request.user)
     return render(request,'core/home.html')
-def register(request):
-    return render(request,'core/signup.html',{
-        'form':UserCreationForm
-    })
-
 
 @login_required
 def create_sesion(request):
@@ -57,21 +52,19 @@ def exit(request):
     logout(request)
     return redirect('home')
 
-def signup(request):
+def teacher_singup_view(request):
     if request.method == 'GET':
         return render(request, 'core/signup.html', {
-            'form': TeacherForm()
+            'form': TeacherRegisterForm()
         })
 
-    form = TeacherForm(request.POST, request.FILES)
+    form = TeacherRegisterForm(request.POST, request.FILES)
 
     if form.is_valid():
         teacher = form.save(commit=False)
 
-        # Asigna un valor único a username
-        teacher.username = f"{teacher.name}{teacher.document}{get_random_string(length=5)}"
+        teacher.username = f"{teacher.fullName}{teacher.document}{get_random_string(length=5)}"
 
-        # Validar que documento y email sean únicos
         if Teacher.objects.filter(document=teacher.document).exists():
             form.add_error('documento', 'El documento ya existe. Por favor, utiliza otro.')
             return render(request, 'core/signup.html', {'form': form})
@@ -80,13 +73,14 @@ def signup(request):
             form.add_error('email', 'El correo ya existe. Por favor, utiliza otro.')
             return render(request, 'core/signup.html', {'form': form})
 
-        # Cifra la contraseña y guarda el usuario
+        teacher.validate = False
+
         teacher.password = make_password(form.cleaned_data['password'])
 
         try:
             teacher.save()
             login(request, teacher)
-            return redirect('login1')
+            return redirect('login')
 
         except IntegrityError:
             form.add_error(None, 'Ocurrió un error al guardar el profesor. Por favor, intenta nuevamente.')
@@ -94,19 +88,36 @@ def signup(request):
 
     return render(request, 'core/signup.html', {'form': form})
 
-def login1(request):
+
+def teacher_login_view(request):
     if request.method == 'GET':
-        return render(request, 'core/login1.html', {
-            'form': AuthenticationForm()
-        })
-    else:
-        email = request.POST['username']  # Usa 'documento' como nombre de usuario
-        password = request.POST['password']
-        user = authenticate(request, username=email, password=password)
-        if user is None:
-            return render(request, 'core/login1.html', {
-                'form': AuthenticationForm(), 'error': 'Usuario o Contraseña incorrecto'
+        return render(request, 'core/login.html', {'form': AuthenticationForm()})
+
+    elif request.method == 'POST':
+        email = request.POST.get('username')
+        password = request.POST.get('password')
+
+        if not email or not password:
+            return render(request, 'core/login.html', {
+                'form': AuthenticationForm(),
+                'error': 'Ambos campos son obligatorios'
             })
-        else:
-            login(request, user)
-            return redirect('session')
+
+        # Autenticar al usuario
+        user = authenticate(request, username=email, password=password)
+
+        if user is None:
+            return render(request, 'core/login.html', {
+                'form': AuthenticationForm(),
+                'error': 'Usuario o contraseña incorrecto'
+            })
+
+        """if hasattr(user, 'validate') and not user.validate:
+            return render(request, 'core/login.html', {
+                'form': AuthenticationForm(),
+                'error': 'Tu cuenta necesita ser validada por un administrador.'
+            })"""
+
+        # Iniciar sesión y redirigir
+        login(request, user)
+        return redirect('session')
