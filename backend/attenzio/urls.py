@@ -21,7 +21,7 @@ urlpatterns = [
     # aqui definen a que ruta va renderizar las urls definidas en cada carpeta
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('sesion/', include('apps.sesion.urls')),
+    path('sesion/', include('apps.session.urls')),
   #  path('student/', include('apps.student.urls')),
     path('', include('apps.teacher.urls')),
 ]

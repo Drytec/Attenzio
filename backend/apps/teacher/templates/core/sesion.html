@@ -6,14 +6,14 @@
         {% for aula in aula1 %}
             <div style="margin-right: 20px; margin-bottom: 10px;">
                 <strong>Aula:</strong>
-                <form action="{% url 'aula_online' aula.aula_id %}" method="get">
+                <form action="{% url 'sesion_online' aula.aula_id %}" method="get">
                     {% csrf_token %}
-                    <button type="submit">Entrar a {{ aula.nombre_aula }}</button>
+                    <button type="submit">Entrar a {{ sesion.nombre_sesion }}</button>
                 </form>
                 <br>
-                <strong>Fecha:</strong> {{ aula.fecha_inicio }}<br>
-                <strong>ID de clase:</strong> {{ aula.aula_id }}<br>
-                <strong>Profesor:</strong> {{ aula.user }}
+                <strong>Fecha:</strong> {{ sesion.fecha_inicio }}<br>
+                <strong>ID de clase:</strong> {{ sesion.sesion_id }}<br>
+                <strong>Profesor:</strong> {{ sesion.user }}
             </div>
         {% endfor %}
     </div>

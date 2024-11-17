@@ -1,16 +1,17 @@
 from django.forms import ModelForm
-from .models import sesion
+from .models import Session
 from django import forms
+from django.contrib.auth.models import User
 
-class sesionForm(ModelForm):
+class sessionForm(ModelForm):
     class Meta:
-        model = sesion
+        model = Session
         #aqui definimos lo s atributos que seran solicitados en el formulario
-        fields = ['sesion_name', 'description', 'date_start', 'date_end']
+        fields = ['session_name', 'description', 'date_start', 'date_end']
 
         #aqui definimos como se veran las etiquetas en el formulario
         labels = {
-            'sesion_name': 'Nombre de la Sesión',
+            'session_name': 'Nombre de la Sesión',
             'description': 'Descripción',
             'date_start': 'Fecha de Inicio',
             'date_end': 'Fecha de Fin',

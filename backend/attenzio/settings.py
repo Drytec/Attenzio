@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'apps.teacher',
-    'apps.sesion',
+    'apps.session',
 ]
 AUTH_USER_MODEL = 'teacher.Teacher'
 
@@ -53,7 +53,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'proyecto.urls'
+ROOT_URLCONF = 'attenzio.urls'
 
 
 TEMPLATES = [
@@ -71,7 +71,7 @@ TEMPLATES = [
         },
     },
 ]
-WSGI_APPLICATION = 'proyecto.wsgi.application'
+WSGI_APPLICATION = 'attenzio.wsgi.application'
 
 
 # Database
