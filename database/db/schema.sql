@@ -7,7 +7,7 @@ CREATE TABLE student (
     estEmail VARCHAR(100) UNIQUE NOT NULL,
     estPhone VARCHAR(10),
     estTab VARCHAR(300)
-)
+);
 
 CREATE TABLE professor(
     profId SERIAL PRIMARY KEY,
@@ -15,19 +15,19 @@ CREATE TABLE professor(
     profFullName VARCHAR(60) NOT NULL,
     profEmail VARCHAR(100) UNIQUE NOT NULL,
     profAddress VARCHAR(300),
-    profPicture IMAGE,
+    profPicture VARCHAR(200),
     profPass VARCHAR(30)
-)
+);
 
 CREATE TABLE session(
     sessionId SERIAL PRIMARY KEY,
     dateSession DATE,
     hourSession TIME,
-    qrCode IMAGE,
-    sessionMaterial
+    qrCode VARCHAR(200),
+    sessionMaterial VARCHAR(300),
     profId INT,
     FOREIGN KEY (profId) REFERENCES professor(profId)
-)
+);
 
 CREATE TABLE studentSession(
     estId INT NOT NULL,
