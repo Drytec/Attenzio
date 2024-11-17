@@ -21,8 +21,8 @@ CREATE TABLE professor(
 
 CREATE TABLE session(
     sessionId SERIAL PRIMARY KEY,
-    date_start DATE,
-    date_end TIME,
+    dateSession DATE,
+    hourSession TIME,
     qrCode IMAGE,
     sessionMaterial
     profId INT,
