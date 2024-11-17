@@ -7,12 +7,11 @@ class TeacherRegisterForm(forms.ModelForm):
 
     class Meta:
         model = Teacher
-        fields = ['document', 'fullName', 'email', 'address', 'phone', 'picture', 'password']
+        fields = ['teacher_document', 'full_name', 'email', 'teacher_address', 'teacher_picture', 'password']
         labels = {
-            'document': 'Documento',
-            'fullName': 'Nombre Completo',
+            'teacher_document': 'Documento',
+            'full_name': 'Nombre Completo',
             'email': 'Email',
-            'address': 'Dirección',
-            'phone': 'Teléfono',
-            'picture': 'Foto',
+            'teacher_address': 'Dirección',
+            'teacher_picture': 'Foto',
         }

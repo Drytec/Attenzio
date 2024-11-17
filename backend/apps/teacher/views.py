@@ -63,9 +63,9 @@ def teacher_singup_view(request):
     if form.is_valid():
         teacher = form.save(commit=False)
 
-        teacher.username = f"{teacher.fullName}{teacher.document}{get_random_string(length=5)}"
+        teacher.username = f"{teacher.full_name}{teacher.teacher_document}{get_random_string(length=5)}"
 
-        if Teacher.objects.filter(document=teacher.document).exists():
+        if Teacher.objects.filter(document=teacher.teacher_document).exists():
             form.add_error('documento', 'El documento ya existe. Por favor, utiliza otro.')
             return render(request, 'core/signup.html', {'form': form})
 

@@ -1,25 +1,17 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from backend.apps.user.models import CustomUser
 
 
-class Teacher(AbstractUser):
-    profFullName = models.CharField(max_length=100)
-    profCedula = models.IntegerField(unique=True)
-    profId = models.IntegerField(unique=True, primary_key=True)
-    profAddress = models.CharField(max_length=100)
-    validate = models.BooleanField(default=False, blank=True)
-    profPicture = models.ImageField(upload_to='photos/', max_length=100, blank=True)
-    profEmail = models.EmailField(max_length=100, unique=True)
-
-    # Cambiar el campo de identificación principal
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['fullName', 'document']
+class Teacher(CustomUser):
+    teacher_document = models.IntegerField(unique=True)
+    full_name = models.CharField(max_length=100, db_column='teacher_full_name')
+    email = models.EmailField(max_length=100, unique=True, db_column='teacher_email')
+    teacher_address = models.CharField(max_length=300, blank=True, null=True)
+    teacher_picture = models.ImageField(upload_to='teacher_pictures/', blank=True, null=True)
+    password = models.CharField(max_length=30, null=False, db_column='teacher_pass')
 
     class Meta:
         db_table = "teacher"
-
-    def __str__(self):
-        return self.fullName
 
     @property
     def is_validated(self):

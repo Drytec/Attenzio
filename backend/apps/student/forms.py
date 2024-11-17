@@ -7,10 +7,10 @@ class StudentRegisterForm(forms.ModelForm):
 
     class Meta:
         model = Student
-        fields = ['fullName', 'email', 'phone', 'tab', 'password']
+        fields = ['full_name', 'email', 'est_phone', 'est_tab', 'password']
         labels = {
-            'fullName': 'Nombre Completo',
+            'full_name': 'Nombre Completo',
             'email': 'Email',
-            'phone': 'Teléfono',
-            'tab': 'Foto',
+            'est_phone': 'Teléfono',
+            'est_tab': 'Foto',
         }

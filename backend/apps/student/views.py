@@ -42,7 +42,7 @@ def student_singup_view(request):
     if form.is_valid():
         student = form.save(commit=False)
 
-        student.username = f"{student.fullName}{get_random_string(length=5)}"
+        student.username = f"{student.full_name}{get_random_string(length=5)}"
 
         if Student.objects.filter(email=student.email).exists():
             form.add_error('email', 'El correo ya existe. Por favor, utiliza otro.')
