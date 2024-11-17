@@ -3,14 +3,13 @@ from django.contrib.auth.models import AbstractUser
 
 
 class Teacher(AbstractUser):
-    fullName = models.CharField(max_length=100)
-    document = models.IntegerField(unique=True)
-    id = models.IntegerField(unique=True, primary_key=True)
-    address = models.CharField(max_length=100)
-    phone = models.CharField(max_length=15, default="")
+    profFullName = models.CharField(max_length=100)
+    profCedula = models.IntegerField(unique=True)
+    profId = models.IntegerField(unique=True, primary_key=True)
+    profAddress = models.CharField(max_length=100)
     validate = models.BooleanField(default=False, blank=True)
-    picture = models.ImageField(upload_to='photos/', max_length=100, blank=True)
-    email = models.EmailField(max_length=100, unique=True)
+    profPicture = models.ImageField(upload_to='photos/', max_length=100, blank=True)
+    profEmail = models.EmailField(max_length=100, unique=True)
 
     # Cambiar el campo de identificación principal
     USERNAME_FIELD = 'email'

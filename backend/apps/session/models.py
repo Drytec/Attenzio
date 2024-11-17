@@ -1,12 +1,15 @@
 from django.db import models
+from backend.apps.teacher.models import Teacher
 
 # Create your models here.
 class Session(models.Model):
-    session_id = models.IntegerField(primary_key=True)
-    session_name = models.CharField(max_length=100)
-    description = models.TextField(max_length=100)
-    date_start = models.DateTimeField(null=True)
-    date_end = models.DateTimeField(null=True)
+    sessionId = models.IntegerField(primary_key=True)
+    sessionMaterial = models.TextField(max_length=100)
+    qrCode = models.ImageField(max_length=100)
+    dateSession = models.DateField(null=True)
+    hourSession = models.TimeField(null=True)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='sessions')
+
     #user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     class Meta:
