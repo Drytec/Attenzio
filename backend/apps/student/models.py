@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
-class Teacher(AbstractUser):
+class Student(AbstractUser):
     fullName = models.CharField(max_length=100)
     id = models.IntegerField(unique=True, primary_key=True)
     phone = models.CharField(max_length=15, default="")

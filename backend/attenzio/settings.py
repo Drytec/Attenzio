@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'apps.teacher',
+    'apps.student',
     'apps.session',
 ]
 AUTH_USER_MODEL = 'teacher.Teacher'

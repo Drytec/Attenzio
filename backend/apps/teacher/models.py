@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+
 class Teacher(AbstractUser):
     fullName = models.CharField(max_length=100)
     document = models.IntegerField(unique=True)
@@ -20,3 +21,7 @@ class Teacher(AbstractUser):
 
     def __str__(self):
         return self.fullName
+
+    @property
+    def is_validated(self):
+        return self.validate
