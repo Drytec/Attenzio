@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>  <!-- Mostrar el mensaje de error si lo hay -->
+    {% endif %}
+
+    <form action="/login1/" method="POST">
+        {% csrf_token %}
+
+        <!-- Cambiar el label del campo username a 'Documento' -->
+        <div>
+            <label for="id_username">Nombre Completo:</label>  <!-- Cambia 'Username' a 'Documento' -->
+            {{ form.username }}  <!-- Campo 'username' del AuthenticationForm -->
+        </div>
+
+        <!-- Cambiar el label del campo password a 'Contraseña' -->
+        <div>
+            <label for="id_password">Contraseña:</label>  <!-- Cambia 'Password' a 'Contraseña' -->
+            {{ form.password }}  <!-- Campo 'password' del AuthenticationForm -->
+        </div>
+
+        <button type="submit">
+            Login
+        </button>
+    </form>
+{% endblock %}

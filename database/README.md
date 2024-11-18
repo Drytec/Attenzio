@@ -16,7 +16,7 @@ Create a db folder and include the following files:
 ### 2. Create `Dockerfile`
 
 Set postgres imagen base:
--  FROM postgres:14
+-  FROM postgres:16
 
 Add lines for copy files into container:
 - COPY ./db/schema.sql /docker-entrypoint-initdb.d/01_schema.sql
@@ -27,17 +27,28 @@ Add lines for copy files into container:
 inside database folder:
 
 ```
-docker build -t drytec/attenzio .
+docker build -t attenzio .
 ```
 
 ### 4. Run server with postgres
 
 ```
-docker run --name facturion -p 0.0.0.0:5432:5432 -e POSTGRES_PASSWORD=aP4sw0rd drytec/attenzio
+docker run --name attenzio -p 0.0.0.0:5432:5432 -e POSTGRES_PASSWORD=aP4sw0rd attenzio
 ```
 
-
 ### Run integrate with dockercompose
+
+To make managing the database container easier, use Docker Compose.
+
+### 1. Run the Database Server with DockerCompose
+
+From root level folder to launch the database services, run:
+
+```bash
+docker-compose up -d attenzio_database
+```
+
+docker-compose.yml simplifies container management.
 
 
 

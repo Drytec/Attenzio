@@ -38,10 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'apps.user',
     'apps.teacher',
-    'apps.sesion',
+    'apps.student',
+    'apps.session',
 ]
-AUTH_USER_MODEL = 'teacher.Teacher'
+AUTH_USER_MODEL = 'user.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -53,7 +55,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'proyecto.urls'
+ROOT_URLCONF = 'attenzio.urls'
 
 
 TEMPLATES = [
@@ -71,7 +73,7 @@ TEMPLATES = [
         },
     },
 ]
-WSGI_APPLICATION = 'proyecto.wsgi.application'
+WSGI_APPLICATION = 'attenzio.wsgi.application'
 
 
 # Database
@@ -79,8 +81,12 @@ WSGI_APPLICATION = 'proyecto.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'pos_course',
+        'USER': 'postgres',
+        'PASSWORD': 'aP4sw0rd',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
