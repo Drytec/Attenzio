@@ -1,5 +1,5 @@
 from django.db import models
-from backend.apps.user.models import CustomUser
+from apps.user.models import CustomUser
 
 
 class Teacher(CustomUser):
