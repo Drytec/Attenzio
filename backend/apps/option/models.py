@@ -1,16 +1,15 @@
 from django.db import models
-from backend.apps.session.models import Session
+from backend.apps.question.models import Question
 
 # Create your models here.
-class Question(models.Model):
-    questionId = models.IntegerField(primary_key=True)
-    questionText = models.TextField(max_length=200)
-    session = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='sessions')
-
-    #user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+class Option(models.Model):
+    question_id = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='question')
+    option_text = models.CharField(max_length=200)
+    is_correct = models.BooleanField,
+    option_id = models.IntegerField(primary_key=True),
 
     class Meta:
-        db_table = "question"
+        db_table = "option"
 
     def __str__(self):
-        return f'{self.questionId}'
+        return f'{self.option_id}'

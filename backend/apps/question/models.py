@@ -1,19 +1,14 @@
 from django.db import models
-from backend.apps.teacher.models import Teacher
+from backend.apps.session.models import Session
 
 # Create your models here.
-class Session(models.Model):
-    sessionId = models.IntegerField(primary_key=True)
-    sessionMaterial = models.TextField(max_length=100)
-    qrCode = models.ImageField(max_length=100)
-    dateSession = models.DateField(null=True)
-    hourSession = models.TimeField(null=True)
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='sessions')
-
-    #user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+class Question(models.Model):
+    session_id = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='session')
+    question_text = models.CharField(max_length=200)
+    question_id = models.IntegerField(primary_key=True),
 
     class Meta:
-        db_table = "session"
+        db_table = "question"
 
     def __str__(self):
-        return f'{self.sesion_id}'
+        return f'{self.question_id}'
