@@ -3,7 +3,7 @@ from django.shortcuts import render
 
 # Create your views here.
 import json
-
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -22,6 +22,9 @@ import pytz
 from .models import Student
 from ..session.forms import sessionForm
 
+
+def is_student(user):
+    return user.is_authenticated and hasattr(user, 'student')
 # Create your views here.
 def home(request):
     print(request.user)
@@ -30,7 +33,7 @@ def home(request):
 def exit(request):
     logout(request)
     return redirect('home')
-
+@user_passes_test(is_student)
 def student_singup_view(request):
     if request.method == 'GET':
         return render(request, 'core/signup.html', {
@@ -61,7 +64,7 @@ def student_singup_view(request):
 
     return render(request, 'core/signup.html', {'form': form})
 
-
+@user_passes_test(is_student)
 def student_login_view(request):
     if request.method == 'GET':
         return render(request, 'core/login.html', {'form': AuthenticationForm()})
