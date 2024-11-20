@@ -56,7 +56,7 @@ def create_sesion(request):
 def exit(request):
     logout(request)
     return redirect('home')
-@user_passes_test(is_teacher)
+
 def teacher_singup_view(request):
     if request.method == 'GET':
         return render(request, 'core/signup.html', {
@@ -68,8 +68,7 @@ def teacher_singup_view(request):
         teacher = form.save(commit=False)
 
         teacher.username = f"{teacher.full_name}{teacher.teacher_document}{get_random_string(length=5)}"
-
-        if Teacher.objects.filter(document=teacher.teacher_document).exists():
+        if Teacher.objects.filter(teacher_document=teacher.teacher_document).exists():
             form.add_error('documento', 'El documento ya existe. Por favor, utiliza otro.')
             return render(request, 'core/signup.html', {'form': form})
 
@@ -92,7 +91,6 @@ def teacher_singup_view(request):
 
     return render(request, 'core/signup.html', {'form': form})
 
-@user_passes_test(is_teacher)
 def teacher_login_view(request):
     if request.method == 'GET':
         return render(request, 'core/login.html', {'form': AuthenticationForm()})

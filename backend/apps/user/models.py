@@ -5,8 +5,7 @@ from django.db import models
 class CustomUser(AbstractUser):
     full_name = models.CharField(max_length=100)
     email = models.EmailField(max_length=100, unique=True)
-    password = models.CharField(max_length=30, null=False)
-
+    password = models.CharField(max_length=128)  # Incrementado a 128 caracteres
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['full_name']
 

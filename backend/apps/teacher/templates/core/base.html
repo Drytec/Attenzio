@@ -99,11 +99,11 @@
 <ul>
     <li><a href="{% url 'home' %}">Inicio</a></li>
     {% if request.user.is_authenticated %}
-        <li><a href="{% url 'aula' %}">Aula</a></li>
-        <li><a href="{% url 'create_aula' %}">Nueva aula</a></li>
+        <li><a href="{% url 'session' %}">Aula</a></li>
+        <li><a href="{% url 'create_session' %}">Nueva aula</a></li>
         <li><a href="{% url 'exit' %}">Salir</a></li>
     {% else %}
-        <li><a href="{% url 'login1' %}">Ingresar</a></li>
+        <li><a href="{% url 'login' %}">Ingresar</a></li>
         <li><a href="{% url 'signup' %}">Registrarse</a></li>
     {% endif %}
 </ul>

@@ -1,5 +1,4 @@
 from django import forms
-
 from .models import Teacher
 
 class TeacherRegisterForm(forms.ModelForm):
@@ -15,3 +14,11 @@ class TeacherRegisterForm(forms.ModelForm):
             'teacher_address': 'Dirección',
             'teacher_picture': 'Foto',
         }
+
+    def save(self, commit=True):
+        # Crea y guarda el nuevo Teacher, incluyendo la contraseña
+        teacher = super().save(commit=False)
+        teacher.set_password(self.cleaned_data['password'])  # Establecer la contraseña de manera segura
+        if commit:
+            teacher.save()  # Guarda el usuario en la base de datos
+        return teacher

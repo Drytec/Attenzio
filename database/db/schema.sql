@@ -3,21 +3,21 @@
 
 CREATE TABLE student(
     est_id SERIAL PRIMARY KEY,
-    est_full_name VARCHAR(60) NOT NULL ,
-    est_email VARCHAR(100) UNIQUE NOT NULL,
+    full_name VARCHAR(60) NOT NULL ,
+    email VARCHAR(100) UNIQUE NOT NULL,
     est_phone VARCHAR(10),
-    est_pass VARCHAR(30),
+    password VARCHAR(30),
     est_tab VARCHAR(300)
 );
 
 CREATE TABLE teacher(
     teacher_id SERIAL PRIMARY KEY,
     teacher_document INTEGER UNIQUE NOT NULL,
-    teacher_full_name VARCHAR(60) NOT NULL,
-    teacher_email VARCHAR(100) UNIQUE NOT NULL,
+    full_name VARCHAR(60) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
     teacher_address VARCHAR(300),
     teacher_picture VARCHAR(200),
-    teacher_pass VARCHAR(30)
+    password VARCHAR(300)
 );
 
 CREATE TABLE session(

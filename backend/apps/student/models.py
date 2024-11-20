@@ -7,3 +7,4 @@ class Student(CustomUser):
     est_tab = models.TextField(blank=True, null=True)
     class Meta:
         db_table = "student"
+        managed = False
