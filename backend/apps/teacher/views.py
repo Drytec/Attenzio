@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 import json
-
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -25,8 +25,13 @@ from ..session.forms import sessionForm
 def home(request):
     print(request.user)
     return render(request,'core/home.html')
+# esta es la funcion que valida que las vistas solo puedan ser accedidas por usuarios del tipo teacher
+def is_teacher(user):
+    return user.is_authenticated and hasattr(user, 'teacher')
 
 @login_required
+#se llama aca a la funcion
+@user_passes_test(is_teacher)
 def create_sesion(request):
     print(f'User ID: {request.user.id}')  # Esto debería imprimir el ID del usuario actual
 
@@ -51,13 +56,12 @@ def create_sesion(request):
 def exit(request):
     logout(request)
     return redirect('home')
-
+@user_passes_test(is_teacher)
 def teacher_singup_view(request):
     if request.method == 'GET':
         return render(request, 'core/signup.html', {
             'form': TeacherRegisterForm()
         })
-
     form = TeacherRegisterForm(request.POST, request.FILES)
 
     if form.is_valid():
@@ -88,7 +92,7 @@ def teacher_singup_view(request):
 
     return render(request, 'core/signup.html', {'form': form})
 
-
+@user_passes_test(is_teacher)
 def teacher_login_view(request):
     if request.method == 'GET':
         return render(request, 'core/login.html', {'form': AuthenticationForm()})

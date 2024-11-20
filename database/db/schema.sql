@@ -7,7 +7,7 @@ CREATE TABLE student(
     est_email VARCHAR(100) UNIQUE NOT NULL,
     est_phone VARCHAR(10),
     est_pass VARCHAR(30),
-    est_tab bytea
+    est_tab VARCHAR(300)
 );
 
 CREATE TABLE teacher(
@@ -22,10 +22,10 @@ CREATE TABLE teacher(
 
 CREATE TABLE session(
     session_id SERIAL PRIMARY KEY,
-    session_hour DATE,
-    session_date TIME,
-    qrCode VARCHAR(200),
-    session_material VARCHAR(300),
+    session_name VARCHAR(300),
+    session_date_start TIME,
+    session_date_end TIME,
+    session_description VARCHAR(300),
     teacher_id INT,
     FOREIGN KEY (teacher_id) REFERENCES teacher(teacher_id)
 );

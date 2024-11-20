@@ -7,18 +7,18 @@ class sessionForm(ModelForm):
     class Meta:
         model = Session
         #aqui definimos lo s atributos que seran solicitados en el formulario
-        fields = ['session_name', 'description', 'date_start', 'date_end']
+        fields = ['session_name', 'session_description', 'session_date_start', 'session_date_end']
 
         #aqui definimos como se veran las etiquetas en el formulario
         labels = {
             'session_name': 'Nombre de la Sesión',
-            'description': 'Descripción',
-            'date_start': 'Fecha de Inicio',
-            'date_end': 'Fecha de Fin',
+            'session_description': 'Descripción',
+            'session_date_start': 'Fecha de Inicio',
+            'session_date_end': 'Fecha de Fin',
         }
 
         # Widgets para campos de fecha y hora
         widgets = {
-            'date_start': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
-            'date_end': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'session_date_start': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'session_date_end': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
         }
