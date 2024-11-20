@@ -84,10 +84,11 @@ def teacher_singup_view(request):
             teacher.save()
             login(request, teacher)
             return redirect('login')
-
-        except IntegrityError:
-            form.add_error(None, 'Ocurrió un error al guardar el profesor. Por favor, intenta nuevamente.')
+        except IntegrityError as e:
+            print(str(e))
+            form.add_error(None, f'Ocurrió un error al guardar el profesor: {str(e)}')
             return render(request, 'core/signup.html', {'form': form})
+
 
     return render(request, 'core/signup.html', {'form': form})
 
