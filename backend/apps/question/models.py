@@ -1,9 +1,9 @@
 from django.db import models
-from backend.apps.session.models import Session
+from apps.session.models import Session
 
 # Create your models here.
 class Question(models.Model):
-    session_id = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='session')
+    session_id = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='questions')
     question_text = models.CharField(max_length=200)
     question_id = models.IntegerField(primary_key=True),
 

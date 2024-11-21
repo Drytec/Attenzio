@@ -11,6 +11,7 @@ venv/*
 /mediafiles/*
 __pycache__/
 /.vscode/
+attenzio.iml
 
 # coverage result
 .coverage
