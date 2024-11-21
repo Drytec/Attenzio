@@ -2,20 +2,19 @@
 
 {% block content %}
     {% if error %}
-        <p style="color:red;">{{ error }}</p>  <!-- Mostrar el mensaje de error si lo hay -->
+        <p style="color:red;">{{ error }}</p>
     {% endif %}
 
     <form action="/login/" method="POST">
         {% csrf_token %}
 
-        <!-- Cambiar el label del campo username a 'Documento' -->
         <div>
-            <label for="full_name">Nombre Completo:</label>
+            <label for="{{ form.username.id_for_label }}">Correo:</label>
             {{ form.username }}
         </div>
 
         <div>
-            <label for="id_password">Contraseña:</label>
+            <label for="{{ form.password.id_for_label }}">Contraseña:</label>
             {{ form.password }}
         </div>
 

@@ -1,5 +1,4 @@
 from django.db import models
-from apps.teacher.models import Teacher
 
 # Create your models here.
 class Session(models.Model):
