@@ -65,8 +65,6 @@ def select_user_type_view(request):
 
 def user_singup_view(request):
     user_type = request.GET.get('type', None)
-    if user_type not in ('student', 'teacher'):
-        return redirect('select-user-type')
 
     if user_type == 'teacher':
         form_class = TeacherRegisterForm
