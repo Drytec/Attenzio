@@ -3,15 +3,12 @@
 
 {% block content %}
     {{ error}}
-    <form action="/signup/" method="POST" enctype="multipart/form-data" >
-
+    <form action= "{% url 'signup' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        {{form.as_p}}
-        <button>
-            login
-        </button>
-
+        {{ form.as_p }}
+        <button>Registrarse</button>
     </form>
+
     <style>
         .signup-form {
             max-width: 400px;

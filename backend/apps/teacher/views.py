@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 import json
-
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -25,8 +25,13 @@ from ..session.forms import sessionForm
 def home(request):
     print(request.user)
     return render(request,'core/home.html')
+# esta es la funcion que valida que las vistas solo puedan ser accedidas por usuarios del tipo teacher
+def is_teacher(user):
+    return user.is_authenticated and hasattr(user, 'teacher')
 
 @login_required
+#se llama aca a la funcion
+@user_passes_test(is_teacher)
 def create_sesion(request):
     print(f'User ID: {request.user.id}')  # Esto debería imprimir el ID del usuario actual
 
@@ -57,15 +62,13 @@ def teacher_singup_view(request):
         return render(request, 'core/signup.html', {
             'form': TeacherRegisterForm()
         })
-
     form = TeacherRegisterForm(request.POST, request.FILES)
 
     if form.is_valid():
         teacher = form.save(commit=False)
 
         teacher.username = f"{teacher.full_name}{teacher.teacher_document}{get_random_string(length=5)}"
-
-        if Teacher.objects.filter(document=teacher.teacher_document).exists():
+        if Teacher.objects.filter(teacher_document=teacher.teacher_document).exists():
             form.add_error('documento', 'El documento ya existe. Por favor, utiliza otro.')
             return render(request, 'core/signup.html', {'form': form})
 
@@ -81,13 +84,13 @@ def teacher_singup_view(request):
             teacher.save()
             login(request, teacher)
             return redirect('login')
-
-        except IntegrityError:
-            form.add_error(None, 'Ocurrió un error al guardar el profesor. Por favor, intenta nuevamente.')
+        except IntegrityError as e:
+            print(str(e))
+            form.add_error(None, f'Ocurrió un error al guardar el profesor: {str(e)}')
             return render(request, 'core/signup.html', {'form': form})
 
-    return render(request, 'core/signup.html', {'form': form})
 
+    return render(request, 'core/signup.html', {'form': form})
 
 def teacher_login_view(request):
     if request.method == 'GET':

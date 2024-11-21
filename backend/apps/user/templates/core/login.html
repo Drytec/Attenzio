@@ -5,7 +5,7 @@
         <p style="color:red;">{{ error }}</p>  <!-- Mostrar el mensaje de error si lo hay -->
     {% endif %}
 
-    <form action="/login1/" method="POST">
+    <form action="/login/" method="POST">
         {% csrf_token %}
 
         <!-- Cambiar el label del campo username a 'Documento' -->

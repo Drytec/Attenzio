@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'apps.teacher',
     'apps.student',
     'apps.session',
+    'apps.rol',
 ]
 AUTH_USER_MODEL = 'user.CustomUser'
 
@@ -82,11 +83,11 @@ WSGI_APPLICATION = 'attenzio.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'pos_course',
+        'NAME': 'pos_attenzio',
         'USER': 'postgres',
         'PASSWORD': 'aP4sw0rd',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': '5433',
     }
 }
 
