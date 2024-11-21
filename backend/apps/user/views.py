@@ -87,7 +87,8 @@ def user_singup_view(request):
 
 def user_login_view(request):
     if request.method == 'GET':
-        return render(request, 'core/login.html', {'form': AuthenticationForm()})
+        form = AuthenticationForm()
+        return render(request, 'core/login.html', {'form': form})
 
     elif request.method == 'POST':
         email = request.POST.get('username')

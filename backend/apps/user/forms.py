@@ -10,6 +10,13 @@ class BaseRegisterForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ['document', 'full_name', 'email', 'address', 'picture', 'password']
+        labels = {
+            'document': 'Documento',
+            'full_name': 'Nombre Completo',
+            'email': 'Email',
+            'address': 'Dirección',
+            'picture': 'Foto',
+        }
 
     def clean_document(self):
         document = self.cleaned_data.get('document')

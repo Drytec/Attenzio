@@ -9,8 +9,6 @@ class Session(models.Model):
     session_date_end = models.TimeField(blank=True, null=True)
     session_description = models.CharField(max_length=300, blank=True, null=True)
 
-
-
     class Meta:
         db_table = "session"
         managed = False

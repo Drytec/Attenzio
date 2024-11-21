@@ -15,7 +15,6 @@ from django.contrib.auth import login
 
 # Create your views here.
 # a este metodo de renderizado le falta la verificacion de la fecha la que esta aun no funciona
-
 def session_interactive(request, session_id):
     colombia_tz = pytz.timezone('America/Bogota')
     ahora = timezone.now().astimezone(colombia_tz)
@@ -44,7 +43,7 @@ def create_session(request):
     else:
         form = sessionForm(request.POST)
         if form.is_valid():
-            new_aula= form.save(commit=False)
+            new_aula = form.save(commit=False)
             new_aula.user = request.user
             new_aula.save()
             return redirect('home')

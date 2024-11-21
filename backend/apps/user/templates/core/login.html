@@ -10,14 +10,13 @@
 
         <!-- Cambiar el label del campo username a 'Documento' -->
         <div>
-            <label for="id_username">Nombre Completo:</label>  <!-- Cambia 'Username' a 'Documento' -->
-            {{ form.username }}  <!-- Campo 'username' del AuthenticationForm -->
+            <label for="full_name">Nombre Completo:</label>
+            {{ form.username }}
         </div>
 
-        <!-- Cambiar el label del campo password a 'Contraseña' -->
         <div>
-            <label for="id_password">Contraseña:</label>  <!-- Cambia 'Password' a 'Contraseña' -->
-            {{ form.password }}  <!-- Campo 'password' del AuthenticationForm -->
+            <label for="id_password">Contraseña:</label>
+            {{ form.password }}
         </div>
 
         <button type="submit">
