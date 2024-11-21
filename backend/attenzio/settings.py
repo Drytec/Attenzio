@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'apps.teacher',
     'apps.student',
     'apps.session',
+    'apps.rol',
 ]
 AUTH_USER_MODEL = 'user.CustomUser'
 
@@ -86,7 +87,7 @@ DATABASES = {
         'USER': 'postgres',
         'PASSWORD': 'aP4sw0rd',
         'HOST': 'localhost',
-        'PORT': '5432'
+        'PORT': '5433',
     }
 }
 

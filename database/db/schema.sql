@@ -1,24 +1,27 @@
 
 \c pos_attenzio
 
-CREATE TABLE student(
-    est_id SERIAL PRIMARY KEY,
-    est_full_name VARCHAR(60) NOT NULL ,
-    est_email VARCHAR(100) UNIQUE NOT NULL,
-    est_phone VARCHAR(10),
-    est_pass VARCHAR(30),
-    est_tab VARCHAR(300)
+
+CREATE TABLE rol(
+    rol_id INT PRIMARY KEY,
+    rol_name VARCHAR(100)
+);
+CREATE TABLE customuser (
+        custom_user_id SERIAL PRIMARY KEY,
+        full_name VARCHAR(100) NOT NULL,
+        document VARCHAR(20) NOT NULL UNIQUE,
+        address VARCHAR(100),
+        picture VARCHAR(200),
+        email VARCHAR(100) UNIQUE NOT NULL,
+        password VARCHAR(128) NOT NULL,
+        rol_id INT REFERENCES rol(rol_id),
+        last_login TIMESTAMPTZ,
+        is_superuser BOOLEAN DEFAULT FALSE,
+        is_staff BOOLEAN DEFAULT FALSE,
+        is_active BOOLEAN DEFAULT TRUE,
+        date_joined TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE teacher(
-    teacher_id SERIAL PRIMARY KEY,
-    teacher_document INTEGER UNIQUE NOT NULL,
-    teacher_full_name VARCHAR(60) NOT NULL,
-    teacher_email VARCHAR(100) UNIQUE NOT NULL,
-    teacher_address VARCHAR(300),
-    teacher_picture VARCHAR(200),
-    teacher_pass VARCHAR(30)
-);
 
 CREATE TABLE session(
     session_id SERIAL PRIMARY KEY,
@@ -26,15 +29,15 @@ CREATE TABLE session(
     session_date_start TIME,
     session_date_end TIME,
     session_description VARCHAR(300),
-    teacher_id INT,
-    FOREIGN KEY (teacher_id) REFERENCES teacher(teacher_id)
+    custom_user_id INT,
+    FOREIGN KEY (custom_user_id) REFERENCES customUser(custom_user_id)
 );
 
-CREATE TABLE studentSession(
-    est_id INT NOT NULL,
+CREATE TABLE userSession(
+    custom_user_id INT NOT NULL,
     session_id INT NOT NULL,
-    PRIMARY KEY(est_id, session_id),
-    FOREIGN KEY (est_id) REFERENCES student(est_id),
+    PRIMARY KEY(custom_user_id, session_id),
+    FOREIGN KEY (custom_user_id) REFERENCES customUser(custom_user_id),
     FOREIGN KEY (session_id) REFERENCES session(session_id)
 );
 
