@@ -13,7 +13,7 @@ from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.utils.crypto import get_random_string
 from django.views.decorators.csrf import csrf_exempt
 
-from .forms import TeacherRegisterForm
+from .forms import TeacherRegisterForm, StudentRegisterForm
 from django.db import IntegrityError
 from django.utils import timezone
 import pytz
@@ -25,12 +25,11 @@ from ..session.forms import sessionForm
 def home(request):
     print(request.user)
     return render(request, 'core/home.html')
-# esta es la funcion que valida que las vistas solo puedan ser accedidas por usuarios del tipo teacher
+
 def is_teacher(user):
     return user.is_authenticated and hasattr(user, 'teacher')
 
 @login_required
-#se llama aca a la funcion
 @user_passes_test(is_teacher)
 def create_sesion(request):
     print(f'User ID: {request.user.id}')  # Esto debería imprimir el ID del usuario actual
@@ -57,48 +56,36 @@ def exit(request):
     logout(request)
     return redirect('home')
 
-def teacher_singup_view(request):
+def select_user_type_view(request):
+    if request.method == 'POST':
+        user_type = request.POST.get('user_type')
+        if user_type in ['student', 'teacher']:
+            return redirect(f'/signup/?type={user_type}')
+    return render(request, 'core/select_user_type.html')
+
+def user_singup_view(request):
+    user_type = request.GET.get('type', None)
+    if user_type not in ('student', 'teacher'):
+        return redirect('select-user-type')
+
+    if user_type == 'teacher':
+        form_class = TeacherRegisterForm
+    else:
+        form_class = StudentRegisterForm
+
     if request.method == 'GET':
-        return render(request, 'core/signup.html', {
-            'form': TeacherRegisterForm()
-        })
+        form = form_class()
+        return render(request, 'core/signup.html', {'form': form, 'user_type': user_type})
 
-    form = TeacherRegisterForm(request.POST, request.FILES)
-
+    form = form_class(request.POST, request.FILES)
     if form.is_valid():
-        customUser = form.save(commit=False)
+        user = form.save()
+        return redirect('login')
 
-        # Generar un nombre de usuario único
-        customUser.username = f"{customUser.full_name}{customUser.document}{get_random_string(length=5)}"
-
-        # Validar si el documento ya existe
-        if CustomUser.objects.filter(document=customUser.document).exists():
-            form.add_error('document', 'El documento ya existe. Por favor, utiliza otro.')
-            return render(request, 'core/signup.html', {'form': form})
-
-        # Validar si el correo ya existe
-        if CustomUser.objects.filter(email=customUser.email).exists():
-            form.add_error('email', 'El correo ya existe. Por favor, utiliza otro.')
-            return render(request, 'core/signup.html', {'form': form})
-
-        # Establecer valores adicionales
-        customUser.validate = False
-        customUser.password = make_password(form.cleaned_data['password'])  # Encriptar contraseña
-
-        try:
-            # Guardar el usuario y autenticarlo
-            customUser.save()
-            login(request, customUser)
-            return redirect('login')
-        except IntegrityError as e:
-            print(str(e))
-            form.add_error(None, f'Ocurrió un error al guardar el usuario: {str(e)}')
-            return render(request, 'core/signup.html', {'form': form})
-
-    return render(request, 'core/signup.html', {'form': form})
+    return render(request, 'core/signup.html', {'form': form, 'user_type': user_type})
 
 
-def teacher_login_view(request):
+def user_login_view(request):
     if request.method == 'GET':
         return render(request, 'core/login.html', {'form': AuthenticationForm()})
 
@@ -121,7 +108,7 @@ def teacher_login_view(request):
                 'error': 'Usuario o contraseña incorrecto'
             })
 
-        """if hasattr(user, 'validate') and not user.validate:
+        """if not user.validate:
             return render(request, 'core/login.html', {
                 'form': AuthenticationForm(),
                 'error': 'Tu cuenta necesita ser validada por un administrador.'

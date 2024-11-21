@@ -3,7 +3,7 @@
 
 {% block content %}
     {{ error}}
-    <form action= "{% url 'signup' %}" method="POST" enctype="multipart/form-data">
+    <form action="{% url 'signup' %}?type={{ user_type }}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <button>Registrarse</button>

@@ -1,59 +1,74 @@
 from django import forms
-from .models import CustomUser, Rol
+from django.utils.crypto import get_random_string
 
-class TeacherRegisterForm(forms.ModelForm):
+from .models import CustomUser
+from apps.rol.models import Rol
+
+class BaseRegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput, label='Contraseña')
 
     class Meta:
         model = CustomUser
         fields = ['document', 'full_name', 'email', 'address', 'picture', 'password']
+
+    def clean_document(self):
+        document = self.cleaned_data.get('document')
+        if CustomUser.objects.filter(document=document).exists():
+            raise forms.ValidationError('El documento ya existe. Por favor, utiliza otro.')
+        return document
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if CustomUser.objects.filter(email=email).exists():
+            raise forms.ValidationError('El correo ya existe. Por favor, utiliza otro.')
+        return email
+
+
+class StudentRegisterForm(BaseRegisterForm):
+    class Meta(BaseRegisterForm.Meta):
         labels = {
-            'document': 'Documento',
-            'full_name': 'Nombre Completo',
-            'email': 'Email',
-            'address': 'Dirección',
-            'picture': 'Foto',
+            **BaseRegisterForm.Meta.labels,
+            'picture': 'Tabulado',
         }
 
     def save(self, commit=True):
-    # Crea la instancia de CustomUser sin guardarla todavía
         user = super().save(commit=False)
-        user.set_password(self.cleaned_data['password'])  # Encripta la contraseña
 
-    # Obtiene o crea el rol 'teacher' en la tabla Rol
-        teacher_role = Rol.objects.get(rol_name='teacher')  # Obtiene el rol
-        user.rol_id = teacher_role  # Asigna el rol al usuario
+        user.username = f"{user.full_name}{get_random_string(length=5)}"
+
+        user.validate = True
+        user.rol_id = 2
 
         if commit:
             user.save()
         return user
 
 
-
-
-class userStudentRegisterForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput, label='Contraseña')
-
-    class Meta:
-        model = CustomUser
-        fields = ['document', 'full_name', 'email', 'address', 'picture', 'password']
-        labels = {
-            'document': 'Documento',
-            'full_name': 'Nombre Completo',
-            'email': 'Email',
-            'address': 'Dirección',
-            'picture': 'Foto',
-    }
     def save(self, commit=True):
-        # Crea la instancia de CustomUser sin guardarla todavía
         user = super().save(commit=False)
-        user.set_password(self.cleaned_data['password'])  # Encripta la contraseña
+        user.set_password(self.cleaned_data['password'])
 
-        # Obtiene o crea el rol 'teacher' en la tabla Roll
-        student_role, created = Roll.objects.get_or_create(rol_name='student')
+        teacher_role = Rol.objects.get(rol_name='teacher')
+        user.rol_id = teacher_role
 
-        # Asigna el rol al nuevo usuario
-        user.rol_id = student_role
+        if commit:
+            user.save()
+        return user
+
+class TeacherRegisterForm(BaseRegisterForm):
+    class Meta(BaseRegisterForm.Meta):
+        labels = {
+            **BaseRegisterForm.Meta.labels,
+            'picture': 'Foto',
+        }
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+
+        user.username = f"{user.full_name}{get_random_string(length=5)}"
+
+        user.validate = False
+        user.rol_id = 1
 
         if commit:
             user.save()
