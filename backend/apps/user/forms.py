@@ -9,13 +9,13 @@ class BaseRegisterForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ['document', 'full_name', 'email', 'address', 'picture', 'password']
+        fields = ['document', 'full_name', 'email', 'address', 'media', 'password']
         labels = {
             'document': 'Documento',
             'full_name': 'Nombre Completo',
             'email': 'Email',
             'address': 'Dirección',
-            'picture': 'Foto',
+            'media': 'Foto',
         }
 
     def clean_document(self):
@@ -35,7 +35,7 @@ class StudentRegisterForm(BaseRegisterForm):
     class Meta(BaseRegisterForm.Meta):
         labels = {
             **BaseRegisterForm.Meta.labels,
-            'picture': 'Tabulado',
+            'media': 'Tabulado',
         }
 
     def save(self, commit=True):
@@ -66,7 +66,7 @@ class TeacherRegisterForm(BaseRegisterForm):
     class Meta(BaseRegisterForm.Meta):
         labels = {
             **BaseRegisterForm.Meta.labels,
-            'picture': 'Foto',
+            'media': 'Foto',
         }
 
     def save(self, commit=True):

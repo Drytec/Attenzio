@@ -10,7 +10,7 @@ CREATE TABLE customUser (
         full_name VARCHAR(100) NOT NULL,
         document VARCHAR(20) NOT NULL UNIQUE,
         address VARCHAR(100),
-        picture VARCHAR(200),
+        media VARCHAR(200),
         email VARCHAR(100) UNIQUE NOT NULL,
         password VARCHAR(128) NOT NULL,
         rol_id INT REFERENCES rol(rol_id),
@@ -21,14 +21,21 @@ CREATE TABLE customUser (
         date_joined TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE course(
+    course_id INT PRIMARY KEY,
+    course_name VARCHAR(300),
+    custom_user_id INT,
+    FOREIGN KEY (custom_user_id) REFERENCES customUser(custom_user_id)
+);
+
 CREATE TABLE session(
     session_id SERIAL PRIMARY KEY,
     session_name VARCHAR(300),
     session_date_start TIME,
     session_date_end TIME,
     session_description VARCHAR(300),
-    custom_user_id INT,
-    FOREIGN KEY (custom_user_id) REFERENCES customUser(custom_user_id)
+    course_id INT,
+    FOREIGN KEY (course_id) REFERENCES course(course_id),
 );
 
 CREATE TABLE userSession(
