@@ -1,0 +1,1 @@
+--INSERT INTO rol (rol_id, rol_name) VALUES (1, 'teacher');

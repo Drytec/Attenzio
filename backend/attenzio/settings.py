@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'apps.teacher',
     'apps.student',
     'apps.session',
+    'apps.rol',
 ]
 AUTH_USER_MODEL = 'user.CustomUser'
 
