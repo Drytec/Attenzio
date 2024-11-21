@@ -23,7 +23,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['full_name']
 
     class Meta:
-        db_table = 'customuser'
+        db_table = 'customUser'
         managed = False
 
 

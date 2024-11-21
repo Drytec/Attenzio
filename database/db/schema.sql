@@ -1,12 +1,11 @@
-
 \c pos_attenzio
-
 
 CREATE TABLE rol(
     rol_id INT PRIMARY KEY,
     rol_name VARCHAR(100)
 );
-CREATE TABLE customuser (
+
+CREATE TABLE customUser (
         custom_user_id SERIAL PRIMARY KEY,
         full_name VARCHAR(100) NOT NULL,
         document VARCHAR(20) NOT NULL UNIQUE,
@@ -21,7 +20,6 @@ CREATE TABLE customuser (
         is_active BOOLEAN DEFAULT TRUE,
         date_joined TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
-
 
 CREATE TABLE session(
     session_id SERIAL PRIMARY KEY,
