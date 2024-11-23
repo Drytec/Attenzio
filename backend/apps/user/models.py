@@ -2,7 +2,8 @@ from multiprocessing.util import MAXFD
 
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
-from apps.rol.models import Rol
+from ..rol.models import Rol
+
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     custom_user_id = models.AutoField(primary_key=True)
@@ -23,9 +24,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['full_name']
 
     class Meta:
-        db_table = 'customUser'
+        db_table = 'customuser'
         managed = False
-
 
     def __str__(self):
         return self.full_name
+
+    def isTeacher(self):
+        return self.rol_id == 1
+
+    def isStudent(self):
+        return self.rol_id == 2

@@ -1,4 +1,4 @@
-
+from django.contrib import messages
 from django.shortcuts import render
 
 import json
@@ -8,12 +8,13 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from django.contrib.auth import login,authenticate
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.utils.crypto import get_random_string
 from django.views.decorators.csrf import csrf_exempt
 
 from .forms import TeacherRegisterForm, StudentRegisterForm
+from .models import isTeacher
 from django.db import IntegrityError
 from django.utils import timezone
 import pytz
@@ -26,12 +27,12 @@ def home(request):
     print(request.user)
     return render(request, 'core/home.html')
 
-def is_teacher(user):
-    return user.is_authenticated and hasattr(user, 'teacher')
-
 @login_required
-@user_passes_test(is_teacher)
-def create_sesion(request):
+def create_session(request):
+    if not request.user.isTeacher():
+        messages.error(request, "No tienes permiso para crear una sesión.")
+        return render(request, 'course/teacher_courses.html')
+
     print(f'User ID: {request.user.id}')  # Esto debería imprimir el ID del usuario actual
 
     if request.method == 'GET':
@@ -115,4 +116,4 @@ def user_login_view(request):
 
         # Iniciar sesión y redirigir
         login(request, user)
-        return redirect('session')
+        return redirect('course')

@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1> Crear Nueva Sesion</h1>
-    <form action="/sesion/create/" method="POST">
+    <form action="/session/create/" method="POST">
         {% csrf_token %}
         {{ form.as_p }}
         <button>

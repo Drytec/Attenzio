@@ -5,5 +5,4 @@ urlpatterns = [
     path ('logout/',exit,name='exit'),
     path('sesion/create/',create_session,name='create_session'),
     path('sesion/<int:aula_id>/',session_interactive,name='session_online'),
-
 ]
