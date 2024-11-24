@@ -1,12 +1,10 @@
 from django.db import models
-from apps.user.models import CustomUser
 
 # Create your models here.
-class Course(models.Models):
+class Course(models.Model):
     course_id = models.AutoField(primary_key=True)
     course_name = models.CharField(max_length=300)
     course_schedule = models.CharField(max_length=300)
-    #custom_user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='courses')
 
     class Meta:
         db_table = 'course'

@@ -39,9 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'apps.customuser',
-    'apps.session',
     'apps.rol',
+    'apps.session',
+    'apps.question',
+    'apps.course',
+    'apps.customusercourse',
 ]
+
 AUTH_USER_MODEL = 'user.CustomUser'
 
 MIDDLEWARE = [

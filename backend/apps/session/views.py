@@ -1,5 +1,6 @@
 import pytz
 from django.contrib.auth import logout
+from django.core.checks import messages
 from django.core.serializers import json
 from .models import Session
 import json
@@ -25,31 +26,31 @@ def session_interactive(request, session_id):
         return render(request, 'core/session.html')
 
 @login_required
-def session_class(request):
-    #aqui nos aseguramos de que las aulas mostradas sean del profesor que hizo el login y las creo
-    # tambien se realizan los filtros necesarios segun el caso
+def course_sessions(request):
+
     session1 = Session.objects.filter(user=request.user)
     return render(request,'core/session.html',{'session1': session1})
 
-
 @login_required
 def create_session(request):
-    print(f'User ID: {request.user.id}')  # Esto debería imprimir el ID del usuario actual
+    if not request.user.isTeacher():
+        messages.error(request, "No tienes permiso para crear una sesión.")
+        return render(request, 'student_courses.html')
 
     if request.method == 'GET':
-        return render(request,'core/create_session.html',{
+        return render(request,'create_session.html',{
             'form':sessionForm
         })
     else:
         form = sessionForm(request.POST)
         if form.is_valid():
-            new_aula = form.save(commit=False)
-            new_aula.user = request.user
-            new_aula.save()
+            new_session= form.save(commit=False)
+            new_session.user = request.user
+            new_session.save()
             return redirect('home')
 
         else:
-            return render(request, 'core/create_session.html', {
+            return render(request, 'create_session.html', {
                 'form': form,
                 'errors': form.errors
             })

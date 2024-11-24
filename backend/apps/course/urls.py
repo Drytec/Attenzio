@@ -6,5 +6,5 @@ urlpatterns = [
     path ('course/student_courses', student_courses, name='student_courses'),
     path ('logout/', exit, name='exit'),
     path('create_course/', create_course, name='create_course'),
-    path('<int:course_id>/', show_course, name='show_course'),
+    path('c:<int:course_id>/', show_course, name='show_course'),
 ]

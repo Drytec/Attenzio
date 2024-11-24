@@ -27,32 +27,6 @@ def home(request):
     print(request.user)
     return render(request, 'core/home.html')
 
-@login_required
-def create_session(request):
-    if not request.user.isTeacher():
-        messages.error(request, "No tienes permiso para crear una sesión.")
-        return render(request, 'course/teacher_courses.html')
-
-    print(f'User ID: {request.user.id}')  # Esto debería imprimir el ID del usuario actual
-
-    if request.method == 'GET':
-        return render(request,'core/create_session.html',{
-            'form':sessionForm
-        })
-    else:
-        form = sessionForm(request.POST)
-        if form.is_valid():
-            new_session= form.save(commit=False)
-            new_session.user = request.user
-            new_session.save()
-            return redirect('home')
-
-        else:
-            return render(request, 'core/create_session.html', {
-                'form': form,
-                'errors': form.errors
-            })
-
 def exit(request):
     logout(request)
     return redirect('home')

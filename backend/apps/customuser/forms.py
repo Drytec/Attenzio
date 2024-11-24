@@ -9,10 +9,11 @@ class BaseRegisterForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ['document', 'full_name', 'email', 'address', 'media', 'password']
+        fields = ['document', 'full_name', 'phone', 'email', 'address', 'media', 'password']
         labels = {
             'document': 'Documento',
             'full_name': 'Nombre Completo',
+            'phone': 'Celular',
             'email': 'Email',
             'address': 'Dirección',
             'media': 'Foto',
@@ -35,11 +36,13 @@ class StudentRegisterForm(BaseRegisterForm):
     class Meta(BaseRegisterForm.Meta):
         labels = {
             **BaseRegisterForm.Meta.labels,
+            'document': 'Código de Estudiante',
             'media': 'Tabulado',
         }
 
     def save(self, commit=True):
         user = super().save(commit=False)
+        user.set_password(self.cleaned_data['password'])
 
         user.username = f"{user.full_name}{get_random_string(length=5)}"
 
@@ -50,17 +53,12 @@ class StudentRegisterForm(BaseRegisterForm):
             user.save()
         return user
 
+    def clean_document(self):
+        document = self.cleaned_data.get('document')
+        if CustomUser.objects.filter(document=document).exists():
+            raise forms.ValidationError('El código ya existe. Por favor, utiliza otro.')
+        return document
 
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        user.set_password(self.cleaned_data['password'])
-
-        teacher_role = Rol.objects.get(rol_name='teacher')
-        user.rol_id = teacher_role
-
-        if commit:
-            user.save()
-        return user
 
 class TeacherRegisterForm(BaseRegisterForm):
     class Meta(BaseRegisterForm.Meta):
