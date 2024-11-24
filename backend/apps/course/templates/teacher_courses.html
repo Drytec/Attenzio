@@ -6,7 +6,7 @@
     {% for aula in aula1 %}
     <div style="margin-right: 20px; margin-bottom: 10px;">
         <strong>Aula:</strong>
-        <form action="{% url 'teacher_courses' course.course_id %}" method="get">
+        <form action="{% url 'show_session_course' course.course_id %}" method="get">
             {% csrf_token %}
             <button type="submit">Entrar a {{ course.course_name }}</button>
         </form>
