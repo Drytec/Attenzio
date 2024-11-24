@@ -25,7 +25,7 @@ CREATE TABLE course(
     course_id INT PRIMARY KEY,
     course_name VARCHAR(300),
     custom_user_id INT,
-    FOREIGN KEY (custom_user_id) REFERENCES customUser(custom_user_id)
+    FOREIGN KEY (custom_user_id) REFERENCES customUser(custom_user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE session(
@@ -38,19 +38,19 @@ CREATE TABLE session(
     FOREIGN KEY (course_id) REFERENCES course(course_id),
 );
 
-CREATE TABLE userSession(
+CREATE TABLE customUserCourse(
     custom_user_id INT NOT NULL,
-    session_id INT NOT NULL,
-    PRIMARY KEY(custom_user_id, session_id),
-    FOREIGN KEY (custom_user_id) REFERENCES customUser(custom_user_id),
-    FOREIGN KEY (session_id) REFERENCES session(session_id)
+    course_id INT NOT NULL,
+    PRIMARY KEY(custom_user_id, course_id),
+    FOREIGN KEY (custom_user_id) REFERENCES customUser(custom_user_id) ON DELETE CASCADE,
+    FOREIGN KEY (course_id) REFERENCES course(course_id) ON DELETE CASCADE
 );
 
 CREATE TABLE question(
     question_id SERIAL PRIMARY KEY,
     question_text VARCHAR(400),
     session_id INT NOT NULL,
-    FOREIGN KEY (session_id) REFERENCES session(session_id)
+    FOREIGN KEY (session_id) REFERENCES session(session_id) ON DELETE CASCADE
 );
 
 CREATE TABLE option(
@@ -58,5 +58,5 @@ CREATE TABLE option(
     option_text VARCHAR(200),
     is_correct BOOLEAN,
     question_id INT,
-    FOREIGN KEY (question_id) REFERENCES question(question_id)
+    FOREIGN KEY (question_id) REFERENCES question(question_id) ON DELETE CASCADE
 );

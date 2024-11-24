@@ -14,16 +14,20 @@ from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 
+from ..customusercourse.models import CustomUserCourse
+
+
 # Create your views here.
 # a este metodo de renderizado le falta la verificacion de la fecha la que esta aun no funciona
 
 @login_required
 def student_courses(request):
-    if not request.user.isStudent():
+    if not request.user.isStudent:
         messages.error(request, "No tienes permiso para ver esto.")
         return render(request, 'teacher_courses.html')
 
-    course = Course.objects.filter(user=request.user)
+    course = request.user.getCourses
+
     return render(request,'student_courses.html',{'course': course})
 
 @login_required
@@ -40,15 +44,16 @@ def teacher_courses(request):
         messages.error(request, "No tienes permiso para ver esto.")
         return render(request, 'student_courses.html')
 
-    course = Course.objects.filter(user=request.user)
+    course = request.user.getCourses
+
     return render(request,'teacher_courses.html',{'course': course})
 
 
 @login_required
 def create_course(request):
-    if not request.user.isTeacher():
+    if not request.user.isTeacher:
         messages.error(request, "No tienes permiso para crear una sesión.")
-        return render(request, 'teacher_courses.html')
+        return render(request, 'student_courses.html')
 
     if request.method == 'GET':
         return render(request,'create_course.html',{
@@ -57,9 +62,13 @@ def create_course(request):
     else:
         form = courseForm(request.POST)
         if form.is_valid():
-            new_session= form.save(commit=False)
-            new_session.user = request.user
-            new_session.save()
+            new_course = form.save(commit=False)
+            new_course.user = request.user
+            new_course.save()
+            CustomUserCourse.objects.create(
+                custom_user_id=request.user,
+                course_id=new_course
+            )
             return redirect('home')
 
         else:

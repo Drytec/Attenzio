@@ -35,3 +35,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def isStudent(self):
         return self.rol_id == 2
+
+    def getCustomUserId(self):
+        return self.custom_user_id
