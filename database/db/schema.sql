@@ -39,10 +39,13 @@ CREATE TABLE session(
     session_date_start TIME,
     session_date_end TIME,
     session_description VARCHAR(300),
+    qrCode VARCHAR(300),
     course_id INT,
     material_id INT,
-    FOREIGN KEY (course_id) REFERENCES course(course_id),
-    FOREIGN KEY (material_id) REFERENCES  material(material_id)
+    question_id INT,
+    FOREIGN KEY (course_id) REFERENCES course(course_id) ON DELETE CASCADE,
+    FOREIGN KEY (material_id) REFERENCES  material(material_id) ON DELETE CASCADE,
+    FOREIGN KEY (question_id) REFERENCES question(question_id) ON DELETE CASCADE
 );
 
 CREATE TABLE customUserCourse(
@@ -66,4 +69,12 @@ CREATE TABLE option(
     is_correct BOOLEAN,
     question_id INT,
     FOREIGN KEY (question_id) REFERENCES question(question_id) ON DELETE CASCADE
+);
+
+CREATE TABLE CustomUserOption(
+    custom_user_id INT NOT NULL,
+    option_id INT NOT NULL,
+    PRIMARY KEY (custom_user_id, option_id),
+    FOREIGN KEY (custom_user_id) REFERENCES customUser(custom_user_id) ON DELETE CASCADE,
+    FOREIGN KEY (option_id) REFERENCES option(option_id) ON DELETE CASCADE
 );

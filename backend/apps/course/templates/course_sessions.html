@@ -1,0 +1,17 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2>Sesiones</h2>
+
+<ul>
+    {% for session in sessions %}
+    <li>
+        <strong>Sesión:</strong> {{ session.session_name }}<br>
+        <strong>Fecha:</strong> {{ session.date }}<br>
+        <a href="{% url 'show_session' aula_id=session.session_id %}">Detalles</a>
+    </li>
+    {% empty %}
+    <li>No hay sesiones disponibles para este curso.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

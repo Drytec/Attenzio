@@ -26,10 +26,12 @@ def session_interactive(request, session_id):
         return render(request, 'core/session.html')
 
 @login_required
-def course_sessions(request):
+def show_session(request, session_id):
+    session = get_object_or_404(Session, session_id=session_id)
+    material = session.material_id
 
-    session1 = Session.objects.filter(user=request.user)
-    return render(request,'core/session.html',{'session1': session1})
+    return render(request, 'show_session.html', {'session': session, 'material': material})
+
 
 @login_required
 def create_session(request):

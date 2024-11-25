@@ -14,7 +14,6 @@ from django.utils.crypto import get_random_string
 from django.views.decorators.csrf import csrf_exempt
 
 from .forms import TeacherRegisterForm, StudentRegisterForm
-from .models import isTeacher
 from django.db import IntegrityError
 from django.utils import timezone
 import pytz

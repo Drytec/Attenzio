@@ -15,6 +15,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 
 from ..customusercourse.models import CustomUserCourse
+from ..session.models import Session
 
 
 # Create your views here.
@@ -26,17 +27,19 @@ def student_courses(request):
         messages.error(request, "No tienes permiso para ver esto.")
         return render(request, 'teacher_courses.html')
 
-    course = request.user.getCourses
+    user = request.user
+    user_courses = CustomUserCourse.objects.filter(custom_user_id=user)
 
-    return render(request,'student_courses.html',{'course': course})
+    return render(request,'student_courses.html',{'courses': user_courses})
 
 @login_required
 def show_course(request, course_id):
-    colombia_tz = pytz.timezone('America/Bogota')
-    ahora = timezone.now().astimezone(colombia_tz)
-    course = get_object_or_404(Course, course_id=course_id)
-    return render(request, 'show_course.html', {'course': course})
+    sessions = Session.objects.filter(course_id=course_id)
 
+    return render(request, 'course_sessions.html', {
+        'sessions': sessions,
+        'course_id': course_id,
+    })
 
 @login_required
 def teacher_courses(request):
@@ -44,9 +47,10 @@ def teacher_courses(request):
         messages.error(request, "No tienes permiso para ver esto.")
         return render(request, 'student_courses.html')
 
-    course = request.user.getCourses
+    user = request.user
+    user_courses = CustomUserCourse.objects.filter(custom_user_id=user)
 
-    return render(request,'teacher_courses.html',{'course': course})
+    return render(request,'teacher_courses.html',{'courses': user_courses})
 
 
 @login_required

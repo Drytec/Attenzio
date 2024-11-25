@@ -47,7 +47,7 @@ class StudentRegisterForm(BaseRegisterForm):
         user.username = f"{user.full_name}{get_random_string(length=5)}"
 
         user.validate = True
-        user.rol_id = 2
+        user.rol_id = Rol.objects.get(rol_id=2)
 
         if commit:
             user.save()
@@ -73,7 +73,7 @@ class TeacherRegisterForm(BaseRegisterForm):
         user.username = f"{user.full_name}{get_random_string(length=5)}"
 
         user.validate = False
-        user.rol_id = 1
+        user.rol_id = Rol.objects.get(rol_id=1)
 
         if commit:
             user.save()

@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class SessionConfig(AppConfig):
+class QuestionConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'apps.session'
+    name = 'apps.question'

@@ -1,5 +1,3 @@
-from multiprocessing.util import MAXFD
-
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from ..rol.models import Rol
@@ -36,6 +34,3 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def isStudent(self):
         return self.rol_id == 2
-
-    def getCustomUserId(self):
-        return self.custom_user_id

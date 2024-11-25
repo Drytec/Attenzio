@@ -13,10 +13,3 @@ class CustomUserCourse(models.Model):
 
     def __str__(self):
         return f'{self.custom_user_id}:{self.course_id}'
-
-    def get_courses(self):
-        if self.isTeacher():
-            return Course.objects.filter(customusercourse__custom_user=self)
-        elif self.isStudent():
-            return Course.objects.filter(customusercourse__custom_user=self)
-        return Course.objects.none()
