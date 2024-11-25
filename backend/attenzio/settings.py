@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'apps.session',
     'apps.question',
     'apps.course',
-    'apps.material'
+    'apps.material',
     'apps.option',
     'apps.customusercourse',
 ]

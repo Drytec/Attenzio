@@ -42,10 +42,8 @@ CREATE TABLE session(
     qrCode VARCHAR(300),
     course_id INT,
     material_id INT,
-    question_id INT,
     FOREIGN KEY (course_id) REFERENCES course(course_id) ON DELETE CASCADE,
-    FOREIGN KEY (material_id) REFERENCES  material(material_id) ON DELETE CASCADE,
-    FOREIGN KEY (question_id) REFERENCES question(question_id) ON DELETE CASCADE
+    FOREIGN KEY (material_id) REFERENCES  material(material_id) ON DELETE CASCADE
 );
 
 CREATE TABLE customUserCourse(

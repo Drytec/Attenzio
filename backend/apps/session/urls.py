@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import Session, exit, create_session, course_sessions, show_session
+from .views import Session, exit, create_session, show_session
 urlpatterns = [
     path ('logout/', exit,name='exit'),
     path('create_session/', create_session, name='create_session'),

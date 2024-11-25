@@ -1,8 +1,6 @@
 from django.db import models
 from ..course.models import Course
 from ..material.models import Material
-from ..question.models import Question
-
 
 # Create your models here.
 class Session(models.Model):
@@ -14,7 +12,6 @@ class Session(models.Model):
     qrCode = models.CharField(max_length=300, blank=True)
     material_id = models.ForeignKey(Material, on_delete=models.CASCADE)
     course_id = models.ForeignKey(Course, on_delete=models.CASCADE)
-    question_id = models.ForeignKey(Question, on_delete=models.CASCADE)
 
     class Meta:
         db_table = "session"

@@ -1,5 +1,5 @@
 from django.db import models
-from apps.session.models import Session
+from ..session.models import Session
 
 # Create your models here.
 class Question(models.Model):

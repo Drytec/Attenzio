@@ -1,5 +1,5 @@
 from django.db import models
-from backend.apps.question.models import Question
+from ..question.models import Question
 
 # Create your models here.
 class Option(models.Model):
