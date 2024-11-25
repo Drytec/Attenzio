@@ -35,6 +35,7 @@ CREATE TABLE material(
 
 CREATE TABLE session(
     session_id SERIAL PRIMARY KEY,
+    qrCode VARCHAR,
     session_name VARCHAR(300),
     session_date_start TIME,
     session_date_end TIME,
@@ -64,6 +65,15 @@ CREATE TABLE option(
     option_id SERIAL PRIMARY KEY,
     option_text VARCHAR(200),
     is_correct BOOLEAN,
+    is_chosen BOOLEAN,
     question_id INT,
     FOREIGN KEY (question_id) REFERENCES question(question_id) ON DELETE CASCADE
+);
+
+CREATE TABLE CustomUserOption(
+    custom_user_id INT NOT NULL,
+    option_id INT NOT NULL,
+    PRIMARY KEY (custom_user_id, option_id),
+    FOREIGN KEY (custom_user_id) REFERENCES customUser(custom_user_id),
+    FOREIGN KEY (option_id) REFERENCES option(option_id)
 );
