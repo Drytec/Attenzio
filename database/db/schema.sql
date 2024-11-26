@@ -14,6 +14,7 @@ CREATE TABLE customUser (
         email VARCHAR(100) UNIQUE NOT NULL,
         password VARCHAR(128) NOT NULL,
         phone VARCHAR(30),
+        validated BOOLEAN DEFAULT FALSE,
         rol_id INT REFERENCES rol(rol_id),
         last_login TIMESTAMPTZ,
         is_superuser BOOLEAN DEFAULT FALSE,
@@ -41,9 +42,15 @@ CREATE TABLE session(
     session_description VARCHAR(300),
     qrCode VARCHAR(300),
     course_id INT,
-    material_id INT,
-    FOREIGN KEY (course_id) REFERENCES course(course_id) ON DELETE CASCADE,
-    FOREIGN KEY (material_id) REFERENCES  material(material_id) ON DELETE CASCADE
+    FOREIGN KEY (course_id) REFERENCES course(course_id) ON DELETE CASCADE
+);
+
+CREATE TABLE materialSession(
+    session_id INT NOT NULL,
+    material_id INT NOT NULL,
+    PRIMARY KEY(session_id, material_id),
+    FOREIGN KEY (session_id) REFERENCES session(session_id) ON DELETE CASCADE,
+    FOREIGN KEY (material_id) REFERENCES material(material_id) ON DELETE CASCADE
 );
 
 CREATE TABLE customUserCourse(
@@ -64,12 +71,12 @@ CREATE TABLE question(
 CREATE TABLE option(
     option_id SERIAL PRIMARY KEY,
     option_text VARCHAR(200),
-    is_correct BOOLEAN,
+    is_correct BOOLEAN DEFAULT FALSE,
     question_id INT,
     FOREIGN KEY (question_id) REFERENCES question(question_id) ON DELETE CASCADE
 );
 
-CREATE TABLE CustomUserOption(
+CREATE TABLE customUserOption(
     custom_user_id INT NOT NULL,
     option_id INT NOT NULL,
     PRIMARY KEY (custom_user_id, option_id),

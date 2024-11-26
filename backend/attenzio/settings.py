@@ -41,10 +41,7 @@ INSTALLED_APPS = [
     'apps.customuser',
     'apps.rol',
     'apps.session',
-    'apps.question',
     'apps.course',
-    'apps.material',
-    'apps.option',
     'apps.customusercourse',
 ]
 

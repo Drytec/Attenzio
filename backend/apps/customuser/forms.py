@@ -2,7 +2,7 @@ from django import forms
 from django.utils.crypto import get_random_string
 
 from .models import CustomUser
-from apps.rol.models import Rol
+from ..rol.models import Rol
 
 class BaseRegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput, label='Contraseña')

@@ -19,7 +19,7 @@ from django.utils import timezone
 import pytz
 from .models import CustomUser
 
-from ..session.forms import sessionForm
+from ..session.forms import SessionForm
 
 
 def home(request):

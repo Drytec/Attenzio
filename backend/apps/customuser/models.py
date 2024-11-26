@@ -13,6 +13,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     password = models.CharField(max_length=128)
     phone = models.CharField(max_length=30, blank=True)
     rol_id = models.ForeignKey(Rol, on_delete=models.CASCADE)
+    validated = models.BooleanField(default=False)
     last_login = models.DateTimeField(blank=True, null=True)
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)

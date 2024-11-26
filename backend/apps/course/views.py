@@ -8,7 +8,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from .forms import courseForm
+from .forms import CourseForm
 from django.db import IntegrityError
 from django.utils import timezone
 from django.shortcuts import render, redirect
@@ -56,15 +56,15 @@ def teacher_courses(request):
 @login_required
 def create_course(request):
     if not request.user.isTeacher:
-        messages.error(request, "No tienes permiso para crear una sesión.")
+        messages.error(request, "No tienes permiso para crear un curso.")
         return render(request, 'student_courses.html')
 
     if request.method == 'GET':
         return render(request,'create_course.html',{
-            'form':courseForm
+            'form':CourseForm
         })
     else:
-        form = courseForm(request.POST)
+        form = CourseForm(request.POST)
         if form.is_valid():
             new_course = form.save(commit=False)
             new_course.user = request.user

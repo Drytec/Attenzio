@@ -3,7 +3,7 @@ from .models import Course
 from django import forms
 from django.contrib.auth.models import User
 
-class courseForm(ModelForm):
+class CourseForm(ModelForm):
     class Meta:
         model = Course
         fields = ['course_name', 'course_schedule']
