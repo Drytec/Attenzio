@@ -1,6 +1,5 @@
 from django.db import models
 from ..course.models import Course
-from ..material.models import Material
 
 # Create your models here.
 class Session(models.Model):
@@ -22,7 +21,7 @@ class Session(models.Model):
 class Question(models.Model):
     session_id = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='questions')
     question_text = models.CharField(max_length=200)
-    question_id = models.AutoField(primary_key=True),
+    question_id = models.AutoField(primary_key=True)
 
     class Meta:
         db_table = "question"
@@ -33,8 +32,8 @@ class Question(models.Model):
 class Option(models.Model):
     question_id = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='question')
     option_text = models.CharField(max_length=200)
-    is_correct = models.BooleanField(default=False),
-    option_id = models.AutoField(primary_key=True),
+    is_correct = models.BooleanField(default=False)
+    option_id = models.AutoField(primary_key=True)
 
     class Meta:
         db_table = "option"

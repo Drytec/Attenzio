@@ -8,7 +8,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from .forms import SessionForm, QuestionForm, OptionForm, MaterialForm, OptionFormSet
+from .forms import SessionForm, QuestionForm, MaterialForm, OptionFormSet
 from django.db import IntegrityError
 from django.utils import timezone
 from django.shortcuts import render, redirect
