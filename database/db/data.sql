@@ -1,1 +1,5 @@
---INSERT INTO rol (rol_id, rol_name) VALUES (1, 'teacher');
+\c pos_attenzio
+
+INSERT INTO rol VALUES
+    (1, 'teacher'),
+    (2, 'student')

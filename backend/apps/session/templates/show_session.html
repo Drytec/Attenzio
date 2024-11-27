@@ -1,0 +1,17 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2>Detalles de la Sesión</h2>
+
+<h3>{{ session.session_name }}</h3>
+
+<p><strong>Descripción:</strong> {{ session.session_description }}</p>
+<p><strong>Fecha de inicio:</strong> {{ session.session_date_start }}</p>
+<p><strong>Fecha de fin:</strong> {{ session.session_date_end }}</p>
+
+{% if material %}
+<p><strong>Material asociado:</strong> <a href="{{ material.material_link }}" target="_blank">Ver material</a></p>
+{% else %}
+<p>No hay material asociado para esta sesión.</p>
+{% endif %}
+{% endblock %}

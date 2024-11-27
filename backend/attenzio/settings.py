@@ -38,13 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'apps.user',
-    'apps.teacher',
-    'apps.student',
-    'apps.session',
+    'apps.customuser',
     'apps.rol',
+    'apps.session',
+    'apps.course',
+    'apps.customusercourse',
 ]
-AUTH_USER_MODEL = 'user.CustomUser'
+
+AUTH_USER_MODEL = 'customuser.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
