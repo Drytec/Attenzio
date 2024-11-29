@@ -76,11 +76,8 @@ def create_course(request):
             return redirect('home')
 
         else:
-            return render(request, 'core/create_course.html', {
+            return render(request, 'create_course.html', {
                 'form': form,
                 'errors': form.errors
             })
 
-def exit(request):
-    logout(request)
-    return redirect('home')

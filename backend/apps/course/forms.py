@@ -11,3 +11,7 @@ class CourseForm(ModelForm):
             'course_name': 'Nombre del Curso',
             'course_schedule': 'Horario',
         }
+        widgets = {
+            'course_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'course_schedule': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control'}),
+        }

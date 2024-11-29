@@ -148,7 +148,3 @@ def create_options(request, question_id):
                 'formset': formset,
                 'errors': formset.errors
             })
-
-def exit(request):
-    logout(request)
-    return redirect('home')
