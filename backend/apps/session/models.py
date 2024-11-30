@@ -14,7 +14,7 @@ class Session(models.Model):
     class Meta:
         db_table = "session"
         managed = False
-
+        app_label = "sessions_app"
     def __str__(self):
         return f'{self.sesion_id}'
 
