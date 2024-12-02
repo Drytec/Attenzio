@@ -6,21 +6,21 @@ CREATE TABLE rol(
 );
 
 CREATE TABLE customUser (
-        custom_user_id SERIAL PRIMARY KEY,
-        full_name VARCHAR(100) NOT NULL,
-        document VARCHAR(20) UNIQUE NOT NULL,
-        address VARCHAR(100),
-        media VARCHAR(200),
-        email VARCHAR(100) UNIQUE NOT NULL,
-        password VARCHAR(128) NOT NULL,
-        phone VARCHAR(30),
-        validated BOOLEAN DEFAULT FALSE,
-        rol_id INT REFERENCES rol(rol_id),
-        last_login TIMESTAMPTZ,
-        is_superuser BOOLEAN DEFAULT FALSE,
-        is_staff BOOLEAN DEFAULT FALSE,
-        is_active BOOLEAN DEFAULT TRUE,
-        date_joined TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+    custom_user_id SERIAL PRIMARY KEY,
+    full_name VARCHAR(100) NOT NULL,
+    document VARCHAR(20) UNIQUE NOT NULL,
+    address VARCHAR(100),
+    media VARCHAR(200),
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(128) NOT NULL,
+    phone VARCHAR(30),
+    validated BOOLEAN DEFAULT FALSE,
+    rol_id INT REFERENCES rol(rol_id),
+    last_login TIMESTAMPTZ,
+    is_superuser BOOLEAN DEFAULT FALSE,
+    is_staff BOOLEAN DEFAULT FALSE,
+    is_active BOOLEAN DEFAULT TRUE,
+    date_joined TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE course(
