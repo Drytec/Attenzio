@@ -99,9 +99,9 @@
 <ul>
     <li><a href="{% url 'home' %}">Inicio</a></li>
     {% if request.user.is_authenticated %}
-        <li><a href="{% url 'session' %}">Aula</a></li>
-        <li><a href="{% url 'create_session' %}">Nueva aula</a></li>
-        <li><a href="{% url 'exit' %}">Salir</a></li>
+        <li><a href="{% url 'teacher_courses' %}">Cursos</a></li>
+        <li><a href="{% url 'create_course' %}">Nuevo Curso</a></li>
+        <li><a href="{% url 'logout' %}">Salir</a></li>
     {% else %}
         <li><a href="{% url 'login' %}">Ingresar</a></li>
         <li><a href="{% url 'select_user_type' %}">Registrarse</a></li>

@@ -1,7 +1,6 @@
 from django.forms import ModelForm, modelformset_factory
 from .models import Session, Question, Option, Material
 from django import forms
-from django.contrib.auth.models import User
 
 class SessionForm(ModelForm):
     class Meta:
@@ -19,16 +18,17 @@ class SessionForm(ModelForm):
         }
 
 class QuestionForm(ModelForm):
-    model = Question
-    fields = ['question_text']
-    labels = {
-        'question_text': 'Enunciado de la Pregunta',
-    }
+    class Meta:
+        model = Question
+        fields = ['question_text']
+        labels = {
+            'question_text': 'Enunciado de la Pregunta',
+        }
 
 class OptionForm(ModelForm):
     class Meta:
         model = Option
-        fields = ['question_id', 'option_text', 'is_correct']
+        fields = ['option_text', 'is_correct']
         labels = {
             'option_text': 'Texto de la Opción',
             'is_correct': '¿Es Correcta?',
@@ -41,7 +41,7 @@ class OptionForm(ModelForm):
 OptionFormSet = modelformset_factory(
     Option,
     form=OptionForm,
-    fields=['question_id', 'option_text', 'is_correct'],
+    fields=['option_text', 'is_correct'],
     extra=4,
     can_delete=True
 )
