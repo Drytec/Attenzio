@@ -38,13 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'apps.user',
-    'apps.teacher',
-    'apps.student',
-    'apps.session',
+    'apps.customuser',
     'apps.rol',
+    'apps.session',
+    'apps.course',
+    'apps.customusercourse',
 ]
-AUTH_USER_MODEL = 'user.CustomUser'
+
+AUTH_USER_MODEL = 'customuser.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -125,6 +126,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 
 # Default primary key field type
@@ -134,3 +138,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # VARIABLE DE REDIRECCION DEL LOGIN Y LOGOUT
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+

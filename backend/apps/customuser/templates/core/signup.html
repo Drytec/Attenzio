@@ -1,0 +1,67 @@
+{% extends 'core/base.html' %}
+
+
+{% block content %}
+    {{ error}}
+    <form action="{% url 'signup' %}?type={{ user_type }}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button>Registrarse</button>
+    </form>
+
+    <style>
+        .signup-form {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #222; /* Fondo gris oscuro para el formulario */
+            padding: 30px; /* Espacio interno */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .signup-form .form-group {
+            margin-bottom: 25px; /* Espacio entre los campos del formulario */
+        }
+
+        .signup-form label {
+            display: block;
+            font-size: 1.2em;
+            margin-bottom: 10px; /* Espacio entre la etiqueta y el campo */
+            color: #fff;
+        }
+
+        .signup-form input {
+            width: 100%;
+            padding: 12px; /* Espacio dentro de los campos de entrada */
+            font-size: 1.1em;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #333;
+            color: #fff;
+            margin-bottom: 5px; /* Espacio entre el campo de entrada y el siguiente */
+        }
+
+        .signup-form input:focus {
+            outline: none;
+            border-color: #1e90ff; /* Borde azul cuando está en foco */
+        }
+
+        .signup-form .btn {
+            width: 100%;
+            padding: 12px; /* Botón más grande */
+            background-color: #1e90ff; /* Botón azul */
+            color: white;
+            border: none;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px; /* Espacio extra entre el botón y los campos */
+        }
+
+        .signup-form .btn:hover {
+            background-color: #000; /* Cambia el fondo a negro al pasar el cursor */
+            color: #1e90ff; /* Cambia el texto a azul al pasar el cursor */
+        }
+    </style>
+{% endblock %}

@@ -3,6 +3,7 @@ db.sqlite3
 db.sqlite3-journal
 .DS_Store
 .env
+.venv
 env/*
 venv/*
 **/settings/local.py
@@ -10,6 +11,7 @@ venv/*
 /mediafiles/*
 __pycache__/
 /.vscode/
+attenzio.iml
 
 # coverage result
 .coverage
