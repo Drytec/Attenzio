@@ -37,8 +37,8 @@ CREATE TABLE material(
 CREATE TABLE session(
     session_id SERIAL PRIMARY KEY,
     session_name VARCHAR(300),
-    session_date_start TIME,
-    session_date_end TIME,
+    session_date_start TIMESTAMP,
+    session_date_end TIMESTAMP,
     session_description VARCHAR(300),
     qr_code VARCHAR(300),
     course_id INT,

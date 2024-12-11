@@ -3,7 +3,7 @@ from .views import Session, exit, create_session, show_session, create_material,
 
 urlpatterns = [
     path ('logout/', exit,name='exit'),
-    path('create_session/', create_session, name='create_session'),
+    path('create_session/<int:course_id>/', create_session, name='create_session'),
     path('create_material/', create_material, name='create_material'),
     path('create_question/', create_question, name='create_question'),
     path('create_options/', create_options, name='create_options'),

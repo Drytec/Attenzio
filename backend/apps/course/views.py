@@ -38,9 +38,11 @@ def show_session_course(request, course_id):
     session = get_object_or_404(Session, course_id=course_id)
 
     return render(request, 'show_course.html', {'course': course})
+# esta es la funcion que accede al contenido del curso, tambien hay que pasarle un objeto del tipo curso para acceder a la descripcion
 def show_course(request, course_id):
+    course = get_object_or_404(Course, course_id=course_id)
     sessions = Session.objects.filter(course_id=course_id)
-    return render(request, 'show_course.html', {'sessions':sessions})
+    return render(request, 'show_course.html', {'sessions':sessions, 'course':course})
 
 @login_required
 def teacher_courses(request):

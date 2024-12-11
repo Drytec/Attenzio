@@ -40,18 +40,19 @@ def show_session(request, session_id):
 
 @login_required
 def create_session(request, course_id):
-    if not request.user.isTeacher():
-        messages.error(request, "No tienes permiso para crear una sesión.")
-        return render(request, 'student_courses.html')
-
-    course = get_object_or_404(Course, pk=course_id)
-
+    #Hay que corregir la funcion isTeacher
+    #if not request.user.isTeacher():
+    #    messages.error(request, "No tienes permiso para crear una sesión.")
+    #    return render(request, 'student_courses.html')
+    course = get_object_or_404(Course, course_id=course_id)
+    print(course_id)
     if request.method == 'GET':
         return render(request,'create_session.html',{
-            'form': SessionForm,
+            'form': SessionForm, 'course': course,
         })
     else:
         form = SessionForm(request.POST)
+        print(course_id)
         if form.is_valid():
             new_session = form.save(commit=False)
             new_session.course_id = course
