@@ -23,13 +23,15 @@ from ..customusercourse.models import CustomUserCourse
 
 @login_required
 def student_courses(request):
-    if not request.user.isStudent:
-        messages.error(request, "No tienes permiso para ver esto.")
+    if not request.user.isStudent():
         return render(request, 'teacher_courses.html')
 
-    course = request.user.getCourses
+    coursesTeacher=CustomUserCourse.objects.filter( custom_user_id=request.user.custom_user_id)
+    course_ids = coursesTeacher.values_list('course_id', flat=True)
+    courses = Course.objects.filter(course_id__in=course_ids)
 
-    return render(request,'student_courses.html',{'course': course})
+
+    return render(request,'student_courses.html',{'courses': courses})
 
 @login_required
 def show_session_course(request, course_id):
@@ -38,29 +40,31 @@ def show_session_course(request, course_id):
     session = get_object_or_404(Session, course_id=course_id)
 
     return render(request, 'show_course.html', {'course': course})
+
+@login_required
 def show_course(request, course_id):
     sessions = Session.objects.filter(course_id=course_id)
-    return render(request, 'show_course.html', {'sessions':sessions})
+    course = get_object_or_404(Course, pk=course_id)
+    customUserCourse = CustomUserCourse.objects.filter(course_id=course_id).first()
+    teacher = customUserCourse.custom_user_id
+
+    return render(request, 'show_course.html', {'course': course, 'sessions': sessions, 'teacher': teacher})
 
 @login_required
 def teacher_courses(request):
-    # esto se comenta ya que la funcion isTeacher no ha sido bien configuratda
-    #if not request.user.isTeacher():
-     #   messages.error(request, "No tienes permiso para ver esto.")
-      #  return render(request, 'student_courses.html')
+    if not request.user.isTeacher():
+        return render(request, 'student_courses.html')
+
     coursesTeacher=CustomUserCourse.objects.filter( custom_user_id=request.user.custom_user_id)
-    #ponemos flat para aplanar la lista
     course_ids = coursesTeacher.values_list('course_id', flat=True)
-    #el __in que se le agrega a course es para que django tome todos los valores relacionados y no un unico id
     courses = Course.objects.filter(course_id__in=course_ids)
-    print(courses)
 
     return render(request,'teacher_courses.html',{'courses': courses})
 
 
 @login_required
 def create_course(request):
-    if not request.user.isTeacher:
+    if not request.user.isTeacher():
         messages.error(request, "No tienes permiso para crear una sesión.")
         return render(request, 'student_courses.html')
 
@@ -75,8 +79,8 @@ def create_course(request):
             new_course.user = request.user
             new_course.save()
             CustomUserCourse.objects.create(
-               custom_user_id=request.user,
-              course_id=new_course
+                custom_user_id=request.user,
+                course_id=new_course
             )
             return redirect('home')
 

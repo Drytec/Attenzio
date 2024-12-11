@@ -1,10 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2>Detalles del Curso</h2>
+
+<h3>{{ course.course_name }}</h3>
+
+<p><strong>Horario:</strong> {{ course.course_schedule }}</p>
+
+<p><strong>Profesor:</strong></p>
+<p>{{ teacher.full_name }}</p>
+
+<h3>Sesiones:</h3>
+<ul>
+    {% for session in sessions %}
+    <li>
+        <strong>{{ session.session_name }}</strong><br>
+        <strong>Fecha de inicio:</strong> {{ session.session_date_start }}<br>
+        <strong>Fecha de fin:</strong> {{ session.session_date_end }}<br>
+    </li>
+    {% empty %}
+    <li>No hay sesiones asociadas a este curso.</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
+

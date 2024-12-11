@@ -30,11 +30,9 @@ def session_interactive(request, session_id):
 
 @login_required
 def show_session(request, session_id):
-    session = Session.objects.filter(course_id=session_id).first()
-    if session is None:
-        material = []
-    else:
-        material = session.sessionMaterial.all()
+    session = get_object_or_404(Session, session_id=session_id)
+    material = session.sessionMaterial.all()
+
     return render(request, 'show_session.html', {'session': session, 'material': material})
 
 
