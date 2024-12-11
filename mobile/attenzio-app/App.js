@@ -14,7 +14,7 @@ export default function App() {
   const Stack = createStackNavigator();
   function MyStack() {
     return(
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{headerShown:false}}>
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="Log" component={Log} />

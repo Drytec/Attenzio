@@ -35,7 +35,7 @@ export const logStyle = StyleSheet.create({
         borderRadius:20,
         padding:20,
         marginTop:8,
-        alignItems:'center',
+        //alignItems:'center',
         shadowColor: '#000',
         shadowOffset: {width: 0, height: 4},
         shadowOpacity: 0.3,
@@ -78,6 +78,18 @@ export const logStyle = StyleSheet.create({
         color: '#FBBC05', 
         fontWeight: 'bold', 
         
-    }
+    },
+    background: {
+        flex: 1, // Hace que la imagen ocupe todo el espacio disponible
+        resizeMode: 'cover', // Ajusta la imagen para cubrir la pantalla
+    },
+    show: {
+        color: 'grey',
+        marginLeft: 10,
+    },
+    passwordContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
 
 });

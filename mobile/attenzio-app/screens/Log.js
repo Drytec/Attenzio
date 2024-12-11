@@ -1,10 +1,11 @@
-import { Text, View, ScrollView, TextInput, TouchableOpacity, Alert } from "react-native";
+import { Text, View, ScrollView, TextInput, TouchableOpacity, Alert, ImageBackground } from "react-native";
 import { useState } from "react";
 import { logStyle } from "../styles/logStyle";
 
 export default function Log({navigation}){
     const [codigo, setCodigo] = useState('')
     const [contraseña, setContraseña] = useState('')
+    const [showContraseña, setShowContraseña] = useState(false);
 
     const saveNote = () => {
         if (!codigo.trim() || !contraseña.trim()) {
@@ -20,6 +21,9 @@ export default function Log({navigation}){
     
         return(
             <ScrollView contentContainerStyle={logStyle.scrollContainer}>
+                <ImageBackground source={require('../assets/fondo.png')} 
+                style={logStyle.background}>
+
                 <View style={logStyle.main}>
                     <Text style={logStyle.tittle}>iniciar <Text style={logStyle.highlight} >sesion</Text> </Text>
                     <Text style={logStyle.desc}>ingrese su correo estudiantil y contraseña</Text>
@@ -33,19 +37,27 @@ export default function Log({navigation}){
                         style={logStyle.input} 
                         />
                     
-                        <TextInput  
-                        placeholder='contraseña' 
-                        placeholderTextColor="slategray" 
-                        value={contraseña} 
-                        onChangeText={setContraseña}
-                        style={logStyle.input} 
-                        />
+                    <Text>Contraseña:</Text>
+                        <View style={logStyle.passwordContainer}>
+                            <TextInput  
+                                placeholder='Contraseña' 
+                                placeholderTextColor="slategray" 
+                                value={contraseña} 
+                                onChangeText={setContraseña}
+                                secureTextEntry={!showContraseña} 
+                                style={[logStyle.input, { flex: 1 }]} 
+                            />
+                            <TouchableOpacity onPress={() => setShowContraseña(!showContraseña)}>
+                                <Text style={logStyle.show}>{showContraseña ? 'Ocultar' : 'Mostrar'}</Text>
+                            </TouchableOpacity>
+                        </View>
 
                         <TouchableOpacity onPress={saveNote} style={logStyle.button}>
                             <Text style={logStyle.buttonText}>Ingresar</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
+                </ImageBackground>
             </ScrollView>
         )
 }

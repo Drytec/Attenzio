@@ -35,5 +35,9 @@ export const homeStyles = StyleSheet.create({
         textAlign:'center',
         fontSize:18,
         fontWeight: 'bold'
+    },
+    background: {
+        flex: 1, // Hace que la imagen ocupe todo el espacio disponible
+        resizeMode: 'cover', // Ajusta la imagen para cubrir la pantalla
     }
 })

@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { Text, View, ImageBackground } from "react-native";
 
 export default function RegisterPh(){
     return(

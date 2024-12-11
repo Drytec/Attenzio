@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-export const logStyle = StyleSheet.create({
+export const registerStyle = StyleSheet.create({
     scrollContainer:{
         flexGrow:1,
         justifyContent:'center',
@@ -21,12 +21,11 @@ export const logStyle = StyleSheet.create({
 
     },
     desc:{
-        fontSize:20,
-        fontWeight: '600',
+        
         marginBottom: 8,
-        textAlign: 'center',
-        marginTop: 20,
-        fontStyle: 'italic'
+        textAlign: 'left',
+        marginTop: 40,
+        
 
     },
     card:{
@@ -35,7 +34,7 @@ export const logStyle = StyleSheet.create({
         borderRadius:20,
         padding:20,
         marginTop:8,
-        alignItems:'center',
+        //alignItems:'center',
         shadowColor: '#000',
         shadowOffset: {width: 0, height: 4},
         shadowOpacity: 0.3,
@@ -59,6 +58,16 @@ export const logStyle = StyleSheet.create({
         backgroundColor: '#FBBC05',
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: 50,
+
+    },
+    buttonphoto:{
+        width:'60%',
+        height: 40,
+        borderRadius: 15,
+        backgroundColor: 'grey',
+        justifyContent: 'center',
+        alignItems: 'center',
         marginTop: 20,
 
     },
@@ -78,6 +87,25 @@ export const logStyle = StyleSheet.create({
         color: '#FBBC05', 
         fontWeight: 'bold', 
         
-    }
+    },
+    background: {
+        flex: 1, // Hace que la imagen ocupe todo el espacio disponible
+        resizeMode: 'cover', // Ajusta la imagen para cubrir la pantalla
+    },
+    imagePreview: {
+        width: 50,
+        height: 50,
+        marginVertical: 10,
+        borderRadius: 10,
+    },
+    show: {
+        color: 'grey',
+        marginLeft: 10,
+    },
+    passwordContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    
 
 });
