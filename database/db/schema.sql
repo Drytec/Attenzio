@@ -40,7 +40,7 @@ CREATE TABLE session(
     session_date_start TIME,
     session_date_end TIME,
     session_description VARCHAR(300),
-    qrCode VARCHAR(300),
+    qr_code VARCHAR(300),
     course_id INT,
     FOREIGN KEY (course_id) REFERENCES course(course_id) ON DELETE CASCADE
 );

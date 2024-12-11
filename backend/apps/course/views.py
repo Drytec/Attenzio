@@ -9,6 +9,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from .forms import CourseForm
+from ..session.models import Session
 from django.db import IntegrityError
 from django.utils import timezone
 from django.shortcuts import render, redirect
@@ -35,8 +36,11 @@ def show_session_course(request, course_id):
     # esta es la funcion a la que se llama cuando se presiona en un curso,
     # tiene que renderizar las sesiones que hayan sido creadas
     session = get_object_or_404(Session, course_id=course_id)
-    return render(request, 'show_course.html', {'course': course})
 
+    return render(request, 'show_course.html', {'course': course})
+def show_course(request, course_id):
+    sessions = Session.objects.filter(course_id=course_id)
+    return render(request, 'show_course.html', {'sessions':sessions})
 
 @login_required
 def teacher_courses(request):

@@ -7,6 +7,6 @@ urlpatterns = [
     path('create_material/', create_material, name='create_material'),
     path('create_question/', create_question, name='create_question'),
     path('create_options/', create_options, name='create_options'),
-    path('s:<int:aula_id>/', show_session, name='show_session'),
+    path('course/<int:session_id>/', show_session, name='show_session'),
     path('create_session/', create_session, name='create_session'),
 ]
