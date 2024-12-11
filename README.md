@@ -37,6 +37,9 @@ env\Scripts\activate
 
 ```
 pip install -r requirements.txt
+alternativamente 
+python.exe -m pip install -r requirements.txt
+
 ```
 
 ### 3. Configure database connection
@@ -51,7 +54,7 @@ DATABASES = {
         'USER': 'postgres',
         'PASSWORD': 'database_password',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': '5000',
     }
 }
 ```
@@ -61,7 +64,5 @@ DATABASES = {
 ```
 python manage.py runserver
 ```
-
-
 
 

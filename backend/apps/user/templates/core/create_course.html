@@ -1,8 +1,8 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-    <h1> Crear Nuevo curso </h1>
-    <form action="/course/create_course/" method="POST">
+    <h1> Crear nuevo curso</h1>
+    <form action="/course/create/" method="POST">
         {% csrf_token %}
         {{ form.as_p }}
         <button>

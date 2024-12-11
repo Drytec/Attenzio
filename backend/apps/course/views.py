@@ -9,13 +9,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from .forms import CourseForm
+from ..session.models import Session
 from django.db import IntegrityError
 from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 
 from ..customusercourse.models import CustomUserCourse
-from ..session.models import Session
 
 
 # Create your views here.
@@ -27,36 +27,41 @@ def student_courses(request):
         messages.error(request, "No tienes permiso para ver esto.")
         return render(request, 'teacher_courses.html')
 
-    user = request.user
-    user_courses = CustomUserCourse.objects.filter(custom_user_id=user)
+    course = request.user.getCourses
 
-    return render(request,'student_courses.html',{'courses': user_courses})
+    return render(request,'student_courses.html',{'course': course})
 
 @login_required
+def show_session_course(request, course_id):
+    # esta es la funcion a la que se llama cuando se presiona en un curso,
+    # tiene que renderizar las sesiones que hayan sido creadas
+    session = get_object_or_404(Session, course_id=course_id)
+
+    return render(request, 'show_course.html', {'course': course})
 def show_course(request, course_id):
     sessions = Session.objects.filter(course_id=course_id)
-
-    return render(request, 'course_sessions.html', {
-        'sessions': sessions,
-        'course_id': course_id,
-    })
+    return render(request, 'show_course.html', {'sessions':sessions})
 
 @login_required
 def teacher_courses(request):
-    if not request.user.isTeacher():
-        messages.error(request, "No tienes permiso para ver esto.")
-        return render(request, 'student_courses.html')
+    # esto se comenta ya que la funcion isTeacher no ha sido bien configuratda
+    #if not request.user.isTeacher():
+     #   messages.error(request, "No tienes permiso para ver esto.")
+      #  return render(request, 'student_courses.html')
+    coursesTeacher=CustomUserCourse.objects.filter( custom_user_id=request.user.custom_user_id)
+    #ponemos flat para aplanar la lista
+    course_ids = coursesTeacher.values_list('course_id', flat=True)
+    #el __in que se le agrega a course es para que django tome todos los valores relacionados y no un unico id
+    courses = Course.objects.filter(course_id__in=course_ids)
+    print(courses)
 
-    user = request.user
-    user_courses = CustomUserCourse.objects.filter(custom_user_id=user)
-
-    return render(request,'teacher_courses.html',{'courses': user_courses})
+    return render(request,'teacher_courses.html',{'courses': courses})
 
 
 @login_required
 def create_course(request):
     if not request.user.isTeacher:
-        messages.error(request, "No tienes permiso para crear un curso.")
+        messages.error(request, "No tienes permiso para crear una sesión.")
         return render(request, 'student_courses.html')
 
     if request.method == 'GET':
@@ -70,8 +75,8 @@ def create_course(request):
             new_course.user = request.user
             new_course.save()
             CustomUserCourse.objects.create(
-                custom_user_id=request.user,
-                course_id=new_course
+               custom_user_id=request.user,
+              course_id=new_course
             )
             return redirect('home')
 

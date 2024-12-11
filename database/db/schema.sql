@@ -6,21 +6,21 @@ CREATE TABLE rol(
 );
 
 CREATE TABLE customUser (
-        custom_user_id SERIAL PRIMARY KEY,
-        full_name VARCHAR(100) NOT NULL,
-        document VARCHAR(20) UNIQUE NOT NULL,
-        address VARCHAR(100),
-        media VARCHAR(200),
-        email VARCHAR(100) UNIQUE NOT NULL,
-        password VARCHAR(128) NOT NULL,
-        phone VARCHAR(30),
-        validated BOOLEAN DEFAULT FALSE,
-        rol_id INT REFERENCES rol(rol_id),
-        last_login TIMESTAMPTZ,
-        is_superuser BOOLEAN DEFAULT FALSE,
-        is_staff BOOLEAN DEFAULT FALSE,
-        is_active BOOLEAN DEFAULT TRUE,
-        date_joined TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+    custom_user_id SERIAL PRIMARY KEY,
+    full_name VARCHAR(100) NOT NULL,
+    document VARCHAR(20) UNIQUE NOT NULL,
+    address VARCHAR(100),
+    media VARCHAR(200),
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(128) NOT NULL,
+    phone VARCHAR(30),
+    validated BOOLEAN DEFAULT FALSE,
+    rol_id INT REFERENCES rol(rol_id),
+    last_login TIMESTAMPTZ,
+    is_superuser BOOLEAN DEFAULT FALSE,
+    is_staff BOOLEAN DEFAULT FALSE,
+    is_active BOOLEAN DEFAULT TRUE,
+    date_joined TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE course(
@@ -40,7 +40,7 @@ CREATE TABLE session(
     session_date_start TIME,
     session_date_end TIME,
     session_description VARCHAR(300),
-    qrCode VARCHAR(300),
+    qr_code VARCHAR(300),
     course_id INT,
     FOREIGN KEY (course_id) REFERENCES course(course_id) ON DELETE CASCADE
 );
@@ -54,9 +54,9 @@ CREATE TABLE materialSession(
 );
 
 CREATE TABLE customUserCourse(
+    customusercourse_id SERIAL PRIMARY KEY,
     custom_user_id INT NOT NULL,
     course_id INT NOT NULL,
-    PRIMARY KEY(custom_user_id, course_id),
     FOREIGN KEY (custom_user_id) REFERENCES customUser(custom_user_id) ON DELETE CASCADE,
     FOREIGN KEY (course_id) REFERENCES course(course_id) ON DELETE CASCADE
 );
