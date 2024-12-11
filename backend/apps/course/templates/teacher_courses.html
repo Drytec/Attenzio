@@ -1,17 +1,18 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-<h3>Clases Programadas</h3>
+<h3>Cursos Programadas</h3>
 <div style="display: flex; flex-wrap: wrap; margin-bottom: 10px;">
-    {% for aula in aula1 %}
+    {% for course in courses %}
     <div style="margin-right: 20px; margin-bottom: 10px;">
-        <strong>Aula:</strong>
-        <form action="{% url 'show_session_course' course.course_id %}" method="get">
+        <strong>Curso:</strong>
+        <form action="{% url 'show_session' course.course_id %}" method="get">
             {% csrf_token %}
             <button type="submit">Entrar a {{ course.course_name }}</button>
         </form>
         <br>
         <strong>ID del Curso:</strong> {{ course.course_id }}<br>
+
         <strong>Profesor:</strong> {{ course.user }}
     </div>
     {% endfor %}

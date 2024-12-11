@@ -54,9 +54,9 @@ CREATE TABLE materialSession(
 );
 
 CREATE TABLE customUserCourse(
+    customusercourse_id SERIAL PRIMARY KEY,
     custom_user_id INT NOT NULL,
     course_id INT NOT NULL,
-    PRIMARY KEY(custom_user_id, course_id),
     FOREIGN KEY (custom_user_id) REFERENCES customUser(custom_user_id) ON DELETE CASCADE,
     FOREIGN KEY (course_id) REFERENCES course(course_id) ON DELETE CASCADE
 );

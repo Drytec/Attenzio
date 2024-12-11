@@ -9,6 +9,4 @@ urlpatterns = [
     path('create_options/', create_options, name='create_options'),
     path('s:<int:aula_id>/', show_session, name='show_session'),
     path('create_session/', create_session, name='create_session'),
-    path('course/<int:aula_id>/', session_interactive, name='session_online'),
-
 ]
