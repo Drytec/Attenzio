@@ -8,6 +8,6 @@ class CourseForm(ModelForm):
         model = Course
         fields = ['course_name', 'course_schedule']
         labels = {
-            'course_name': 'Nombre de la Sesión',
+            'course_name': 'Nombre del curso',
             'course_schedule': 'Descripcion del horario del Curso',
         }
