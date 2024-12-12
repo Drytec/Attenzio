@@ -23,7 +23,7 @@ from ..customusercourse.models import CustomUserCourse
 @login_required
 def show_session(request, session_id):
     session = get_object_or_404(Session, session_id=session_id)
-    materials = session.sessionMaterial.all()
+    materials = Material.objects.filter(materialsession__session_id=session_id)
 
     return render(request, 'show_session.html', {'session': session, 'materials': materials})
 
@@ -55,7 +55,6 @@ def report_view(request, custom_user_id, course_id):
 @login_required
 def create_session(request, course_id):
     if not request.user.isTeacher:
-        messages.error(request, "No tienes permiso para crear una sesión.")
         return render(request, 'student_courses.html')
 
     course = get_object_or_404(Course, course_id=course_id)
@@ -82,15 +81,17 @@ def create_session(request, course_id):
             })
 
 def create_material(request, session_id):
-    if not request.user.isTeacher:
-        messages.error(request, "No tienes permiso para crear material.")
-        return render(request, 'student_courses.html')
+    session = get_object_or_404(Session, pk=session_id)
+
+    if not request.user.isTeacher and not request.user.isAdmin:
+        return render(request, 'student_courses.html', {'session': session})
 
     session = get_object_or_404(Session, pk=session_id)
 
     if request.method == 'GET':
         return render(request,'create_material.html',{
             'form': MaterialForm,
+            'session': session
         })
     else:
         form = MaterialForm(request.POST)
@@ -99,21 +100,20 @@ def create_material(request, session_id):
             new_material.user = request.user
             new_material.save()
             MaterialSession.objects.create(
-                session_id=session_id,
-                material_id=new_material.material_id
+                session_id=session,
+                material_id=new_material
             )
-            course_id = session.course_id
-            return redirect('show_course', course_id=course_id)
+            return redirect('show_session', session_id=session.session_id)
 
         else:
             return render(request, 'create_material.html', {
                 'form': form,
-                'errors': form.errors
+                'errors': form.errors,
+                'session': session
             })
 
 def create_question(request, session_id):
     if not request.user.isTeacher:
-        messages.error(request, "No tienes permiso para crear preguntas.")
         return render(request, 'student_courses.html')
 
     session = get_object_or_404(Session, pk=session_id)
@@ -133,14 +133,13 @@ def create_question(request, session_id):
             return redirect('create_options', question_id=question_id)
 
         else:
-            return render(request, 'create_material.html', {
+            return render(request, 'create_material.html.html', {
                 'form': form,
                 'errors': form.errors
             })
 
 def create_options(request, question_id):
     if not request.user.isTeacher:
-        messages.error(request, "No tienes permiso para crear opciones.")
         return render(request, 'student_courses.html')
 
     question = get_object_or_404(Question, pk=question_id)

@@ -9,7 +9,7 @@ class Session(models.Model):
     session_date_end = models.TimeField(blank=True)
     session_description = models.CharField(max_length=300, blank=True)
     qr_code = models.CharField(max_length=300, blank=True)
-    course_id = models.ForeignKey(Course, on_delete=models.CASCADE,db_column='course_id')
+    course_id = models.ForeignKey(Course, on_delete=models.CASCADE, db_column='course_id')
 
     class Meta:
         db_table = "session"
@@ -53,8 +53,8 @@ class Material(models.Model):
 
 class MaterialSession(models.Model):
     material_session_id = models.AutoField(primary_key=True,db_column='material_session_id',unique=True)
-    material_id = models.ForeignKey(Material, on_delete=models.CASCADE)
-    session_id = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='sessionMaterial')
+    material_id = models.ForeignKey(Material, on_delete=models.CASCADE, db_column='material_id')
+    session_id = models.ForeignKey(Session, on_delete=models.CASCADE, db_column='session_id')
 
     class Meta:
         db_table = 'materialsession'
