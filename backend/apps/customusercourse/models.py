@@ -2,11 +2,16 @@ from django.db import models
 from ..customuser.models import CustomUser
 from ..course.models import Course
 
-# Create your models here.
-class CustomUserCourse(models.Model):
-    custom_user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    course_id = models.ForeignKey(Course, on_delete=models.CASCADE)
+from django.db import models
+from ..customuser.models import CustomUser
+from ..course.models import Course
 
+class CustomUserCourse(models.Model):
+    customusercourse_id = models.AutoField(primary_key=True,db_column='customusercourse_id',unique=True);
+    custom_user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='custom_user_id')
+    course_id = models.ForeignKey(Course, on_delete=models.CASCADE, db_column='course_id')
+
+    # Definir la clave primaria compuesta
     class Meta:
         db_table = 'customusercourse'
         managed = False

@@ -8,7 +8,7 @@
     <li>
         <strong>Sesión:</strong> {{ session.session_name }}<br>
         <strong>Fecha:</strong> {{ session.date }}<br>
-        <a href="{% url 'show_session' aula_id=session.session_id %}">Detalles</a>
+        <a href="{% url 'show_session' session_id=session.session_id %}">Detalles</a>
     </li>
     {% empty %}
     <li>No hay sesiones disponibles para este curso.</li>

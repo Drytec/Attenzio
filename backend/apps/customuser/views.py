@@ -1,7 +1,9 @@
+
 from django.contrib import messages
 from django.shortcuts import render
 
 import json
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
@@ -13,7 +15,7 @@ from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.utils.crypto import get_random_string
 from django.views.decorators.csrf import csrf_exempt
 
-from .forms import TeacherRegisterForm, StudentRegisterForm
+from .forms import BaseRegisterForm, StudentRegisterForm, TeacherRegisterForm
 from django.db import IntegrityError
 from django.utils import timezone
 import pytz
@@ -25,10 +27,20 @@ from ..session.forms import SessionForm
 def home(request):
     print(request.user)
     return render(request, 'core/home.html')
+from django.contrib.auth import logout
+from django.shortcuts import redirect
 
-def exit(request):
-    logout(request)
-    return redirect('home')
+def logout_view(request):
+    print(f"Usuario saliendo: {request.user}")
+    try:
+        logout(request)
+        return redirect('/')  # Redirige a la página principal
+    except SystemExit as sys_exit:
+        print(f"SystemExit detectado: {sys_exit}")
+        return redirect('/')  # Manejo seguro del error
+    except Exception as e:
+        print(f"Error durante el logout: {e}")
+        return redirect('/')  # Manejo genérico del error
 
 def select_user_type_view(request):
     if request.method == 'POST':
@@ -51,7 +63,9 @@ def user_singup_view(request):
 
     form = form_class(request.POST, request.FILES)
     if form.is_valid():
-        user = form.save()
+        user = form.save(commit=False)
+        user.set_password(form.cleaned_data['password'])  # Cifra la contraseña
+        user.save()
         return redirect('login')
 
     return render(request, 'core/signup.html', {'form': form, 'user_type': user_type})
@@ -65,6 +79,7 @@ def user_login_view(request):
     elif request.method == 'POST':
         email = request.POST.get('username')
         password = request.POST.get('password')
+        document = request.POST.get('document')
 
         if not email or not password:
             return render(request, 'core/login.html', {
@@ -73,6 +88,7 @@ def user_login_view(request):
             })
 
         # Autenticar al usuario
+        print(email, password)
         user = authenticate(request, username=email, password=password)
 
         if user is None:
@@ -89,4 +105,4 @@ def user_login_view(request):
 
         # Iniciar sesión y redirigir
         login(request, user)
-        return redirect('course')
+        return redirect('home')

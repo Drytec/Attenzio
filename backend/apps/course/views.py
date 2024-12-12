@@ -1,5 +1,4 @@
 import pytz
-from Attenzio.backend.apps.session.models import Session
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.core.serializers import json
@@ -9,7 +8,8 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from .forms import courseForm
+from .forms import CourseForm
+from ..session.models import Session
 from django.db import IntegrityError
 from django.utils import timezone
 from django.shortcuts import render, redirect
@@ -36,18 +36,28 @@ def show_session_course(request, course_id):
     # esta es la funcion a la que se llama cuando se presiona en un curso,
     # tiene que renderizar las sesiones que hayan sido creadas
     session = get_object_or_404(Session, course_id=course_id)
-    return render(request, 'show_course.html', {'course': course})
 
+    return render(request, 'show_course.html', {'course': course})
+# esta es la funcion que accede al contenido del curso, tambien hay que pasarle un objeto del tipo curso para acceder a la descripcion
+def show_course(request, course_id):
+    course = get_object_or_404(Course, course_id=course_id)
+    sessions = Session.objects.filter(course_id=course_id)
+    return render(request, 'show_course.html', {'sessions':sessions, 'course':course})
 
 @login_required
 def teacher_courses(request):
-    if not request.user.isTeacher():
-        messages.error(request, "No tienes permiso para ver esto.")
-        return render(request, 'student_courses.html')
+    # esto se comenta ya que la funcion isTeacher no ha sido bien configuratda
+    #if not request.user.isTeacher():
+     #   messages.error(request, "No tienes permiso para ver esto.")
+      #  return render(request, 'student_courses.html')
+    coursesTeacher=CustomUserCourse.objects.filter( custom_user_id=request.user.custom_user_id)
+    #ponemos flat para aplanar la lista
+    course_ids = coursesTeacher.values_list('course_id', flat=True)
+    #el __in que se le agrega a course es para que django tome todos los valores relacionados y no un unico id
+    courses = Course.objects.filter(course_id__in=course_ids)
+    print(courses)
 
-    course = request.user.getCourses
-
-    return render(request,'teacher_courses.html',{'course': course})
+    return render(request,'teacher_courses.html',{'courses': courses})
 
 
 @login_required
@@ -58,26 +68,23 @@ def create_course(request):
 
     if request.method == 'GET':
         return render(request,'create_course.html',{
-            'form':courseForm
+            'form':CourseForm
         })
     else:
-        form = courseForm(request.POST)
+        form = CourseForm(request.POST)
         if form.is_valid():
             new_course = form.save(commit=False)
             new_course.user = request.user
             new_course.save()
             CustomUserCourse.objects.create(
-                custom_user_id=request.user,
-                course_id=new_course
+               custom_user_id=request.user,
+              course_id=new_course
             )
             return redirect('home')
 
         else:
-            return render(request, 'core/create_course.html', {
+            return render(request, 'create_course.html', {
                 'form': form,
                 'errors': form.errors
             })
 
-def exit(request):
-    logout(request)
-    return redirect('home')
