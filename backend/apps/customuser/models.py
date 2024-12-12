@@ -1,5 +1,3 @@
-from multiprocessing.util import MAXFD
-
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from ..rol.models import Rol
@@ -15,6 +13,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     password = models.CharField(max_length=128)
     phone = models.CharField(max_length=30, blank=True)
     rol_id = models.ForeignKey(Rol, on_delete=models.CASCADE)
+    validated = models.BooleanField(default=False)
     last_login = models.DateTimeField(blank=True, null=True)
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
@@ -36,6 +35,3 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def isStudent(self):
         return self.rol_id == 2
-
-    def getCustomUserId(self):
-        return self.custom_user_id

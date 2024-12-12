@@ -1,4 +1,5 @@
 import pytz
+from Attenzio.backend.apps.session.models import Session
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.core.serializers import json
@@ -31,10 +32,10 @@ def student_courses(request):
     return render(request,'student_courses.html',{'course': course})
 
 @login_required
-def show_course(request, course_id):
-    colombia_tz = pytz.timezone('America/Bogota')
-    ahora = timezone.now().astimezone(colombia_tz)
-    course = get_object_or_404(Course, course_id=course_id)
+def show_session_course(request, course_id):
+    # esta es la funcion a la que se llama cuando se presiona en un curso,
+    # tiene que renderizar las sesiones que hayan sido creadas
+    session = get_object_or_404(Session, course_id=course_id)
     return render(request, 'show_course.html', {'course': course})
 
 

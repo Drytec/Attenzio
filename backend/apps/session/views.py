@@ -26,13 +26,13 @@ def session_interactive(request, session_id):
         return render(request, 'core/session.html')
 
 @login_required
-def course_sessions(request):
-
-    session1 = Session.objects.filter(user=request.user)
+def course_sessions(request,course_id):
+    #aqui haciendo uso de la llave foranea se filtran las sesiones que pertenezcan al curso
+    session1 = Session.objects.filter(user=request.user, course_id=course_id)
     return render(request,'core/session.html',{'session1': session1})
 
 @login_required
-def create_session(request):
+def create_session(request,course_id):
     if not request.user.isTeacher():
         messages.error(request, "No tienes permiso para crear una sesión.")
         return render(request, 'student_courses.html')
@@ -46,6 +46,9 @@ def create_session(request):
         if form.is_valid():
             new_session= form.save(commit=False)
             new_session.user = request.user
+            #esto posiblemente aun no sirva, cuando el profesor entre a un aula hay que guardar el id de esta
+            #ahi dejo encargado a jh
+            new_session.course_id=course_id
             new_session.save()
             return redirect('home')
 
