@@ -16,6 +16,7 @@ from django.contrib.auth import login
 
 from ..course.models import Course
 from ..customusercourse.models import CustomUserCourse
+from ..customuser.models import CustomUser
 
 
 # Create your views here.
@@ -35,16 +36,13 @@ def report_view(request, custom_user_id, course_id):
         course_id=course_id
     )
 
-    custom_user = custom_user_course.custom_user_id
-    course = custom_user_course.course_id
-
-    sesiones = Session.objects.filter(course_id=course).distinct()
+    sesiones = Session.objects.filter(course_id=course_id).distinct()
 
     show_report = 'generate_report' in request.GET
 
     context = {
-        'custom_user': custom_user,
-        'course': course,
+        'custom_user': custom_user_course.custom_user_id,
+        'course': custom_user_course.course_id,
         'sesiones': sesiones,
         'show_report': show_report,
     }
