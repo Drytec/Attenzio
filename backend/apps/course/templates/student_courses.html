@@ -1,9 +1,9 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-<h2 style="text-align: center; margin-bottom: 20px;">Mis Cursos</h2>
+<h2 style="text-align: center; margin-bottom: 20px;">Cursos Matriculados</h2>
 <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
-    {% for course in courses %}
+    {% for course, teacher in zip(courses, teachers) %}
     <div style="
         border: 1px solid #ccc;
         border-radius: 8px;
@@ -13,7 +13,9 @@
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
         <h4 style="margin: 0 0 10px 0; text-align: center;">{{ course.course_name }}</h4>
         <p><strong>ID del Curso:</strong> {{ course.course_id }}</p>
-        <p><strong>Profesor:</strong> {{ course.user }}</p>
+        {% if teacher %}
+        <p><strong>Profesor:</strong> {{ teacher.full_name }}</p>
+        {% endif %}
         <a href="{% url 'show_course' course.course_id %}" style="
             display: inline-block;
             text-decoration: none;
@@ -28,3 +30,4 @@
     {% endfor %}
 </div>
 {% endblock %}
+

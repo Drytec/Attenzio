@@ -7,7 +7,7 @@ from ..customuser.models import CustomUser
 from ..course.models import Course
 
 class CustomUserCourse(models.Model):
-    customusercourse_id = models.AutoField(primary_key=True,db_column='customusercourse_id',unique=True);
+    custom_user_course_id = models.AutoField(primary_key=True, db_column='custom_user_course_id', unique=True)
     custom_user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='custom_user_id')
     course_id = models.ForeignKey(Course, on_delete=models.CASCADE, db_column='course_id')
 

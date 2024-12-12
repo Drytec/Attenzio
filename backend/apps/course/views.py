@@ -26,20 +26,18 @@ def student_courses(request):
     if not request.user.isStudent:
         return render(request, 'teacher_courses.html')
 
-    coursesTeacher=CustomUserCourse.objects.filter( custom_user_id=request.user.custom_user_id)
-    course_ids = coursesTeacher.values_list('course_id', flat=True)
+    course_ids = CustomUserCourse.objects.filter( custom_user_id=request.user.custom_user_id).values_list('course_id', flat=True)
     courses = Course.objects.filter(course_id__in=course_ids)
 
+    courseTeachers = []
+    for course in courses:
+        try:
+            teacher = CustomUserCourse.objects.filter(course_id=course.course_id, custom_user_id__is_teacher=True).select_related('custom_user_id').get()
+            courseTeachers.append(teacher.custom_user_id)
+        except CustomUserCourse.DoesNotExist:
+            courseTeachers.append(None)
 
-    return render(request,'student_courses.html',{'courses': courses})
-
-@login_required
-def show_session_course(request, course_id):
-    # esta es la funcion a la que se llama cuando se presiona en un curso,
-    # tiene que renderizar las sesiones que hayan sido creadas
-    session = get_object_or_404(Session, course_id=course_id)
-
-    return render(request, 'show_course.html', {'course': course})
+    return render(request,'student_courses.html',{'courses': courses, 'teachers': courseTeachers})
 
 @login_required
 def show_course(request, course_id):
@@ -55,16 +53,24 @@ def teacher_courses(request):
     if not request.user.isTeacher:
         return render(request, 'student_courses.html')
 
-    coursesTeacher=CustomUserCourse.objects.filter( custom_user_id=request.user.custom_user_id)
-    course_ids = coursesTeacher.values_list('course_id', flat=True)
+    course_ids = CustomUserCourse.objects.filter( custom_user_id=request.user.custom_user_id).values_list('course_id', flat=True)
     courses = Course.objects.filter(course_id__in=course_ids)
 
     return render(request,'teacher_courses.html',{'courses': courses})
 
+@login_required
+def admin_courses(request):
+    if not request.user.isAdmin:
+        return redirect('home')
+
+    course_ids = CustomUserCourse.objects.filter( custom_user_id=request.user.custom_user_id).values_list('course_id', flat=True)
+    courses = Course.objects.filter(course_id__in=course_ids)
+
+    return render(request,'admin_courses.html',{'courses': courses})
 
 @login_required
 def create_course(request):
-    if not request.user.isTeacher:
+    if not request.user.isTeacher and not request.user.isAdmin:
         messages.error(request, "No tienes permiso para crear una sesión.")
         return render(request, 'student_courses.html')
 
@@ -82,7 +88,11 @@ def create_course(request):
                 custom_user_id=request.user,
                 course_id=new_course
             )
-            return redirect('home')
+
+            if request.user.isTeacher:
+                return redirect('teacher_courses')
+            else:
+                return redirect('admin_courses')
 
         else:
             return render(request, 'create_course.html', {

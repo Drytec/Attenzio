@@ -27,7 +27,6 @@ from ..session.forms import SessionForm
 
 
 def home(request):
-    print(request.user.isTeacher)
     return render(request, 'core/home.html')
 
 def logout_view(request):

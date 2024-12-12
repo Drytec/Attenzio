@@ -31,20 +31,15 @@
     {% empty %}
     <li>No hay sesiones asociadas a este curso.</li>
     {% endfor %}
-    </div>
-    <div style="text-align: center; margin-top: 20px;">
-        <a href="{% url 'create_session' course.course_id %}" style="
-        display: inline-block;
-        text-decoration: none;
-        background-color: #28a745;
-        color: white;
-        padding: 10px 20px;
-        border-radius: 4px;
-        text-align: center;">
-            Crear Sesión
-        </a>
-    </div>
 </ul>
+
+{% if request.user.isTeacher or request.user.isAdmin %}
+<div style="text-align: center; margin-top: 20px;">
+    <a href="{% url 'create_session' course.course_id %}">
+        Crear Sesión
+    </a>
+</div>
+{% endif %}
 
 {% endblock %}
 

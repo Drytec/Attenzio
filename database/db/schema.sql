@@ -47,15 +47,15 @@ CREATE TABLE session(
 );
 
 CREATE TABLE materialSession(
+    material_session_id SERIAL PRIMARY KEY,
     session_id INT NOT NULL,
     material_id INT NOT NULL,
-    PRIMARY KEY(session_id, material_id),
     FOREIGN KEY (session_id) REFERENCES session(session_id) ON DELETE CASCADE,
     FOREIGN KEY (material_id) REFERENCES material(material_id) ON DELETE CASCADE
 );
 
 CREATE TABLE customUserCourse(
-    customusercourse_id SERIAL PRIMARY KEY,
+    custom_user_course_id SERIAL PRIMARY KEY,
     custom_user_id INT NOT NULL,
     course_id INT NOT NULL,
     FOREIGN KEY (custom_user_id) REFERENCES customUser(custom_user_id) ON DELETE CASCADE,

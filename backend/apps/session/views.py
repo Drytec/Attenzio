@@ -2,7 +2,7 @@ import pytz
 from django.contrib.auth import logout
 from django.core.checks import messages
 from django.core.serializers import json
-from .models import Session, SessionMaterial, Question, Material
+from .models import Session, MaterialSession, Question, Material
 import json
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -22,7 +22,7 @@ from ..course.models import Course
 @login_required
 def show_session(request, session_id):
     session = get_object_or_404(Session, session_id=session_id)
-    materials = Material.objects.filter(sessionmaterial__session_id=session_id)
+    materials = session.sessionMaterial.all()
 
     return render(request, 'show_session.html', {'session': session, 'materials': materials})
 
