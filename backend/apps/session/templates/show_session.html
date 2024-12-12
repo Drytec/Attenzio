@@ -9,8 +9,13 @@
 <p><strong>Fecha de inicio:</strong> {{ session.session_date_start }}</p>
 <p><strong>Fecha de fin:</strong> {{ session.session_date_end }}</p>
 
-{% if material %}
-<p><strong>Material asociado:</strong> <a href="{{ material.material_link }}" target="_blank">Ver material</a></p>
+{% if materials %}
+<p><strong>Material:</strong></p>
+<ul>
+    {% for material in materials %}
+    <li><a href="{{ material.material_link }}" target="_blank">Ver material</a></li>
+    {% endfor %}
+</ul>
 {% else %}
 <p>No hay material asociado para esta sesión.</p>
 {% endif %}

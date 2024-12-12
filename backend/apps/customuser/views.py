@@ -14,6 +14,8 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.utils.crypto import get_random_string
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import logout
+from django.shortcuts import redirect
 
 from .forms import BaseRegisterForm, StudentRegisterForm, TeacherRegisterForm
 from django.db import IntegrityError
@@ -25,10 +27,8 @@ from ..session.forms import SessionForm
 
 
 def home(request):
-    print(request.user)
+    print(request.user.isTeacher)
     return render(request, 'core/home.html')
-from django.contrib.auth import logout
-from django.shortcuts import redirect
 
 def logout_view(request):
     print(f"Usuario saliendo: {request.user}")
@@ -79,7 +79,6 @@ def user_login_view(request):
     elif request.method == 'POST':
         email = request.POST.get('username')
         password = request.POST.get('password')
-        document = request.POST.get('document')
 
         if not email or not password:
             return render(request, 'core/login.html', {

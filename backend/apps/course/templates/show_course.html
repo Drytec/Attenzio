@@ -1,0 +1,51 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2>Detalles del Curso</h2>
+
+<h3>{{ course.course_name }}</h3>
+
+<p><strong>Horario: {{ course.course_schedule }}</strong></p>
+
+<p><strong>Profesor: {{ teacher.full_name }}</strong></p>
+
+<h3>Sesiones:</h3>
+<ul>
+    {% for session in sessions %}
+    <li>
+        <strong>{{ session.session_name }}</strong><br>
+        <strong>Fecha de inicio:</strong> {{ session.session_date_start }}<br>
+        <strong>Fecha de fin:</strong> {{ session.session_date_end }}<br>
+        <a href="{% url 'show_session' session.session_id %}" style="
+            display: inline-block;
+            text-decoration: none;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-align: center;
+            margin-top: 10px;">
+            Ver Sesión
+        </a>
+    </li>
+    {% empty %}
+    <li>No hay sesiones asociadas a este curso.</li>
+    {% endfor %}
+    </div>
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'create_session' course.course_id %}" style="
+        display: inline-block;
+        text-decoration: none;
+        background-color: #28a745;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 4px;
+        text-align: center;">
+            Crear Sesión
+        </a>
+    </div>
+</ul>
+
+{% endblock %}
+
+
