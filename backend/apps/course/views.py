@@ -40,6 +40,23 @@ def student_courses(request):
     return render(request,'student_courses.html',{'courses': courses, 'teachers': courseTeachers})
 
 @login_required
+def student_list_course(request, course_id):
+    custom_user_courses = CustomUserCourse.objects.filter(course_id=course_id)
+
+    students = [cuc.custom_user_id for cuc in custom_user_courses if cuc.custom_user_id.isStudent]
+
+    student_count = len(students)
+
+    context = {
+        'course_id': course_id,
+        'student_count': student_count,
+        'students': students,
+    }
+
+    return render(request, 'show_course.html', context)
+
+
+@login_required
 def show_course(request, course_id):
     sessions = Session.objects.filter(course_id=course_id)
     course = get_object_or_404(Course, pk=course_id)

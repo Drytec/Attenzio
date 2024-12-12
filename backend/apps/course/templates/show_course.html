@@ -33,6 +33,18 @@
     {% endfor %}
 </ul>
 
+    <!-- A partir de aquí se muestran los estudiantes matriculados en el curso / nsc -->
+<h3>Estudiantes:</h3>
+<ul>
+    {% for student in students %}
+        <li>
+            <strong>{{ student.full_name }}</strong> - {{ student.email }}
+        </li>
+    {% empty %}
+        <li>No hay estudiantes inscritos en este curso.</li>
+    {% endfor %}
+</ul>
+
 {% if request.user.isTeacher or request.user.isAdmin %}
 <div style="text-align: center; margin-top: 20px;">
     <a href="{% url 'create_session' course.course_id %}">
