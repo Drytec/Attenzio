@@ -23,7 +23,7 @@ from ..customusercourse.models import CustomUserCourse
 
 @login_required
 def student_courses(request):
-    if not request.user.isStudent():
+    if not request.user.isStudent:
         return render(request, 'teacher_courses.html')
 
     coursesTeacher=CustomUserCourse.objects.filter( custom_user_id=request.user.custom_user_id)
@@ -52,7 +52,7 @@ def show_course(request, course_id):
 
 @login_required
 def teacher_courses(request):
-    if not request.user.isTeacher():
+    if not request.user.isTeacher:
         return render(request, 'student_courses.html')
 
     coursesTeacher=CustomUserCourse.objects.filter( custom_user_id=request.user.custom_user_id)
@@ -64,7 +64,7 @@ def teacher_courses(request):
 
 @login_required
 def create_course(request):
-    if not request.user.isTeacher():
+    if not request.user.isTeacher:
         messages.error(request, "No tienes permiso para crear una sesión.")
         return render(request, 'student_courses.html')
 

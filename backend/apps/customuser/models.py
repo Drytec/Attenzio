@@ -36,11 +36,17 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.full_name
 
+    @property
     def isTeacher(self):
-        return self.rol_id == 1
+        return self.rol_id_id == 1
 
+    @property
     def isStudent(self):
-        return self.rol_id == 2
-    #Funcion solicitada por django para el manejo de superusuarios
+        return self.rol_id_id == 2
+
+    @property
+    def isAdmin(self):
+        return self.rol_id_id == 3
+
     def get_by_natural_key(self, email):
         return self.objects.get(email=email)

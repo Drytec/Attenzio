@@ -5,10 +5,9 @@
 
 <h3>{{ course.course_name }}</h3>
 
-<p><strong>Horario:</strong> {{ course.course_schedule }}</p>
+<p><strong>Horario: {{ course.course_schedule }}</strong></p>
 
-<p><strong>Profesor:</strong></p>
-<p>{{ teacher.full_name }}</p>
+<p><strong>Profesor: {{ teacher.full_name }}</strong></p>
 
 <h3>Sesiones:</h3>
 <ul>
@@ -17,11 +16,36 @@
         <strong>{{ session.session_name }}</strong><br>
         <strong>Fecha de inicio:</strong> {{ session.session_date_start }}<br>
         <strong>Fecha de fin:</strong> {{ session.session_date_end }}<br>
+        <a href="{% url 'show_session' session.session_id %}" style="
+            display: inline-block;
+            text-decoration: none;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-align: center;
+            margin-top: 10px;">
+            Ver Sesión
+        </a>
     </li>
     {% empty %}
     <li>No hay sesiones asociadas a este curso.</li>
     {% endfor %}
+    </div>
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'create_session' course.course_id %}" style="
+        display: inline-block;
+        text-decoration: none;
+        background-color: #28a745;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 4px;
+        text-align: center;">
+            Crear Sesión
+        </a>
+    </div>
 </ul>
 
 {% endblock %}
+
 

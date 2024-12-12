@@ -2,7 +2,7 @@ import pytz
 from django.contrib.auth import logout
 from django.core.checks import messages
 from django.core.serializers import json
-from .models import Session, SessionMaterial, Question
+from .models import Session, SessionMaterial, Question, Material
 import json
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -18,30 +18,21 @@ from ..course.models import Course
 
 
 # Create your views here.
-# a este metodo de renderizado le falta la verificacion de la fecha la que esta aun no funciona
-def session_interactive(request, session_id):
-    colombia_tz = pytz.timezone('America/Bogota')
-    ahora = timezone.now().astimezone(colombia_tz)
-    session1 = get_object_or_404(Session, session_id=session_id)
-    if session1.date_start <= ahora <= session1.date_end:
-        return render(request, 'core/session_online.html', {'session': session1})
-    else:#  aqui lo mejor seria implementar un alertbox para que notifique que la clase no esta en horario
-        return render(request, 'core/session.html')
 
 @login_required
 def show_session(request, session_id):
     session = get_object_or_404(Session, session_id=session_id)
-    material = session.sessionMaterial.all()
+    materials = Material.objects.filter(sessionmaterial__session_id=session_id)
 
-    return render(request, 'show_session.html', {'session': session, 'material': material})
+    return render(request, 'show_session.html', {'session': session, 'materials': materials})
 
 
 @login_required
 def create_session(request, course_id):
-    #Hay que corregir la funcion isTeacher
-    #if not request.user.isTeacher():
-    #    messages.error(request, "No tienes permiso para crear una sesión.")
-    #    return render(request, 'student_courses.html')
+    if not request.user.isTeacher:
+        messages.error(request, "No tienes permiso para crear una sesión.")
+        return render(request, 'student_courses.html')
+
     course = get_object_or_404(Course, course_id=course_id)
     print(course_id)
     if request.method == 'GET':
@@ -57,7 +48,7 @@ def create_session(request, course_id):
             new_session.user = request.user
             new_session.save()
             session_id = new_session.session_id
-            return redirect('create_material', session_id=session_id)
+            return redirect('show_session', session_id=session_id)
 
         else:
             return render(request, 'create_session.html', {
@@ -66,7 +57,7 @@ def create_session(request, course_id):
             })
 
 def create_material(request, session_id):
-    if not request.user.isTeacher():
+    if not request.user.isTeacher:
         messages.error(request, "No tienes permiso para crear material.")
         return render(request, 'student_courses.html')
 
@@ -96,7 +87,7 @@ def create_material(request, session_id):
             })
 
 def create_question(request, session_id):
-    if not request.user.isTeacher():
+    if not request.user.isTeacher:
         messages.error(request, "No tienes permiso para crear preguntas.")
         return render(request, 'student_courses.html')
 
@@ -123,7 +114,7 @@ def create_question(request, session_id):
             })
 
 def create_options(request, question_id):
-    if not request.user.isTeacher():
+    if not request.user.isTeacher:
         messages.error(request, "No tienes permiso para crear opciones.")
         return render(request, 'student_courses.html')
 

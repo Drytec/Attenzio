@@ -8,13 +8,12 @@ class Session(models.Model):
     session_date_start = models.TimeField(blank=True)
     session_date_end = models.TimeField(blank=True)
     session_description = models.CharField(max_length=300, blank=True)
-    qrcode = models.CharField(max_length=300, blank=True)
+    qr_code = models.CharField(max_length=300, blank=True)
     course_id = models.ForeignKey(Course, on_delete=models.CASCADE,db_column='course_id')
 
     class Meta:
         db_table = "session"
         managed = False
-        abstract = False
     def __str__(self):
         return f'{self.sesion_id}'
 

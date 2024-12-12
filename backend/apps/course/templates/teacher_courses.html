@@ -1,19 +1,40 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-<h3>Cursos Programados</h3>
-<div style="display: flex; flex-wrap: wrap; margin-bottom: 10px;">
+<h2 style="text-align: center; margin-bottom: 20px;">Mis Cursos</h2>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
     {% for course in courses %}
-    <div style="margin-right: 20px; margin-bottom: 10px;">
-        <strong>Curso:</strong>
-        <form action="{% url 'show_course' course.course_id %}" method="get">
-            {% csrf_token %}
-            <button type="submit">Entrar a {{ course.course_name }}</button>
-        </form>
-        <br>
-        <strong>ID del Curso:</strong> {{ course.course_id }}<br>
-
-        <strong>Profesor:</strong> {{ course.user }}
+    <div style="
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 15px;
+        width: 250px;
+        background-color: #f9f9f9;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <h4 style="margin: 0 0 10px 0; text-align: center;">{{ course.course_name }}</h4>
+        <p><strong>ID del Curso:</strong> {{ course.course_id }}</p>
+        <p><strong>Profesor:</strong> {{ course.user }}</p>
+        <a href="{% url 'show_course' course.course_id %}" style="
+            display: inline-block;
+            text-decoration: none;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-align: center;">
+            Entrar
+        </a>
+        <a href="{% url 'create_session' course.course_id %}" style="
+            display: inline-block;
+            text-decoration: none;
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-align: center;
+            margin-top: 10px;">
+            Crear Sesión
+        </a>
     </div>
     {% endfor %}
 </div>
