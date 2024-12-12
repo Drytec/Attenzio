@@ -1,0 +1,16 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h1>Crear Pregunta</h1>
+<form action="{% url 'create_question' session_id=session.session_id %}" method="POST">
+    {% csrf_token %}
+
+    <h3>Pregunta</h3>
+    {{ question_form.as_p }}
+
+    <label for="num_options">Número de opciones:</label>
+    <input type="number" name="num_options" id="num_options" value="4" min="2" max="10" required />
+
+    <button type="submit">Guardar Pregunta</button>
+</form>
+{% endblock %}

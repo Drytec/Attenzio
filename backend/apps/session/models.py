@@ -18,7 +18,7 @@ class Session(models.Model):
         return f'{self.sesion_id}'
 
 class Question(models.Model):
-    session_id = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='questions')
+    session_id = models.ForeignKey(Session, on_delete=models.CASCADE, db_column='session_id', related_name='questions')
     question_text = models.CharField(max_length=200)
     question_id = models.AutoField(primary_key=True)
 

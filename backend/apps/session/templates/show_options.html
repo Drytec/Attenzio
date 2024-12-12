@@ -1,0 +1,26 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2 style="text-align: center; margin-bottom: 20px;">Opciones de la Pregunta</h2>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
+    {% if options %}
+    {% for option in options %}
+    <div style="
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 15px;
+            width: 250px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <p><strong>Opción número:</strong> {{ option.option_id }}</p>
+        <p>{{ option.option_text }}</p>
+        {% if option.is_correct %}
+        <p><strong>Esta es la opción correcta.</strong></p>
+        {% endif %}
+    </div>
+    {% endfor %}
+    {% else %}
+    <p>No hay opciones para esta pregunta.</p>
+    {% endif %}
+</div>
+{% endblock %}
