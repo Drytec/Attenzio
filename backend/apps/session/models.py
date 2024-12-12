@@ -51,12 +51,13 @@ class Material(models.Model):
     def __str__(self):
         return f'{self.material_id}'
 
-class SessionMaterial(models.Model):
+class MaterialSession(models.Model):
+    material_session_id = models.AutoField(primary_key=True,db_column='material_session_id',unique=True)
     material_id = models.ForeignKey(Material, on_delete=models.CASCADE)
     session_id = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='sessionMaterial')
 
     class Meta:
-        db_table = 'sessionmaterial'
+        db_table = 'materialsession'
         managed = False
 
     def __str__(self):

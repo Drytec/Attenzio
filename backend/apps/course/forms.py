@@ -9,5 +9,5 @@ class CourseForm(ModelForm):
         fields = ['course_name', 'course_schedule']
         labels = {
             'course_name': 'Nombre del curso',
-            'course_schedule': 'Descripcion del horario del Curso',
+            'course_schedule': 'Descripcion del Horario del Curso',
         }

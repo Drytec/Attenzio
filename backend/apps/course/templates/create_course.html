@@ -1,13 +1,12 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-    <h1> Crear Nuevo curso </h1>
-    <form action="/course/create_course/" method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button>
-            Guardar
-        </button>
-    </form>
-
+<h1> Crear Nuevo curso </h1>
+<form action="{% url 'create_course' %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button>
+        Guardar
+    </button>
+</form>
 {% endblock %}
