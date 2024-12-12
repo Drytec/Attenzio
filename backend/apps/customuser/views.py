@@ -29,6 +29,7 @@ from ..session.forms import SessionForm
 def home(request):
     return render(request, 'core/home.html')
 
+@login_required
 def logout_view(request):
     print(f"Usuario saliendo: {request.user}")
     try:

@@ -80,6 +80,7 @@ def create_session(request, course_id):
                 'errors': form.errors
             })
 
+@login_required
 def create_material(request, session_id):
     session = get_object_or_404(Session, pk=session_id)
 
@@ -112,11 +113,12 @@ def create_material(request, session_id):
                 'session': session
             })
 
+@login_required
 def create_question(request, session_id):
-    if not request.user.isTeacher:
-        return render(request, 'student_courses.html')
-
     session = get_object_or_404(Session, pk=session_id)
+
+    if not request.user.isTeacher and not request.user.isAdmin:
+        return render(request, 'student_courses.html', {'session': session})
 
     if request.method == 'GET':
         return render(request,'create_question.html',{
@@ -138,6 +140,7 @@ def create_question(request, session_id):
                 'errors': form.errors
             })
 
+@login_required
 def create_options(request, question_id):
     if not request.user.isTeacher:
         return render(request, 'student_courses.html')
