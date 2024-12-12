@@ -16,6 +16,7 @@ CREATE TABLE customUser (
     phone VARCHAR(30),
     validated BOOLEAN DEFAULT FALSE,
     rol_id INT REFERENCES rol(rol_id),
+    FOREIGN KEY (rol_id) REFERENCES rol(rol_id) ON DELETE CASCADE,
     last_login TIMESTAMPTZ,
     is_superuser BOOLEAN DEFAULT FALSE,
     is_staff BOOLEAN DEFAULT FALSE,
