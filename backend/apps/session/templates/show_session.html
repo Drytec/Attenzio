@@ -1,22 +1,58 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-<h2>Detalles de la Sesión</h2>
+    <h2>Detalles del Curso</h2>
+    <h3>Curso: {{ course.name }}</h3>
+    <p><strong>Estudiante:</strong> {{ custom_user.name }}</p>
 
-<h3>{{ session.session_name }}</h3>
+    {% if show_report %}
+        <h3>Informe de Sesiones</h3>
+        <table border="1">
+            <thead>
+            <tr>
+                <th>Nombre de la Sesión</th>
+                <th>Descripción</th>
+                <th>Fecha de Inicio</th>
+                <th>Fecha de Fin</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for session in sesiones %}
+                <tr>
+                    <td>{{ session.session_name }}</td>
+                    <td>{{ session.session_description }}</td>
+                    <td>{{ session.session_date_start }}</td>
+                    <td>{{ session.session_date_end }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'course_details' course.course_id %}">Volver a Detalles de la Sesión</a>
+    {% else %}
+        <h2>Detalles de la Sesión</h2>
 
-<p><strong>Descripción:</strong> {{ session.session_description }}</p>
-<p><strong>Fecha de inicio:</strong> {{ session.session_date_start }}</p>
-<p><strong>Fecha de fin:</strong> {{ session.session_date_end }}</p>
+        <h3>{{ session.session_name }}</h3>
 
-{% if materials %}
-<p><strong>Material:</strong></p>
-<ul>
-    {% for material in materials %}
-    <li><a href="{{ material.material_link }}" target="_blank">Ver material</a></li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>No hay material asociado para esta sesión.</p>
-{% endif %}
+        <p><strong>Descripción:</strong> {{ session.session_description }}</p>
+        <p><strong>Fecha de inicio:</strong> {{ session.session_date_start }}</p>
+        <p><strong>Fecha de fin:</strong> {{ session.session_date_end }}</p>
+
+        {% if materials %}
+            <p><strong>Material:</strong></p>
+            <ul>
+                {% for material in materials %}
+                    <li><a href="{{ material.material_link }}" target="_blank">Ver material</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay material asociado para esta sesión.</p>
+        {% endif %}
+
+        <h3>Acciones</h3>
+        <form method="get">
+            <input type="hidden" name="generate_report" value="1">
+            <button type="submit">Ver Informe de Sesiones</button>
+        </form>
+    {% endif %}
+
 {% endblock %}

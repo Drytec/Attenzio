@@ -15,6 +15,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 
 from ..course.models import Course
+from ..customusercourse.models import CustomUserCourse
 
 
 # Create your views here.
@@ -25,6 +26,30 @@ def show_session(request, session_id):
     materials = session.sessionMaterial.all()
 
     return render(request, 'show_session.html', {'session': session, 'materials': materials})
+
+@login_required
+def report_view(request, custom_user_id, course_id):
+    custom_user_course = get_object_or_404(
+        CustomUserCourse,
+        custom_user_id=custom_user_id,
+        course_id=course_id
+    )
+
+    custom_user = custom_user_course.custom_user_id
+    course = custom_user_course.course_id
+
+    sesiones = Session.objects.filter(course_id=course).distinct()
+
+    show_report = 'generate_report' in request.GET
+
+    context = {
+        'custom_user': custom_user,
+        'course': course,
+        'sesiones': sesiones,
+        'show_report': show_report,
+    }
+
+    return render(request, 'show_session.html', context)
 
 
 @login_required
@@ -73,7 +98,7 @@ def create_material(request, session_id):
             new_material = form.save(commit=False)
             new_material.user = request.user
             new_material.save()
-            SessionMaterial.objects.create(
+            MaterialSession.objects.create(
                 session_id=session_id,
                 material_id=new_material.material_id
             )
