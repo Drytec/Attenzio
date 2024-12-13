@@ -15,8 +15,8 @@ const Login = () => {
 
     try {
       const data = await loginUser(email, password);
-      console.log(data.message); // Mostrar mensaje de éxito
-      navigate('/home'); // Redirigir al usuario
+      console.log(data.message); 
+      navigate('/home'); 
     } catch (err) {
       setError(err.response?.data?.error || 'Error desconocido. Por favor, inténtalo de nuevo.');
     }

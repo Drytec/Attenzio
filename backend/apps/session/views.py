@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Session, Material, MaterialSession, Question, Option
 from ..course.models import Course
 from rest_framework import status
-from serializers import SessionSerializer, MaterialSerializer, QuestionSerializer, OptionSerializer
+from .serializers import SessionSerializer, MaterialSerializer, QuestionSerializer, OptionSerializer
 
 
 class ShowSessionView(APIView):
