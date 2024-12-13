@@ -40,14 +40,6 @@ class OptionForm(ModelForm):
             'is_correct': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
 
-OptionFormSet = modelformset_factory(
-    Option,
-    form=OptionForm,
-    fields=['option_text', 'is_correct'],
-    extra=4,
-    can_delete=True
-)
-
 class MaterialForm(ModelForm):
     class Meta:
         model = Material

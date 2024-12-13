@@ -2,13 +2,13 @@
 
 {% block content %}
 <h1>Crear Opciones para la Pregunta: {{ question.question_text }}</h1>
+
 <form action="{% url 'create_options' session_id=session.session_id question_id=question.question_id num_options=num_options %}" method="POST">
     {% csrf_token %}
 
-    {% for option_form in option_forms %}
-    <div class="option-form">
-        <h4>Opción {{ forloop.counter }}</h4>
-        {{ option_form.as_p }}
+    {% for form in form_options %}
+    <div>
+        {{ form.as_p }}
     </div>
     {% endfor %}
 

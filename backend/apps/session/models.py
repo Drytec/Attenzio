@@ -29,7 +29,7 @@ class Question(models.Model):
         return f'{self.question_id}'
 
 class Option(models.Model):
-    question_id = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='question')
+    question_id = models.ForeignKey(Question, on_delete=models.CASCADE, db_column='question_id', related_name='question')
     option_text = models.CharField(max_length=200)
     is_correct = models.BooleanField(default=False)
     option_id = models.AutoField(primary_key=True)

@@ -10,7 +10,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from .forms import SessionForm, QuestionForm, MaterialForm, OptionFormSet, OptionForm
+from .forms import SessionForm, QuestionForm, MaterialForm, OptionForm
 from django.db import IntegrityError
 from django.utils import timezone
 from django.shortcuts import render, redirect
@@ -60,14 +60,13 @@ def create_session(request, course_id):
         return render(request, 'student_courses.html')
 
     course = get_object_or_404(Course, course_id=course_id)
-    print(course_id)
+
     if request.method == 'GET':
         return render(request,'create_session.html',{
             'form': SessionForm, 'course': course,
         })
     else:
         form = SessionForm(request.POST)
-        print(course_id)
         if form.is_valid():
             new_session = form.save(commit=False)
             new_session.course_id = course
@@ -124,7 +123,6 @@ def create_question(request, session_id):
 
     if request.method == 'POST':
         question_form = QuestionForm(request.POST)
-        num_options = int(request.POST.get('num_options', 4))
 
         if question_form.is_valid():
             new_question = question_form.save(commit=False)
@@ -132,13 +130,12 @@ def create_question(request, session_id):
             new_question.user = request.user
             new_question.save()
 
-            return redirect('create_options', session_id=session_id, question_id=new_question.question_id, num_options=num_options)
+            return redirect('choose_num_options', session_id=session_id, question_id=new_question.question_id)
 
         else:
             return render(request, 'create_question.html', {
                 'question_form': question_form,
                 'session': session,
-                'num_options': num_options
             })
 
     else:
@@ -149,6 +146,24 @@ def create_question(request, session_id):
         })
 
 @login_required
+def choose_num_options(request, session_id, question_id):
+    session = get_object_or_404(Session, pk=session_id)
+    question = get_object_or_404(Question, pk=question_id)
+
+    if not request.user.isTeacher and not request.user.isAdmin:
+        return redirect('show_session', session_id=session_id)
+
+    if request.method == 'POST':
+        num_options = int(request.POST.get('num_options', 4))
+
+        return redirect('create_options', session_id=session_id, question_id=question_id, num_options=num_options)
+
+    return render(request, 'choose_num_options.html', {
+        'question': question,
+        'session': session
+    })
+
+@login_required
 def show_questions(request, session_id):
     session = get_object_or_404(Session, pk=session_id)
 
@@ -157,56 +172,45 @@ def show_questions(request, session_id):
 
     questions = Question.objects.filter(session_id=session_id)
 
-    return render(request, 'show_questions.html', {'questions': questions})
+    return render(request, 'show_questions.html', {'questions': questions, 'session': session})
 
 @login_required
-def show_options(request, question_id):
+def show_options(request, session_id, question_id):
     question = get_object_or_404(Question, pk=question_id)
 
     if not request.user.isTeacher and not request.user.isAdmin:
         return redirect('show_session', session_id=question.session_id)
 
     options = Option.objects.filter(question_id=question_id)
-
+    print(options)
     return render(request, 'show_options.html', {'options': options})
 
 @login_required
 def create_options(request, session_id, question_id, num_options):
+    session = get_object_or_404(Session, pk=session_id)
     question = get_object_or_404(Question, pk=question_id)
 
     if not request.user.isTeacher and not request.user.isAdmin:
         return redirect('show_session', session_id=session_id)
 
-    if request.method == 'GET':
-        OptionFormSet = modelformset_factory(Option, form=OptionForm, extra=num_options)
-        formset = OptionFormSet(queryset=Option.objects.none())
+    form_options = [OptionForm(prefix=f"option_{i}") for i in range(num_options)]
 
-        return render(request, 'create_options.html', {
-            'question': question,
-            'formset': formset,
-            'num_options': num_options
-        })
+    if request.method == 'POST':
+        for form in form_options:
+            form = OptionForm(request.POST, prefix=form.prefix)
+            if form.is_valid():
+                option = form.save(commit=False)
+                option.question_id = question
+                option.save()
 
-    else:
-        OptionFormSet = modelformset_factory(Option, form=OptionForm, extra=num_options)
-        formset = OptionFormSet(request.POST)
+        return redirect('show_session', session_id=session_id)
 
-        if formset.is_valid():
-            for form in formset:
-                new_option = form.save(commit=False)
-                new_option.question_id = question
-                new_option.user = request.user
-                new_option.save()
-
-            return redirect('show_session', session_id=session_id)
-
-        else:
-            return render(request, 'create_options.html', {
-                'question': question,
-                'formset': formset,
-                'errors': formset.errors,
-                'num_options': num_options
-            })
+    return render(request, 'create_options.html', {
+        'question': question,
+        'session': session,
+        'form_options': form_options,
+        'num_options': num_options
+    })
 
 def exit(request):
     logout(request)
