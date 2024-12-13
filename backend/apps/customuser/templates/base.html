@@ -99,13 +99,7 @@
 <ul>
     <li><a href="{% url 'home' %}">Inicio</a></li>
     {% if request.user.is_authenticated %}
-        {% if request.user.isTeacher %}
-            <li><a href="{% url 'teacher_courses' %}">Cursos</a></li>
-        {% elif request.user.isStudent %}
-            <li><a href="{% url 'student_courses' %}">Cursos</a></li>
-        {% elif request.user.isAdmin %}
-            <li><a href="{% url 'admin_courses' %}">Cursos</a></li>
-        {% endif %}
+        <li><a href="{% url 'get_courses' %}">Cursos</a></li>
         <li><a href="{% url 'create_course' %}">Nuevo Curso</a></li>
         <li><a href="{% url 'logout' %}">Salir</a></li>
     {% else %}

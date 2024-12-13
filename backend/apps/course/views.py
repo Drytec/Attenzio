@@ -1,10 +1,11 @@
+from django.contrib import messages
+
 from .models import Course, CustomUserCourse
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .forms import CourseForm
+from .forms import CourseForm, CourseIdInputForm
 from ..session.models import Session
 from django.shortcuts import render, redirect
-
 
 # Create your views here.
 @login_required
@@ -26,6 +27,36 @@ def student_courses(request):
     return render(request,'student_courses.html',{'courses': courses, 'teachers': courseTeachers})
 
 @login_required
+def join_course(request):
+    """
+    Vista para mostrar el formulario de matriculación y realizar la inscripción al curso.
+    """
+    if request.method == 'POST':
+        form = CourseIdInputForm(request.POST)
+        if form.is_valid():
+            course_id = form.cleaned_data['course_id']
+            course = Course.objects.filter(id=course_id).first()
+            if course:
+                if CustomUserCourse.objects.filter(custom_user_id=request.user, course_id=course).exists():
+                    messages.error(request, 'Ya estás matriculado en este curso.')
+                else:
+                    CustomUserCourse.objects.create(
+                        custom_user_id=request.user,
+                        course_id=course
+                    )
+                    messages.success(request, 'Te has matriculado en el curso con éxito.')
+                return redirect('courses')
+            else:
+                messages.error(request, 'El curso con este ID no existe.')
+        else:
+            messages.error(request, 'Por favor ingresa un ID de curso válido.')
+    else:
+        form = CourseIdInputForm()
+
+    return render(request, 'join_course.html', {'form': form})
+
+
+@login_required
 def show_course(request, course_id):
     sessions = Session.objects.filter(course_id=course_id)
     course = get_object_or_404(Course, pk=course_id)
@@ -35,24 +66,11 @@ def show_course(request, course_id):
     return render(request, 'show_course.html', {'course': course, 'sessions': sessions, 'teacher': teacher})
 
 @login_required
-def teacher_courses(request):
-    if not request.user.isTeacher:
-        return redirect('home')
-
+def get_courses(request):
     course_ids = CustomUserCourse.objects.filter( custom_user_id=request.user.custom_user_id).values_list('course_id', flat=True)
     courses = Course.objects.filter(course_id__in=course_ids)
 
-    return render(request,'teacher_courses.html',{'courses': courses})
-
-@login_required
-def admin_courses(request):
-    if not request.user.isAdmin:
-        return redirect('home')
-
-    course_ids = CustomUserCourse.objects.filter( custom_user_id=request.user.custom_user_id).values_list('course_id', flat=True)
-    courses = Course.objects.filter(course_id__in=course_ids)
-
-    return render(request,'admin_courses.html',{'courses': courses})
+    return render(request,'courses.html',{'courses': courses})
 
 @login_required
 def create_course(request):

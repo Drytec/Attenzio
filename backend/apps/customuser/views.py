@@ -11,16 +11,16 @@ def home(request):
 
 @login_required
 def logout_view(request):
-    print(f"Usuario saliendo: {request.user}")
-    try:
+    """
+    Vista para desloguear a un usuario.
+
+    - Cierra la sesión del usuario actual.
+    - Redirige al usuario a la página de inicio de sesión u otra página definida.
+    """
+    if request.method == 'GET':
         logout(request)
-        return redirect('/')  # Redirige a la página principal
-    except SystemExit as sys_exit:
-        print(f"SystemExit detectado: {sys_exit}")
-        return redirect('/')  # Manejo seguro del error
-    except Exception as e:
-        print(f"Error durante el logout: {e}")
-        return redirect('/')
+        return redirect('login')
+
 
 def select_user_type_view(request):
     if request.method == 'POST':
