@@ -63,5 +63,3 @@ python manage.py runserver
 ```
 
 
-
-

@@ -1,0 +1,20 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <h3>Clases Programadas</h3>
+    <div style="display: flex; flex-wrap: wrap; margin-bottom: 10px;">
+        {% for session in session1 %}
+            <div style="margin-right: 20px; margin-bottom: 10px;">
+                <strong>Aula:</strong>
+                <form action="{% url 'sesion_online' session.session_id %}" method="get">
+                    {% csrf_token %}
+                    <button type="submit">Entrar a {{ session.session_name }}</button>
+                </form>
+                <br>
+                <strong>Fecha:</strong> {{ session.session_date_start }}<br>
+                <strong>ID de clase:</strong> {{ sesion.session_id }}<br>
+                <strong>Profesor:</strong> {{ session.user }}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

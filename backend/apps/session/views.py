@@ -1,5 +1,6 @@
 import pytz
 from django.contrib.auth import logout
+from django.core.checks import messages
 from django.core.serializers import json
 from .models import Session
 import json
@@ -15,7 +16,6 @@ from django.contrib.auth import login
 
 # Create your views here.
 # a este metodo de renderizado le falta la verificacion de la fecha la que esta aun no funciona
-
 def session_interactive(request, session_id):
     colombia_tz = pytz.timezone('America/Bogota')
     ahora = timezone.now().astimezone(colombia_tz)
@@ -26,31 +26,34 @@ def session_interactive(request, session_id):
         return render(request, 'core/session.html')
 
 @login_required
-def session_class(request):
-    #aqui nos aseguramos de que las aulas mostradas sean del profesor que hizo el login y las creo
-    # tambien se realizan los filtros necesarios segun el caso
-    session1 = Session.objects.filter(user=request.user)
+def course_sessions(request,course_id):
+    #aqui haciendo uso de la llave foranea se filtran las sesiones que pertenezcan al curso
+    session1 = Session.objects.filter(user=request.user, course_id=course_id)
     return render(request,'core/session.html',{'session1': session1})
 
-
 @login_required
-def create_session(request):
-    print(f'User ID: {request.user.id}')  # Esto debería imprimir el ID del usuario actual
+def create_session(request,course_id):
+    if not request.user.isTeacher():
+        messages.error(request, "No tienes permiso para crear una sesión.")
+        return render(request, 'student_courses.html')
 
     if request.method == 'GET':
-        return render(request,'core/create_session.html',{
+        return render(request,'create_session.html',{
             'form':sessionForm
         })
     else:
         form = sessionForm(request.POST)
         if form.is_valid():
-            new_aula= form.save(commit=False)
-            new_aula.user = request.user
-            new_aula.save()
+            new_session= form.save(commit=False)
+            new_session.user = request.user
+            #esto posiblemente aun no sirva, cuando el profesor entre a un aula hay que guardar el id de esta
+            #ahi dejo encargado a jh
+            new_session.course_id=course_id
+            new_session.save()
             return redirect('home')
 
         else:
-            return render(request, 'core/create_session.html', {
+            return render(request, 'create_session.html', {
                 'form': form,
                 'errors': form.errors
             })
