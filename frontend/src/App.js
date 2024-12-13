@@ -5,7 +5,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1><span style={{color: "red"}}>Facturion</span>App</h1>
+        <h1><span style={{color: "red"}}>Attenzio</span>App</h1>
         <Approutes/>
       </header>
     </div>
