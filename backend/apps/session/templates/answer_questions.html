@@ -11,12 +11,14 @@
     <div class="question">
         <p><strong>{{ question.question_text }}</strong></p>
 
-        {% for option in question.question.all %}
-        <div class="option">
-            <input type="radio" name="question_{{ question.question_id }}" value="{{ option.option_id }}">
-            <label>{{ option.option_text }}</label>
+        <div class="options-container">
+            {% for option in question.question.all %}
+            <div class="option">
+                <input type="radio" name="question_{{ question.question_id }}" value="{{ option.option_id }}">
+                <label>{{ option.option_text }}</label>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
 
     </div>
     {% endfor %}
@@ -27,4 +29,23 @@
 <p>No hay preguntas disponibles para esta sesión.</p>
 {% endif %}
 
+{% endblock %}
+
+{% block styles %}
+<style>
+    .options-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .option {
+        display: flex;
+        align-items: center;
+    }
+
+    .option input {
+        margin-right: 8px;
+    }
+</style>
 {% endblock %}

@@ -1,4 +1,6 @@
 from django.contrib.auth import logout
+from django.urls import reverse
+
 from .models import Session, MaterialSession, Question, Material, Option, CustomUserOption
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -9,12 +11,29 @@ from ..course.models import Course, CustomUserCourse
 
 # Create your views here.
 
+import qrcode
+from django.http import HttpResponse
+from io import BytesIO
+
 @login_required
 def show_session(request, session_id):
     session = get_object_or_404(Session, session_id=session_id)
     materials = Material.objects.filter(materialsession__session_id=session_id)
 
-    return render(request, 'show_session.html', {'session': session, 'materials': materials})
+    # Generar el código QR
+    url = request.build_absolute_uri(reverse('answer_questions', args=[session_id]))
+    img = qrcode.make(url)
+    qr_io = BytesIO()
+    img.save(qr_io, 'PNG')
+    qr_io.seek(0)
+    qr_image = qr_io.getvalue()
+
+    return render(request, 'show_session.html', {
+        'session': session,
+        'materials': materials,
+        'qr_image': qr_image
+    })
+
 
 @login_required
 def report_view(request, custom_user_id, course_id):

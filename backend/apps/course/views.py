@@ -95,10 +95,8 @@ def create_course(request):
                 course_id=new_course
             )
 
-            if request.user.isTeacher:
-                return redirect('teacher_courses')
-            else:
-                return redirect('admin_courses')
+            return redirect('get_courses')
+
 
         else:
             return render(request, 'create_course.html', {
