@@ -30,7 +30,11 @@ def student_courses(request):
 def join_course(request):
     """
     Vista para mostrar el formulario de matriculación y realizar la inscripción al curso.
+
     """
+    if not request.user.isStudent:
+        return redirect('get_courses')
+
     if request.method == 'POST':
         form = CourseIdInputForm(request.POST)
         if form.is_valid():
@@ -54,7 +58,6 @@ def join_course(request):
         form = CourseIdInputForm()
 
     return render(request, 'join_course.html', {'form': form})
-
 
 @login_required
 def show_course(request, course_id):

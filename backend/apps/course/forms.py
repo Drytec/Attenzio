@@ -1,7 +1,6 @@
 from django.forms import ModelForm
 from .models import Course
 from django import forms
-from django.contrib.auth.models import User
 
 class CourseForm(ModelForm):
     class Meta:
@@ -11,9 +10,6 @@ class CourseForm(ModelForm):
             'course_name': 'Nombre del curso',
             'course_schedule': 'Descripcion del Horario del Curso',
         }
-
-# forms.py
-from django import forms
 
 class CourseIdInputForm(forms.Form):
     course_id = forms.IntegerField(

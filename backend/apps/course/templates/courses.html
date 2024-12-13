@@ -19,6 +19,7 @@
     </div>
     {% endfor %}
 </div>
+{% if user.is_authenticated and user.isStudent %}
 <a href="{% url 'join_course' %}" style="
             display: inline-block;
             text-decoration: none;
@@ -27,6 +28,7 @@
             padding: 10px 20px;
             border-radius: 4px;
             text-align: center;">
-    Matricular Curso
+    Matricular Un Curso
 </a>
+{% endif %}
 {% endblock %}
