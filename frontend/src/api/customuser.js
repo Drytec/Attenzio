@@ -4,7 +4,7 @@ export const loginUser = async (credentials) => {
     const navigate = useNavigate();
 
     try {
-        const response = await apiClient.post('api/users/login/', credentials);
+        const response = await apiClient.post('users/login/', credentials);
 
         navigate('/home');
 
@@ -17,7 +17,7 @@ export const loginUser = async (credentials) => {
 
 export const logoutUser = async () => {
     try {
-        const response = await apiClient.post('api/userslogout/');
+        const response = await apiClient.post('users/logout/');
         return response.data;
     } catch (error) {
         console.error('Error logging out:', error);
@@ -27,7 +27,7 @@ export const logoutUser = async () => {
 
 export const registerUser = async (userData) => {
     try {
-        const response = await apiClient.post('api/users/register/', userData);
+        const response = await apiClient.post('users/register/', userData);
         return response.data;  // Devuelve la respuesta con el mensaje y los datos del usuario registrado
     } catch (error) {
         console.error('Error registering user:', error);
@@ -37,7 +37,7 @@ export const registerUser = async (userData) => {
 
 export const getHomeMessage = async () => {
     try {
-        const response = await apiClient.get('/api/users/home/'); // URL de tu API de Home
+        const response = await apiClient.get('users/home/'); // URL de tu API de Home
         return response.data;
     } catch (error) {
         console.error('Error fetching home message:', error);
