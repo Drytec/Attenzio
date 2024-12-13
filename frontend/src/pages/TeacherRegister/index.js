@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { registerUser } from '../../api/customuser';
 
-const StudentRegister = () => {
+const TeacherRegister = () => {
   const [formData, setFormData] = useState({
     full_name: "",
     document: "",
@@ -39,7 +39,7 @@ const StudentRegister = () => {
 
   return (
     <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", width: "300px", margin: "auto" }}>
-      <h2>Estudiante</h2>
+      <h2>Docente</h2>
       <input
         type="text"
         name="full_name"
@@ -50,8 +50,8 @@ const StudentRegister = () => {
       />
       <input
         type="text"
-        name="code"
-        placeholder="Código de estudiante"
+        name="document"
+        placeholder="Documento"
         value={formData.document}
         onChange={handleChange}
         required
@@ -86,7 +86,7 @@ const StudentRegister = () => {
         onChange={handleChange}
         required
       />
-      <label>Subir tabulado:</label>
+      <label>Subir imagen:</label>
       <input type="file" name="media" onChange={handleFileChange} />
       <button type="submit" style={{ backgroundColor: "orange", color: "white", marginTop: "10px" }}>
         Registrarse
@@ -95,4 +95,4 @@ const StudentRegister = () => {
   );
 };
 
-export default StudentRegister;
+export default TeacherRegister;
