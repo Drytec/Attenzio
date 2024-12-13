@@ -34,11 +34,21 @@
 
 {% if request.user.isTeacher or request.user.isAdmin %}
 <div style="text-align: center; margin-top: 20px;">
-    <a href="{% url 'create_session' course.course_id %}">
+    <a href="{% url 'create_session' course.course_id %}"
+       style="display: inline-block;
+              padding: 10px 20px;
+              background-color: #007bff;
+              color: white;
+              text-decoration: none;
+              border-radius: 4px;
+              text-align: center;
+              font-size: 16px;
+              transition: background-color 0.3s ease;">
         Crear Sesión
     </a>
 </div>
 {% endif %}
+
 
 {% endblock %}
 
