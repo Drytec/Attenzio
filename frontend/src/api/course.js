@@ -1,5 +1,4 @@
 import apiClient from './apiClient';
-
 export const getStudentCourses = async () => {
     try {
         const response = await apiClient.get('courses/student_courses/');
