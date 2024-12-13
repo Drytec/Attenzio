@@ -49,7 +49,7 @@ def join_course(request):
                         course_id=course
                     )
                     messages.success(request, 'Te has matriculado en el curso con éxito.')
-                return redirect('courses')
+                return redirect('get_courses')
             else:
                 messages.error(request, 'El curso con este ID no existe.')
         else:
