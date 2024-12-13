@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import registerUser from '../../api/login';
+import {registerUser} from '../../api/customuser';
 
 const StudentRegister = () => {
     const [formData, setFormData] = useState({
@@ -52,7 +52,7 @@ const StudentRegister = () => {
             <input
                 type="text"
                 name="document"
-                placeholder="Documento"
+                placeholder="Código de estudiante"
                 value={formData.document}
                 onChange={handleChange}
                 required
@@ -87,7 +87,7 @@ const StudentRegister = () => {
                 onChange={handleChange}
                 required
             />
-            <label>Subir imagen:</label>
+            <label>Subir tabulado:</label>
             <input type="file" name="media" onChange={handleFileChange} />
             <button type="submit" style={{ backgroundColor: "orange", color: "white", marginTop: "10px" }}>
                 Registrarse
