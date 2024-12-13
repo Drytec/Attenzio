@@ -13,7 +13,7 @@ class BaseRegisterForm(forms.ModelForm):
             'phone': 'Celular',
             'email': 'Email',
             'address': 'Dirección',
-            'media': 'Foto',
+            'media': 'Link a la foto',
         }
 
     def clean_document(self):
@@ -30,9 +30,8 @@ class BaseRegisterForm(forms.ModelForm):
 
 class TeacherRegisterForm(BaseRegisterForm):
     def save(self, commit=True):
-        # Asignar el rol por defecto antes de guardar
         user = super().save(commit=False)
-        rol = Rol.objects.get(rol_id=1)  # Asegúrate de que este Rol existe en la base de datos
+        rol = Rol.objects.get(rol_id=1)
         user.rol_id = rol
         if commit:
             user.save()
@@ -43,7 +42,7 @@ class StudentRegisterForm(BaseRegisterForm):
         labels = {
             **BaseRegisterForm.Meta.labels,
             'document': 'Código de Estudiante',
-            'media': 'Tabulado',
+            'media': 'Link al tabulado',
         }
 
     def save(self, commit=True):

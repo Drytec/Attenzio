@@ -20,7 +20,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     full_name = models.CharField(max_length=100)
     document = models.CharField(max_length=20, unique=True)
     address = models.CharField(max_length=100, null=True)
-    media = models.ImageField(max_length=200, blank=True)
+    media = models.CharField(max_length=300, blank=True)
     email = models.EmailField(max_length=100, unique=True)
     password = models.CharField(max_length=128)
     phone = models.CharField(max_length=30, blank=True)

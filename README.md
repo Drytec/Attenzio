@@ -1,67 +1,26 @@
-# Backend Component
+# Pasos para correr el proyecto
 
-## Summary
+## 1. Crear imagen
 
-Under construction
-
-## Steps for build and run the backend
-
-
-### 1. Create and activate python environment
-
-Inside backend folder:
+Dentro del folder "database"
 
 ```
-# Create the virtual environment
-python -m venv env 
+docker build -t attenzio .
 ```
 
-or
+## 2. Correr contenedor
 
 ```
-# Create the virtual environment
-virtualenv -p python3 env
+docker run --name attenzio -p 0.0.0.0:5432:5432 -e POSTGRES_PASSWORD=aP4sw0rd attenzio
 ```
 
-```
-# Activate the virtual environment (Linux/Mac)
-source env/bin/activate
-```
+## 3. Correr servidor de django
+
+Dentro del folder "backend"
 
 ```
-# Activate the virtual environment (Windows)
-env\Scripts\activate
-```
-
-### 2. Install dependencies
-
-```
-pip install -r requirements.txt
-alternativamente 
-python.exe -m pip install -r requirements.txt
-
-```
-
-### 3. Configure database connection
-
-In the settings.py file, configure the database you want to use (SQLite is the default).
-
-```
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'pos_attenzio',
-        'USER': 'postgres',
-        'PASSWORD': 'database_password',
-        'HOST': 'localhost',
-        'PORT': '5000',
-    }
-}
-```
-
-### 4. Run the development server
-
-```
+python manage.py makemigrations
+python manage.py migrate
 python manage.py runserver
 ```
 

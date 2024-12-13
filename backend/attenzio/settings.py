@@ -133,7 +133,7 @@ AUTHENTICATION_BACKENDS = [
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-# VARIABLE DE REDIRECCION DEL LOGIN Y LOGOUT
+
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 

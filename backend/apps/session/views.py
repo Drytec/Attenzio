@@ -8,7 +8,8 @@ from ..course.models import Course, CustomUserCourse
 
 
 # Create your views here.
-# @login_required
+
+@login_required
 def show_session(request, session_id):
     session = get_object_or_404(Session, session_id=session_id)
     materials = Material.objects.filter(materialsession__session_id=session_id)
@@ -168,7 +169,6 @@ def show_options(request, session_id, question_id):
         return redirect('show_session', session_id=question.session_id)
 
     options = Option.objects.filter(question_id=question_id)
-    print(options)
     return render(request, 'show_options.html', {'options': options})
 
 @login_required
