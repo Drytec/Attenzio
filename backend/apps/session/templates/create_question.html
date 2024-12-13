@@ -1,0 +1,14 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h1>Crear Pregunta</h1>
+<form action="{% url 'create_question' session_id=session.session_id %}" method="POST">
+    {% csrf_token %}
+
+    <h3>Pregunta</h3>
+    {{ question_form.as_p }}
+
+    <button type="submit">Guardar Pregunta</button>
+</form>
+{% endblock %}
+

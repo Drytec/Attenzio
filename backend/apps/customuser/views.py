@@ -1,92 +1,75 @@
-from django.contrib import messages
-from django.shortcuts import render
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import AllowAny
+from django.contrib.auth import authenticate, login
+from .serializers import TeacherRegisterSerializer, StudentRegisterSerializer
 
-import json
-from django.contrib.auth.decorators import user_passes_test
-from django.contrib.auth.hashers import make_password
-from django.http import JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
-from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
-from django.utils.crypto import get_random_string
-from django.views.decorators.csrf import csrf_exempt
+class HomeAPIView(APIView):
+    permission_classes = [AllowAny]
 
-from .forms import TeacherRegisterForm, StudentRegisterForm
-from django.db import IntegrityError
-from django.utils import timezone
-import pytz
-from .models import CustomUser
+    def get(self, request):
+        return Response({"message": "Welcome to the API Home"}, status=status.HTTP_200_OK)
 
-from ..session.forms import SessionForm
+class SelectUserTypeAPIView(APIView):
+    permission_classes = [AllowAny]
 
-
-def home(request):
-    print(request.user)
-    return render(request, 'core/home.html')
-
-def exit(request):
-    logout(request)
-    return redirect('home')
-
-def select_user_type_view(request):
-    if request.method == 'POST':
-        user_type = request.POST.get('user_type')
+    def post(self, request):
+        user_type = request.data.get('user_type')
         if user_type in ['student', 'teacher']:
-            return redirect(f'/signup/?type={user_type}')
-    return render(request, 'core/select_user_type.html')
+            return Response({"redirect_url": f"/signup/?type={user_type}"}, status=status.HTTP_200_OK)
+        return Response({"error": "Invalid user type"}, status=status.HTTP_400_BAD_REQUEST)
 
-def user_singup_view(request):
-    user_type = request.GET.get('type', None)
+class UserSignupAPIView(APIView):
+    permission_classes = [AllowAny]
 
-    if user_type == 'teacher':
-        form_class = TeacherRegisterForm
-    else:
-        form_class = StudentRegisterForm
+    def get(self, request):
+        user_type = request.query_params.get('type')
 
-    if request.method == 'GET':
-        form = form_class()
-        return render(request, 'core/signup.html', {'form': form, 'user_type': user_type})
+        if user_type == 'teacher':
+            serializer = TeacherRegisterSerializer()
+        else:
+            serializer = StudentRegisterSerializer()
 
-    form = form_class(request.POST, request.FILES)
-    if form.is_valid():
-        user = form.save()
-        return redirect('login')
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-    return render(request, 'core/signup.html', {'form': form, 'user_type': user_type})
+    def post(self, request):
+        user_type = request.query_params.get('type')
 
+        if user_type == 'teacher':
+            serializer_class = TeacherRegisterSerializer
+        else:
+            serializer_class = StudentRegisterSerializer
 
-def user_login_view(request):
-    if request.method == 'GET':
-        form = AuthenticationForm()
-        return render(request, 'core/login.html', {'form': form})
+        serializer = serializer_class(data=request.data)
 
-    elif request.method == 'POST':
-        email = request.POST.get('username')
-        password = request.POST.get('password')
+        if serializer.is_valid():
+            user = serializer.save()
+            user.set_password(serializer.validated_data['password'])
+            user.save()
+            return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserLoginAPIView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        email = request.data.get('username')
+        password = request.data.get('password')
 
         if not email or not password:
-            return render(request, 'core/login.html', {
-                'form': AuthenticationForm(),
-                'error': 'Ambos campos son obligatorios'
-            })
+            return Response({"error": "Both fields are required"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Autenticar al usuario
         user = authenticate(request, username=email, password=password)
 
         if user is None:
-            return render(request, 'core/login.html', {
-                'form': AuthenticationForm(),
-                'error': 'Usuario o contraseña incorrecto'
-            })
+            return Response({"error": "Invalid username or password"}, status=status.HTTP_401_UNAUTHORIZED)
 
-        """if not user.validate:
-            return render(request, 'core/login.html', {
-                'form': AuthenticationForm(),
-                'error': 'Tu cuenta necesita ser validada por un administrador.'
-            })"""
+        # Uncomment this block if validation logic is needed:
+        # if not user.validate:
+        #     return Response({"error": "Your account needs to be validated by an administrator."}, status=status.HTTP_403_FORBIDDEN)
 
-        # Iniciar sesión y redirigir
         login(request, user)
-        return redirect('course')
+        return Response({"message": "Login successful", "redirect_url": "/home"}, status=status.HTTP_200_OK)
+

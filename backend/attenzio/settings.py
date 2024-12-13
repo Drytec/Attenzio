@@ -39,10 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'apps.customuser',
-    'apps.rol',
     'apps.session',
     'apps.course',
-    'apps.customusercourse',
 ]
 
 AUTH_USER_MODEL = 'customuser.CustomUser'
@@ -88,7 +86,7 @@ DATABASES = {
         'USER': 'postgres',
         'PASSWORD': 'aP4sw0rd',
         'HOST': 'localhost',
-        'PORT': '5433',
+        'PORT': '5432',
     }
 }
 
@@ -126,6 +124,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 
 # Default primary key field type
@@ -135,3 +136,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # VARIABLE DE REDIRECCION DEL LOGIN Y LOGOUT
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+

@@ -1,3 +1,5 @@
+from django.core.exceptions import ValidationError
+from django.core.validators import URLValidator
 from django.forms import ModelForm, modelformset_factory
 from .models import Session, Question, Option, Material
 from django import forms
@@ -38,14 +40,6 @@ class OptionForm(ModelForm):
             'is_correct': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
 
-OptionFormSet = modelformset_factory(
-    Option,
-    form=OptionForm,
-    fields=['option_text', 'is_correct'],
-    extra=4,
-    can_delete=True
-)
-
 class MaterialForm(ModelForm):
     class Meta:
         model = Material
@@ -53,3 +47,12 @@ class MaterialForm(ModelForm):
         labels = {
             'material_link': 'Link al material'
         }
+
+    def clean_material_link(self):
+        material_link = self.cleaned_data.get('material_link')
+        validate_url = URLValidator()
+        try:
+            validate_url(material_link)  # Intenta validar el enlace
+        except ValidationError:
+            raise forms.ValidationError("El enlace proporcionado no es una URL válida.")
+        return material_link

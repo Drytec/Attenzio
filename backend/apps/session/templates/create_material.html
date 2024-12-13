@@ -1,0 +1,11 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h1> Crear Material </h1>
+<form action="{% url 'create_material' session_id=session.session_id %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button>Guardar</button>
+</form>
+</form>
+{% endblock %}

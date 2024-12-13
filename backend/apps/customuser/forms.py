@@ -1,8 +1,7 @@
 from django import forms
 from django.utils.crypto import get_random_string
 
-from .models import CustomUser
-from ..rol.models import Rol
+from .models import CustomUser, Rol
 
 class BaseRegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput, label='Contraseña')
@@ -31,6 +30,15 @@ class BaseRegisterForm(forms.ModelForm):
             raise forms.ValidationError('El correo ya existe. Por favor, utiliza otro.')
         return email
 
+class TeacherRegisterForm(BaseRegisterForm):
+    def save(self, commit=True):
+        # Asignar el rol por defecto antes de guardar
+        user = super().save(commit=False)
+        rol = Rol.objects.get(rol_id=1)  # Asegúrate de que este Rol existe en la base de datos
+        user.rol_id = rol
+        if commit:
+            user.save()
+        return user
 
 class StudentRegisterForm(BaseRegisterForm):
     class Meta(BaseRegisterForm.Meta):
@@ -60,21 +68,4 @@ class StudentRegisterForm(BaseRegisterForm):
         return document
 
 
-class TeacherRegisterForm(BaseRegisterForm):
-    class Meta(BaseRegisterForm.Meta):
-        labels = {
-            **BaseRegisterForm.Meta.labels,
-            'media': 'Foto',
-        }
 
-    def save(self, commit=True):
-        user = super().save(commit=False)
-
-        user.username = f"{user.full_name}{get_random_string(length=5)}"
-
-        user.validate = False
-        user.rol_id = Rol.objects.get(rol_id=1)
-
-        if commit:
-            user.save()
-        return user

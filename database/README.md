@@ -33,7 +33,7 @@ docker build -t attenzio .
 ### 4. Run server with postgres
 
 ```
-docker run --name attenzio -p 0.0.0.0:5000:5000 -e POSTGRES_PASSWORD=aP4sw0rd attenzio
+docker run --name attenzio -p 0.0.0.0:5432:5432 -e POSTGRES_PASSWORD=aP4sw0rd attenzio
 ```
 
 ### Run integrate with dockercompose

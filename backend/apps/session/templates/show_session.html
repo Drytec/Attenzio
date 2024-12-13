@@ -9,9 +9,48 @@
 <p><strong>Fecha de inicio:</strong> {{ session.session_date_start }}</p>
 <p><strong>Fecha de fin:</strong> {{ session.session_date_end }}</p>
 
-{% if material %}
-<p><strong>Material asociado:</strong> <a href="{{ material.material_link }}" target="_blank">Ver material</a></p>
+{% if materials %}
+<p><strong>Material:</strong></p>
+<ul>
+    {% for material in materials %}
+    <li><a href="{{ material.material_link }}" target="_blank">Ver material</a></li>
+    {% endfor %}
+</ul>
 {% else %}
 <p>No hay material asociado para esta sesión.</p>
 {% endif %}
+
+<a href="{% url 'create_material' session.session_id %}" style="
+            display: inline-block;
+            text-decoration: none;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-align: center;">
+    Crear Material
+</a>
+
+<a href="{% url 'create_question' session.session_id %}" style="
+            display: inline-block;
+            text-decoration: none;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-align: center;">
+    Crear Pregunta
+</a>
+
+<a href="{% url 'show_questions' session.session_id %}" style="
+            display: inline-block;
+            text-decoration: none;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-align: center;">
+    Ver Preguntas
+</a>
+
 {% endblock %}
