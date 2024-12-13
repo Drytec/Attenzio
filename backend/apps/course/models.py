@@ -19,7 +19,6 @@ class CustomUserCourse(models.Model):
     custom_user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='custom_user_id')
     course_id = models.ForeignKey(Course, on_delete=models.CASCADE, db_column='course_id')
 
-    # Definir la clave primaria compuesta
     class Meta:
         db_table = 'customusercourse'
         managed = False

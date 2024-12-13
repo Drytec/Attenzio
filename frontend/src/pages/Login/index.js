@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../../api/login';
+import loginUser from '../../api/login';
 import './styles.css';
 
 const Login = () => {
@@ -14,17 +14,11 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await api.post('/login/', { username: email, password });
-      const { message, redirect_url } = response.data;
-
-      console.log(message); // Login exitoso
-      navigate(redirect_url); // Redirige al usuario
+      const data = await loginUser(email, password);
+      console.log(data.message); // Mostrar mensaje de éxito
+      navigate('/home'); // Redirigir al usuario
     } catch (err) {
-      if (err.response && err.response.data.error) {
-        setError(err.response.data.error);
-      } else {
-        setError('Something went wrong. Please try again.');
-      }
+      setError(err.response?.data?.error || 'Error desconocido. Por favor, inténtalo de nuevo.');
     }
   };
 

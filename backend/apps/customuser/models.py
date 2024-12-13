@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
+
 from django.contrib.auth.models import BaseUserManager
 
 class CustomUserManager(BaseUserManager):
@@ -14,7 +15,6 @@ class Rol(models.Model):
         managed = False
     def __str__(self):
         return f'{self.rol_id}'
-
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     custom_user_id = models.AutoField(primary_key=True)
     full_name = models.CharField(max_length=100)
