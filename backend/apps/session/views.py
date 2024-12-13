@@ -15,10 +15,7 @@ from django.db import IntegrityError
 from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
-
-from ..course.models import Course
-from ..customusercourse.models import CustomUserCourse
-
+from ..course.models import Course, CustomUserCourse
 
 # Create your views here.
 

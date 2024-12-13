@@ -2,7 +2,7 @@ import pytz
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.core.serializers import json
-from .models import Course
+from .models import Course, CustomUserCourse
 import json
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -15,11 +15,7 @@ from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 
-from ..customusercourse.models import CustomUserCourse
-
-
 # Create your views here.
-# a este metodo de renderizado le falta la verificacion de la fecha la que esta aun no funciona
 
 @login_required
 def student_courses(request):
