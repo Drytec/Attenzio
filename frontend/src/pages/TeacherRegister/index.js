@@ -40,7 +40,7 @@ const TeacherRegister = () => {
 
     return (
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", width: "300px", margin: "auto" }}>
-            <h2>Estudiante</h2>
+            <h2>Profesor</h2>
             <input
                 type="text"
                 name="full_name"

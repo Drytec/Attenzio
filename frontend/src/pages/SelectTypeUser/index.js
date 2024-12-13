@@ -8,8 +8,8 @@ const SelectTypeUser = () => {
             <h2>Registrarse</h2>
             <p>Selecciona tu rol para continuar:</p>
             <div className="button-container">
-                <Link to="users/student_register" className="role-button">Estudiante</Link>
-                <Link to="users/teacher_register" className="role-button">Profesor</Link>
+                <Link to="/users/student_register" className="role-button">Estudiante</Link>
+                <Link to="/users/teacher_register" className="role-button">Profesor</Link>
             </div>
         </div>
     );
