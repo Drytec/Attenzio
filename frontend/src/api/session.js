@@ -23,8 +23,6 @@ export const createSession = async (courseId, sessionData) => {
     }
 };
 
-import apiClient from './apiClient';
-
 export const createMaterial = async (sessionId, materialData) => {
     try {
         const response = await apiClient.post(`sessions/s:${sessionId}/create_material`, materialData);
@@ -34,8 +32,6 @@ export const createMaterial = async (sessionId, materialData) => {
         throw error;
     }
 };
-
-import apiClient from './apiClient';
 
 export const createQuestion = async (sessionId, questionData) => {
     try {

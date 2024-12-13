@@ -1,13 +1,9 @@
 import apiClient from './apiClient';
 
 export const loginUser = async (credentials) => {
-    const navigate = useNavigate();
 
     try {
         const response = await apiClient.post('users/login/', credentials);
-
-        navigate('/home');
-
         return response.data;
     } catch (error) {
         console.error('Error logging in:', error);
