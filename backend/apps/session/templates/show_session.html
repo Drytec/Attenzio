@@ -20,6 +20,7 @@
 <p>No hay material asociado para esta sesión.</p>
 {% endif %}
 
+{% if request.user.is_authenticated and request.user.isTeacher %}
 <a href="{% url 'create_material' session.session_id %}" style="
             display: inline-block;
             text-decoration: none;
@@ -30,7 +31,9 @@
             text-align: center;">
     Crear Material
 </a>
+{% endif %}
 
+{% if request.user.is_authenticated and request.user.isTeacher %}
 <a href="{% url 'create_question' session.session_id %}" style="
             display: inline-block;
             text-decoration: none;
@@ -41,7 +44,9 @@
             text-align: center;">
     Crear Pregunta
 </a>
+{% endif %}
 
+{% if request.user.is_authenticated and request.user.isTeacher %}
 <a href="{% url 'show_questions' session.session_id %}" style="
             display: inline-block;
             text-decoration: none;
@@ -52,6 +57,18 @@
             text-align: center;">
     Ver Preguntas
 </a>
+{% endif %}
 
-
+{% if request.user.is_authenticated and request.user.isStudent %}
+<a href="{% url 'answer_questions' session.session_id%}" style="
+            display: inline-block;
+            text-decoration: none;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-align: center;">
+    Responder Preguntas
+</a>
+{% endif %}
 {% endblock %}

@@ -1,67 +1,48 @@
 from django.contrib.auth import logout
-from django.urls import reverse
-
 from .models import Session, MaterialSession, Question, Material, Option, CustomUserOption
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import SessionForm, QuestionForm, MaterialForm, OptionForm
 from django.shortcuts import render, redirect
-from ..course.models import Course, CustomUserCourse
-
+from ..course.models import Course
 
 # Create your views here.
 
-import qrcode
-from django.http import HttpResponse
-from io import BytesIO
-
 @login_required
 def show_session(request, session_id):
+    """
+    Muestra los detalles de una sesión específica, incluyendo los materiales asociados a la sesión.
+
+    Parámetros:
+    - session_id: ID de la sesión a mostrar.
+
+    Comportamiento:
+    - Recupera la sesión usando el session_id.
+    - Obtiene los materiales asociados a esa sesión.
+    - Renderiza el template 'show_session.html' con la sesión y los materiales.
+    """
     session = get_object_or_404(Session, session_id=session_id)
     materials = Material.objects.filter(materialsession__session_id=session_id)
-
-    # Generar el código QR
-    url = request.build_absolute_uri(reverse('answer_questions', args=[session_id]))
-    img = qrcode.make(url)
-    qr_io = BytesIO()
-    img.save(qr_io, 'PNG')
-    qr_io.seek(0)
-    qr_image = qr_io.getvalue()
 
     return render(request, 'show_session.html', {
         'session': session,
         'materials': materials,
-        'qr_image': qr_image
     })
-
-
-@login_required
-def report_view(request, custom_user_id, course_id):
-    custom_user_course = get_object_or_404(
-        CustomUserCourse,
-        custom_user_id=custom_user_id,
-        course_id=course_id
-    )
-
-    custom_user = custom_user_course.custom_user_id
-    course = custom_user_course.course_id
-
-    sesiones = Session.objects.filter(course_id=course).distinct()
-
-    show_report = 'generate_report' in request.GET
-
-    context = {
-        'custom_user': custom_user,
-        'course': course,
-        'sesiones': sesiones,
-        'show_report': show_report,
-    }
-
-    return render(request, 'show_session.html', context)
-
 
 @login_required
 def create_session(request, course_id):
+    """
+    Permite a un profesor o administrador crear una nueva sesión para un curso determinado.
+
+    Parámetros:
+    - course_id: ID del curso al que se va a asociar la nueva sesión.
+
+    Comportamiento:
+    - Verifica si el usuario es un profesor. Si no lo es, redirige a la página de cursos del estudiante.
+    - Si el método HTTP es GET, muestra el formulario de creación de sesión.
+    - Si el método HTTP es POST, procesa el formulario y guarda la nueva sesión asociada al curso.
+    - Redirige al detalle del curso ('show_course') si la sesión se crea correctamente.
+    """
     if not request.user.isTeacher:
         return render(request, 'student_courses.html')
 
@@ -79,7 +60,7 @@ def create_session(request, course_id):
             new_session.user = request.user
             new_session.save()
             session_id = new_session.session_id
-            return redirect('show_session', session_id=session_id)
+            return redirect('show_course', course_id=course_id)
 
         else:
             return render(request, 'create_session.html', {
@@ -89,6 +70,18 @@ def create_session(request, course_id):
 
 @login_required
 def create_material(request, session_id):
+    """
+    Permite a un profesor o administrador agregar materiales a una sesión.
+
+    Parámetros:
+    - session_id: ID de la sesión a la que se agregarán los materiales.
+
+    Comportamiento:
+    - Verifica si el usuario tiene permisos para agregar materiales (profesor o administrador).
+    - Si el método HTTP es GET, muestra el formulario para agregar materiales.
+    - Si el método HTTP es POST, procesa el formulario y guarda el nuevo material asociado a la sesión.
+    - Redirige a la vista de la sesión después de guardar el material.
+    """
     session = get_object_or_404(Session, pk=session_id)
 
     if not request.user.isTeacher and not request.user.isAdmin:
@@ -122,6 +115,17 @@ def create_material(request, session_id):
 
 @login_required
 def create_question(request, session_id):
+    """
+    Permite a un profesor o administrador crear una nueva pregunta para una sesión.
+
+    Parámetros:
+    - session_id: ID de la sesión a la que se agregará la nueva pregunta.
+
+    Comportamiento:
+    - Verifica si el usuario es un profesor o administrador. Si no lo es, redirige a la vista de la sesión.
+    - Si el método HTTP es POST, procesa el formulario de pregunta y lo guarda.
+    - Redirige a la vista para elegir el número de opciones después de guardar la pregunta.
+    """
     session = get_object_or_404(Session, pk=session_id)
 
     if not request.user.isTeacher and not request.user.isAdmin:
@@ -153,6 +157,16 @@ def create_question(request, session_id):
 
 @login_required
 def choose_num_options(request, session_id, question_id):
+    """
+    Permite al profesor elegir cuántas opciones (por defecto 4) tendrá una pregunta.
+
+    Parámetros:
+    - session_id: ID de la sesión donde está la pregunta.
+    - question_id: ID de la pregunta a la que se agregarán las opciones.
+
+    Comportamiento:
+    - Si el método HTTP es POST, redirige al formulario de opciones con el número elegido.
+    """
     session = get_object_or_404(Session, pk=session_id)
     question = get_object_or_404(Question, pk=question_id)
 
@@ -171,6 +185,16 @@ def choose_num_options(request, session_id, question_id):
 
 @login_required
 def show_questions(request, session_id):
+    """
+    Muestra todas las preguntas de una sesión.
+
+    Parámetros:
+    - session_id: ID de la sesión a la que pertenecen las preguntas.
+
+    Comportamiento:
+    - Si el usuario es profesor o administrador, muestra todas las preguntas de la sesión.
+    - Si no, redirige a la vista de la sesión.
+    """
     session = get_object_or_404(Session, pk=session_id)
 
     if not request.user.isTeacher and not request.user.isAdmin:
@@ -182,6 +206,16 @@ def show_questions(request, session_id):
 
 @login_required
 def show_options(request, session_id, question_id):
+    """
+    Muestra las opciones para una pregunta específica de una sesión.
+
+    Parámetros:
+    - session_id: ID de la sesión.
+    - question_id: ID de la pregunta a la que se agregarán las opciones.
+
+    Comportamiento:
+    - Si el usuario es profesor o administrador, muestra las opciones de la pregunta.
+    """
     question = get_object_or_404(Question, pk=question_id)
 
     if not request.user.isTeacher and not request.user.isAdmin:
@@ -192,6 +226,17 @@ def show_options(request, session_id, question_id):
 
 @login_required
 def create_options(request, session_id, question_id, num_options):
+    """
+    Permite crear las opciones para una pregunta específica de una sesión.
+
+    Parámetros:
+    - session_id: ID de la sesión.
+    - question_id: ID de la pregunta.
+    - num_options: Número de opciones a crear.
+
+    Comportamiento:
+    - Si el usuario es profesor o administrador, se permite la creación de opciones para la pregunta.
+    """
     session = get_object_or_404(Session, pk=session_id)
     question = get_object_or_404(Question, pk=question_id)
 
@@ -219,7 +264,20 @@ def create_options(request, session_id, question_id, num_options):
 
 @login_required
 def answer_questions(request, session_id):
+    """
+    Permite a un estudiante responder las preguntas de una sesión.
+
+    Parámetros:
+    - session_id: ID de la sesión.
+
+    Comportamiento:
+    - Si el método HTTP es POST, guarda las respuestas del estudiante en el modelo `CustomUserOption`.
+    - Redirige al detalle de la sesión después de guardar las respuestas.
+    """
     session = get_object_or_404(Session, pk=session_id)
+
+    if not request.user.isStudent:
+        return redirect('show_session', session_id)
 
     questions = Question.objects.filter(session_id=session_id)
 
@@ -243,5 +301,8 @@ def answer_questions(request, session_id):
     })
 
 def exit(request):
+    """
+    Cierra la sesión del usuario y redirige a la página de inicio.
+    """
     logout(request)
     return redirect('home')
