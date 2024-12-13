@@ -9,6 +9,6 @@ urlpatterns = [
     path('s:<int:session_id>/create_question', CreateQuestionView.as_view(), name='create_question'),
     path('s:<int:session_id>/q:<int:question_id>/create_options', CreateOptionsView.as_view(), name='create_options'),
     path('s:<int:session_id>/show_questions', ShowQuestionsView.as_view(), name='show_questions'),
-    path('s:<int:session_id>/q:<int:question_id>/show_options', ShowOptionsView, name='show_options'),
+    path('s:<int:session_id>/q:<int:question_id>/show_options', ShowOptionsView.as_view(), name='show_options'),
 ]
 
