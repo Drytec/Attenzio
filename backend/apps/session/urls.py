@@ -1,12 +1,14 @@
 from django.urls import path
-from .views import ShowSessionView, CreateSessionView, CreateMaterialView, CreateQuestionView, CreateOptionsView
+from .views import *
 
 urlpatterns = [
     path('logout/', exit, name='exit'),
-    path('api/sessions/', CreateSessionView.as_view(), name='create_session'),
-    path('api/sessions/<int:session_id>/', ShowSessionView.as_view(), name='show_session'),
-    path('api/sessions/<int:session_id>/materials/', CreateMaterialView.as_view(), name='create_material'),
-    path('api/sessions/<int:session_id>/questions/', CreateQuestionView.as_view(), name='create_question'),
-    path('api/sessions/<int:session_id>/questions/<int:question_id>/options/', CreateOptionsView.as_view(), name='create_options'),
+    path('create_session/', CreateSessionView.as_view(), name='create_session'),
+    path('s:<int:session_id>/', ShowSessionView.as_view(), name='show_session'),
+    path('s:<int:session_id>/create_material', CreateMaterialView.as_view(), name='create_material'),
+    path('s:<int:session_id>/create_question', CreateQuestionView.as_view(), name='create_question'),
+    path('s:<int:session_id>/q:<int:question_id>/create_options', CreateOptionsView.as_view(), name='create_options'),
+    path('s:<int:session_id>/show_questions', ShowQuestionsView.as_view(), name='show_questions'),
+    path('s:<int:session_id>/q:<int:question_id>/show_options', ShowOptionsView, name='show_options'),
 ]
 

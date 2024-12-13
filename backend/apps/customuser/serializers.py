@@ -19,11 +19,11 @@ class LoginSerializer(serializers.Serializer):
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
-    user_type = serializers.ChoiceField(choices=['student', 'teacher'], write_only=True)  # Selección de tipo de usuario
-    document = serializers.CharField(max_length=20)  # Documento obligatorio
-    phone = serializers.CharField(max_length=30, required=False)  # Teléfono opcional
-    address = serializers.CharField(max_length=100, required=False)  # Dirección opcional
-    media = serializers.ImageField(required=False)  # Foto opcional
+    user_type = serializers.ChoiceField(choices=['student', 'teacher'], write_only=True)
+    document = serializers.CharField(max_length=20)
+    phone = serializers.CharField(max_length=30, required=False)
+    address = serializers.CharField(max_length=100, required=False)
+    media = serializers.ImageField(required=False)
 
     class Meta:
         model = CustomUser

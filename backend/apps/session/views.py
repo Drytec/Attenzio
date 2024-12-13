@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .models import Session, Material, MaterialSession, Question
+from .models import Session, Material, MaterialSession, Question, Option
 from ..course.models import Course
 from rest_framework import status
 from .serializers import SessionSerializer, MaterialSerializer, QuestionSerializer, OptionSerializer
@@ -88,3 +88,39 @@ class CreateOptionsView(APIView):
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         return Response({'message': 'Opciones creadas exitosamente'}, status=status.HTTP_201_CREATED)
+
+class ShowOptionsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, session_id, question_id):
+        if not request.user.isTeacher and not request.user.isAdmin:
+            return Response({'detail': 'Permiso denegado'}, status=status.HTTP_403_FORBIDDEN)
+
+        question = get_object_or_404(Question, pk=question_id)
+        options = Option.objects.filter(question_id=question_id)
+
+        options_data = OptionSerializer(options, many=True).data
+
+        return Response({'options': options_data}, status=status.HTTP_200_OK)
+
+class ShowQuestionsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, session_id):
+        if not request.user.isTeacher and not request.user.isAdmin:
+            return Response({'detail': 'Permiso denegado'}, status=status.HTTP_403_FORBIDDEN)
+
+        session = get_object_or_404(Session, pk=session_id)
+
+        questions = Question.objects.filter(session_id=session_id)
+
+        questions_data = QuestionSerializer(questions, many=True).data
+
+        # Devolver las preguntas en formato JSON
+        return Response({'questions': questions_data, 'session': {
+            'session_id': session.session_id,
+            'session_name': session.session_name,
+            'session_description': session.session_description,
+            'session_date_start': session.session_date_start,
+            'session_date_end': session.session_date_end,
+        }}, status=status.HTTP_200_OK)
