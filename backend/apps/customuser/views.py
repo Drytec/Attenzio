@@ -9,22 +9,22 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 class LoginView(APIView):
     def post(self, request):
+        # Validar los datos con el serializer
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
             email = serializer.validated_data['email']
             password = serializer.validated_data['password']
+
+            # Intentar autenticar al usuario
             user = authenticate(request, username=email, password=password)
             if user is not None:
-                refresh = RefreshToken.for_user(user)
-                access_token = str(refresh.access_token)
-
+                # En este caso, eliminamos la parte de JWT
                 return Response({
                     'message': 'Login exitoso',
                     'user': {
                         'email': user.email,
                         'full_name': user.full_name
-                    },
-                    'access_token': access_token,
+                    }
                 }, status=status.HTTP_200_OK)
 
             return Response({'error': 'Credenciales incorrectas'}, status=status.HTTP_400_BAD_REQUEST)
