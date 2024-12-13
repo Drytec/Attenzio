@@ -1,8 +1,12 @@
+from django.shortcuts import get_object_or_404
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .models import CustomUserCourse, Course
-from .serializers import CourseSerializer
+from .serializers import CourseSerializer, CustomUserCourseSerializer
+from ..session.models import Session
+from ..session.serializers import SessionSerializer
 
 
 class StudentCoursesView(APIView):
@@ -71,3 +75,27 @@ class CreateCourseView(APIView):
             return Response({'message': 'Curso creado exitosamente', 'course': serializer.data}, status=201)
 
         return Response({'errors': serializer.errors}, status=400)
+
+class ShowCourseView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, course_id):
+        # Obtener el curso y sus sesiones
+        course = get_object_or_404(Course, pk=course_id)
+        sessions = Session.objects.filter(course_id=course_id)
+
+        # Obtener el CustomUserCourse y el profesor
+        custom_user_course = CustomUserCourse.objects.filter(course_id=course_id).first()
+        teacher = custom_user_course.custom_user_id if custom_user_course else None
+
+        # Serializar los datos
+        course_data = CourseSerializer(course).data
+        sessions_data = SessionSerializer(sessions, many=True).data
+        teacher_data = CustomUserCourseSerializer(teacher).data if teacher else None
+
+        # Retornar los datos en formato JSON
+        return Response({
+            'course': course_data,
+            'sessions': sessions_data,
+            'teacher': teacher_data
+        }, status=status.HTTP_200_OK)

@@ -52,7 +52,7 @@ class MaterialForm(ModelForm):
         material_link = self.cleaned_data.get('material_link')
         validate_url = URLValidator()
         try:
-            validate_url(material_link)  # Intenta validar el enlace
+            validate_url(material_link)
         except ValidationError:
             raise forms.ValidationError("El enlace proporcionado no es una URL válida.")
         return material_link
