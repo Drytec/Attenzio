@@ -78,9 +78,9 @@ CREATE TABLE option(
 );
 
 CREATE TABLE customUserOption(
+    custom_user_option SERIAL PRIMARY KEY,
     custom_user_id INT NOT NULL,
     option_id INT NOT NULL,
-    PRIMARY KEY (custom_user_id, option_id),
     FOREIGN KEY (custom_user_id) REFERENCES customUser(custom_user_id) ON DELETE CASCADE,
     FOREIGN KEY (option_id) REFERENCES option(option_id) ON DELETE CASCADE
 );

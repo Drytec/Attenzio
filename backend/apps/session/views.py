@@ -1,5 +1,5 @@
 from django.contrib.auth import logout
-from .models import Session, MaterialSession, Question, Material, Option
+from .models import Session, MaterialSession, Question, Material, Option, CustomUserOption
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import SessionForm, QuestionForm, MaterialForm, OptionForm
@@ -196,6 +196,31 @@ def create_options(request, session_id, question_id, num_options):
         'session': session,
         'form_options': form_options,
         'num_options': num_options
+    })
+
+@login_required
+def answer_questions(request, session_id):
+    session = get_object_or_404(Session, pk=session_id)
+
+    questions = Question.objects.filter(session_id=session_id)
+
+    selected_options = {}
+
+    if request.method == 'POST':
+        for question in questions:
+            selected_option_id = request.POST.get(f'question_{question.question_id}')
+            if selected_option_id:
+                option = get_object_or_404(Option, pk=selected_option_id)
+                CustomUserOption.objects.create(
+                    custom_user_id=request.user,
+                    option_id=option
+                )
+
+        return redirect('show_session', session_id=session_id)
+
+    return render(request, 'answer_questions.html', {
+        'session': session,
+        'questions': questions,
     })
 
 def exit(request):

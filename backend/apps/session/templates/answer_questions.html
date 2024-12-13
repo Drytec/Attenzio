@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Responde las preguntas de la sesión: {{ session.session_name }}</h2>
+
+{% if questions %}
+<form method="POST">
+    {% csrf_token %}
+
+    {% for question in questions %}
+    <div class="question">
+        <p><strong>{{ question.question_text }}</strong></p>
+
+        {% for option in question.question.all %}
+        <div class="option">
+            <input type="radio" name="question_{{ question.question_id }}" value="{{ option.option_id }}">
+            <label>{{ option.option_text }}</label>
+        </div>
+        {% endfor %}
+
+    </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary">Enviar respuestas</button>
+</form>
+{% else %}
+<p>No hay preguntas disponibles para esta sesión.</p>
+{% endif %}
+
+{% endblock %}

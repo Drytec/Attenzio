@@ -1,5 +1,7 @@
 from django.db import models
 from ..course.models import Course
+from ..customuser.models import CustomUser
+
 
 # Create your models here.
 class Session(models.Model):
@@ -62,3 +64,15 @@ class MaterialSession(models.Model):
 
     def __str__(self):
         return f'{self.material_id}:{self.session_id}'
+
+class CustomUserOption(models.Model):
+    custom_user_option_id = models.AutoField(primary_key=True,db_column='custom_user_option_id', unique=True)
+    custom_user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='custom_user_id')
+    option_id = models.ForeignKey(Option, on_delete=models.CASCADE, db_column='option_id')
+
+    class Meta:
+        db_table = 'customuseroption'
+        managed = False
+
+    def __str__(self):
+        return f'{self.custom_user_id}:{self.option_id}'
