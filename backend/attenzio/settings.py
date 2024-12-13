@@ -94,8 +94,8 @@ DATABASES = {
         'NAME': 'pos_attenzio',
         'USER': 'postgres',
         'PASSWORD': 'aP4sw0rd',
-        'HOST': 'attenzio_database',
-        'PORT': '5111',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
