@@ -3,6 +3,8 @@ from django.db import models
 
 from django.contrib.auth.models import BaseUserManager
 
+media = models.ImageField(upload_to='uploads/', blank=True, null=True)
+
 class CustomUserManager(BaseUserManager):
     def get_by_natural_key(self, email):
         return self.get(email=email)

@@ -8,8 +8,8 @@ const Register = () => {
       <h2>Registrarse</h2>
       <p>Selecciona tu rol para continuar:</p>
       <div className="button-container">
-        <Link to="/register/studentRegister" className="role-button">Estudiante</Link>
-        <Link to="/register/teacherRegister" className="role-button">Profesor</Link>
+        <Link to="/studentRegister" className="role-button">Estudiante</Link>
+        <Link to="/teacherRegister" className="role-button">Profesor</Link>
       </div>
     </div>
   );
