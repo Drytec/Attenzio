@@ -7,7 +7,7 @@ RUN pip3 install --upgrade pip
 WORKDIR /app
 # Copy all from source folder
 COPY . .
-# install dependencies
+# install dependencies 
 RUN pip3 install -r requirements.txt
 # Run service (debug mode)
-CMD [ "python3", "manage.py", "runserver" ]
+CMD [ "python3", "manage.py", "runserver" , "0.0.0.0:8000"]

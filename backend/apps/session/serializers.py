@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Session, MaterialSession, Material, Question, Option
 
+
 class SessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Session
