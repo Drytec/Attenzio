@@ -10,4 +10,3 @@ urlpatterns = [
     path('signup/', RegisterView.as_view(), name='signup'),
     path('register/', RegisterView.as_view(), name='register'),
 ]
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
