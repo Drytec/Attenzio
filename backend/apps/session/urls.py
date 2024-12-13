@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import ShowSessionView, CreateSessionView, CreateMaterialView, CreateQuestionView, CreateOptionsView, ShowQuestionsView
+from .views import ShowSessionView, CreateSessionView, CreateMaterialView, CreateQuestionView, CreateOptionsView, ShowQuestionsView, ShowOptionsView
+
 urlpatterns = [
     path('logout/', exit, name='exit'),
     path('create_session/', CreateSessionView.as_view(), name='create_session'),
