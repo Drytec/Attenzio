@@ -36,7 +36,6 @@ class CustomUserCourse(models.Model):
     Modelo que representa la relación entre un usuario y un curso.
 
     Atributos:
-        - custom_user_course_id: ID único de la relación entre usuario y curso (clave primaria).
         - custom_user_id: Relación con el usuario (clave foránea hacia el modelo CustomUser).
         - course_id: Relación con el curso (clave foránea hacia el modelo Course).
 
@@ -47,13 +46,12 @@ class CustomUserCourse(models.Model):
     Métodos:
         - __str__: Devuelve una representación en cadena de la relación usuario-curso (combinando los IDs del usuario y del curso).
     """
-    custom_user_course_id = models.AutoField(primary_key=True, db_column='custom_user_course_id', unique=True)
     custom_user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='custom_user_id')
     course_id = models.ForeignKey(Course, on_delete=models.CASCADE, db_column='course_id')
 
     class Meta:
         db_table = 'customusercourse'
-        managed = False
+        unique_together = ('custom_user_id', 'course_id')
 
     def __str__(self):
         return f'{self.custom_user_id}:{self.course_id}'

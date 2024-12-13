@@ -1,6 +1,6 @@
-from django.contrib.auth import authenticate
 from rest_framework import serializers
-from .models import CustomUser, Rol
+from django.contrib.auth import authenticate
+from .models import Rol, CustomUser
 
 class RegisterSerializer(serializers.ModelSerializer):
     """
@@ -52,7 +52,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
-
 
 class LoginSerializer(serializers.Serializer):
     """

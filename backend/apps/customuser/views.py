@@ -1,11 +1,8 @@
-from django.contrib.auth import login, authenticate
 from django.contrib.auth import logout
-from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from .serializers import LoginSerializer, RegisterSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
 
+from .serializers import RegisterSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -17,14 +14,8 @@ class LoginView(APIView):
     Vista para manejar el inicio de sesión de un usuario.
 
     Método:
-        POST: Valida los datos de inicio de sesión, autentica al usuario y devuelve una respuesta con el mensaje de éxito
-              y los datos del usuario si las credenciales son correctas, o un error en caso contrario.
-
-    Respuesta:
-        - 200 OK: Si el inicio de sesión es exitoso, con los datos del usuario.
-        - 400 Bad Request: Si las credenciales son incorrectas o el serializador es inválido.
+        POST: Valida los datos de inicio de sesión, autentica al usuario y devuelve un JWT si las credenciales son correctas.
     """
-
     permission_classes = [AllowAny]
 
     def post(self, request):
@@ -35,7 +26,7 @@ class LoginView(APIView):
             request (Request): Objeto de solicitud HTTP que contiene los datos de inicio de sesión.
 
         Respuesta:
-            - 200 OK: Si las credenciales son correctas.
+            - 200 OK: Si las credenciales son correctas, con un JWT.
             - 400 Bad Request: Si las credenciales son incorrectas o los datos no son válidos.
         """
         serializer = LoginSerializer(data=request.data)
@@ -45,12 +36,16 @@ class LoginView(APIView):
 
             user = authenticate(request, username=email, password=password)
             if user is not None:
+                refresh = RefreshToken.for_user(user)
+                access_token = str(refresh.access_token)
+
                 return Response({
                     'message': 'Login exitoso',
                     'user': {
                         'email': user.email,
                         'full_name': user.full_name
-                    }
+                    },
+                    'access_token': str(access_token),
                 }, status=status.HTTP_200_OK)
 
             return Response({'error': 'Credenciales incorrectas'}, status=status.HTTP_400_BAD_REQUEST)
@@ -87,29 +82,35 @@ class LogoutView(APIView):
         return Response({'message': 'Logout exitoso'}, status=status.HTTP_200_OK)
 
 class RegisterView(APIView):
-    """
-    Vista para manejar el registro de un nuevo usuario.
-    """
-
     permission_classes = [AllowAny]
 
     def post(self, request):
         """
-        Crea un nuevo usuario con los datos proporcionados en la solicitud.
+        Registra a un nuevo usuario y genera un token JWT para él.
+
+        Parámetros:
+            request (Request): Objeto de solicitud HTTP que contiene los datos del nuevo usuario.
+
+        Respuesta:
+            - 201 Created: Si el registro es exitoso, con los datos del usuario y el JWT.
+            - 400 Bad Request: Si los datos no son válidos.
         """
         serializer = RegisterSerializer(data=request.data)
-
         if serializer.is_valid():
             user = serializer.save()
+
+            refresh = RefreshToken.for_user(user)
+            access_token = str(refresh.access_token)
 
             return Response({
                 'message': 'Registro exitoso',
                 'user': {
                     'email': user.email,
-                    'full_name': user.full_name,
-                    'role': user.rol_id.rol_name
-                }
+                    'full_name': user.full_name
+                },
+                'access_token': access_token
             }, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 

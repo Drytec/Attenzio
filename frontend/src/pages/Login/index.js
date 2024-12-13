@@ -15,7 +15,7 @@ const Login = () => {
 
     try {
       const data = await loginUser({ email, password });
-      navigate('/users/main');
+      navigate('/courses');
     } catch (err) {
       setError(
           err?.response?.data?.error || 'Error desconocido. Por favor, inténtalo de nuevo.'

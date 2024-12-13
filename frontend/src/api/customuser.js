@@ -10,7 +10,14 @@ import apiClient from './apiClient';
 export const loginUser = async (credentials) => {
     try {
         const response = await apiClient.post('users/login/', credentials);
-        return response.data;
+
+        if (response.status === 200) {
+            // Guardar el token JWT en localStorage
+            localStorage.setItem('authToken', response.data.access_token);
+
+            // Devolver los datos de la respuesta, incluyendo el mensaje de éxito y los datos del usuario
+            return response.data;
+        }
     } catch (error) {
         console.error('Error logging in:', error);
         throw error;
@@ -26,7 +33,13 @@ export const loginUser = async (credentials) => {
  */
 export const logoutUser = async () => {
     try {
+        // Hacer la petición de cierre de sesión en el backend
         const response = await apiClient.post('users/logout/');
+
+        // Eliminar el token del almacenamiento local o de sesión
+        localStorage.removeItem('access_token');
+        sessionStorage.removeItem('access_token');
+
         return response.data;
     } catch (error) {
         console.error('Error logging out:', error);
@@ -44,12 +57,18 @@ export const logoutUser = async () => {
 export const registerUser = async (userData) => {
     try {
         const response = await apiClient.post('users/register/', userData);
+
+        const { access_token } = response.data;
+        localStorage.setItem('access_token', access_token);
+        sessionStorage.setItem('access_token', access_token);
+
         return response.data;
     } catch (error) {
         console.error('Error registering user:', error);
         throw error;
     }
 };
+
 
 /**
  * Obtiene el mensaje de bienvenida o mensaje principal para el usuario.
