@@ -15,7 +15,7 @@ import {
                 <Route path="select_type_user" element={<SelectTypeUser/>}></Route>
                 <Route path="users/student_register" element={<StudentRegister/>}></Route>
                 <Route path="users/teacher_register" element={<TeacherRegister/>}></Route>
-                <Route path="courses/student_courses" element={<StudentCourses/>}></Route>
+                <Route path="courses/student_courses" element={<Courses/>}></Route>
                 <Route path="courses/teacher_courses" element={<TeacherCourses/>}></Route>
                 <Route path="courses/admind_courses" element={<AdminCourses/>}></Route>
             </Routes>
