@@ -1,11 +1,9 @@
-from django.urls import path, include
-from .views import create_course, teacher_courses, show_course, student_courses, admin_courses
+from django.urls import path
+from .views import StudentCoursesView, TeacherCoursesView, AdminCoursesView, CreateCourseView
 
 urlpatterns = [
-    path ('teacher_courses', teacher_courses, name='teacher_courses'),
-    path ('student_courses', student_courses, name='student_courses'),
-    path ('admin_courses', admin_courses, name='admin_courses'),
-    path ('logout/', exit, name='exit'),
-    path('create_course/', create_course, name='create_course'),
-    path('c:<int:course_id>/', show_course, name='show_course'),
+    path('api/student_courses/', StudentCoursesView.as_view(), name='student_courses'),
+    path('api/teacher_courses/', TeacherCoursesView.as_view(), name='teacher_courses'),
+    path('api/admin_courses/', AdminCoursesView.as_view(), name='admin_courses'),
+    path('api/create_course/', CreateCourseView.as_view(), name='create_course'),
 ]
