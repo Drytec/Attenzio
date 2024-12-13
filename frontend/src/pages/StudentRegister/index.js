@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import registerUser from '../../api/login';
+import { registerUser } from '../../api/customuser';
 
 const StudentRegister = () => {
   const [formData, setFormData] = useState({
