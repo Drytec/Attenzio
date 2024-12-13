@@ -1,7 +1,8 @@
 export { default as Home } from './Home';
 export { default as Login } from './Login';
-export { default as Register } from './Register';
+export { default as SelectTypeUser } from './SelectTypeUser';
 export { default as StudentRegister } from './StudentRegister';
-export { default as StudentCourses } from './StudentCourses';
 export { default as TeacherRegister } from './TeacherRegister';
+export { default as StudentCourses } from './StudentCourses';
+
 

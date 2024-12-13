@@ -19,6 +19,21 @@ export const getTeacherCourses = async () => {
     }
 };
 
+/**
+ * Función para permitir a un estudiante unirse a un curso.
+ *
+ * @param {number} courseId - ID del curso al que el estudiante desea unirse.
+ * @returns {object} - Respuesta del servidor con el mensaje de éxito o error.
+ */
+export const joinCourse = async (courseId) => {
+    try {
+        const response = await apiClient.post(`courses/join_course/${courseId}/`);
+        return response.data;  // Devuelve el mensaje de éxito.
+    } catch (error) {
+        console.error('Error joining course:', error);
+        throw error;
+    }
+};
 export const getAdminCourses = async () => {
     try {
         const response = await apiClient.get('courses/admin_courses/');

@@ -16,7 +16,7 @@ const Login = () => {
     try {
       const data = await loginUser({ email, password });
       console.log(data.message);
-      navigate('/studentCourses'); // Redirigir a StudentCourses al iniciar sesión exitosamente
+      navigate('users/main');
     } catch (err) {
       setError(
           err?.response?.data?.error || 'Error desconocido. Por favor, inténtalo de nuevo.'
