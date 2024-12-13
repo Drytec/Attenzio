@@ -3,8 +3,8 @@ import apiClient from './apiClient';
 /**
  * Inicia sesión de un usuario con sus credenciales.
  *
- * @param {Object} credentials - Las credenciales del usuario (usualmente un objeto con 'username' y 'password').
- * @returns {Object} Los datos de la respuesta del servidor (por ejemplo, tokens de acceso, información del usuario, etc.).
+ * @param {Object} credentials - Las credenciales del usuario (usualmente un objeto con 'email' y 'password').
+ * @returns {Object} Los datos de la respuesta del servidor (por ejemplo, información del usuario).
  * @throws {Error} Si ocurre un error durante el proceso de login, el error se lanza para ser manejado por el componente o flujo que invoque esta función.
  */
 export const loginUser = async (credentials) => {
@@ -16,6 +16,7 @@ export const loginUser = async (credentials) => {
         throw error;
     }
 };
+
 
 /**
  * Cierra sesión del usuario actual.

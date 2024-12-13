@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import registerUser from '../../api/login';
+import {registerUser} from '../../api/customuser';
 
-const StudentRegister = () => {
+const TeacherRegister = () => {
     const [formData, setFormData] = useState({
         full_name: "",
         document: "",
@@ -10,7 +10,7 @@ const StudentRegister = () => {
         phone: "",
         password: "",
         media: null,
-        user_type: "student",
+        user_type: "teacher",
     });
 
     const handleChange = (e) => {
@@ -96,5 +96,5 @@ const StudentRegister = () => {
     );
 };
 
-export default StudentRegister;
+export default TeacherRegister;
 

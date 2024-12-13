@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate
 from rest_framework import serializers
 from .models import CustomUser, Rol
 from PIL import Image
@@ -76,24 +77,47 @@ class RegisterSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.Serializer):
     """
     Serializer para el proceso de login de un usuario. Este serializer valida las credenciales
-    de inicio de sesión (correo electrónico y contraseña) y asigna un rol al usuario durante
-    el proceso de autenticación.
+    de inicio de sesión (correo electrónico y contraseña).
 
     Campos:
         - email (str): El correo electrónico del usuario.
         - password (str): La contraseña del usuario.
 
     Métodos:
-        - `create()`: Valida las credenciales del usuario y asigna el rol apropiado.
+        - `create()`: Valida las credenciales del usuario y devuelve el objeto del usuario autenticado.
     """
 
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
 
+    def validate(self, attrs):
+        """
+        Valida las credenciales del usuario, asegurándose de que el usuario exista y la contraseña
+        sea correcta.
+
+        Parámetros:
+            attrs (dict): Los datos validados del formulario de inicio de sesión.
+
+        Retorna:
+            dict: Datos validados con el usuario autenticado.
+
+        Lanza:
+            ValidationError: Si las credenciales no son válidas.
+        """
+        email = attrs.get('email')
+        password = attrs.get('password')
+
+        user = authenticate(email=email, password=password)
+
+        if user is None:
+            raise serializers.ValidationError("Credenciales inválidas.")
+
+        attrs['user'] = user
+        return attrs
+
     def create(self, validated_data):
         """
-        Crea un usuario para iniciar sesión. El rol es asignado dependiendo del tipo de usuario
-        ('teacher' o 'student').
+        Crea un objeto de usuario autenticado para el login.
 
         Parámetros:
             validated_data (dict): Los datos validados del formulario de inicio de sesión.
@@ -101,17 +125,5 @@ class LoginSerializer(serializers.Serializer):
         Retorna:
             user (CustomUser): El objeto de usuario autenticado.
         """
-        user_type = validated_data.pop('user_type')
-
-        user = CustomUser(**validated_data)
-        user.set_password(validated_data['password'])
-
-        if user_type == 'teacher':
-            rol = Rol.objects.get(rol_id=1)
-        else:
-            rol = Rol.objects.get(rol_id=2)
-
-        user.rol_id = rol
-        user.save()
-
+        user = validated_data['user']
         return user

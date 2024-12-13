@@ -7,8 +7,8 @@ const Home = () => {
     <div className="landing-container">
       <p>Bienvenido, elige una opción para continuar</p>
       <div className="button-container">
-        <Link to="/login" className="button-link">Iniciar Sesión</Link>
-        <Link to="/register" className="button-link">Registrarse</Link>
+        <Link to="users/login" className="button-link">Iniciar Sesión</Link>
+        <Link to="user/register" className="button-link">Registrarse</Link>
       </div>
     </div>
   );

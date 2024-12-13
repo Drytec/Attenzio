@@ -6,6 +6,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import LoginSerializer, RegisterSerializer
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.contrib.auth import authenticate
+from .serializers import LoginSerializer
+
 class LoginView(APIView):
     """
     Vista para manejar el inicio de sesión de un usuario.
@@ -50,6 +56,7 @@ class LoginView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
 class LogoutView(APIView):
     """
     Vista para manejar el cierre de sesión de un usuario autenticado.
@@ -76,12 +83,6 @@ class LogoutView(APIView):
         """
         logout(request)
         return Response({'message': 'Logout exitoso'}, status=status.HTTP_200_OK)
-
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .serializers import RegisterSerializer
 
 class RegisterView(APIView):
     """
