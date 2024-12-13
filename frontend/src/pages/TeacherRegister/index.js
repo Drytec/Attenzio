@@ -87,7 +87,7 @@ const TeacherRegister = () => {
                 onChange={handleChange}
                 required
             />
-            <label>Subir imagen:</label>
+            <label>Subir foto:</label>
             <input type="file" name="media" onChange={handleFileChange} />
             <button type="submit" style={{ backgroundColor: "orange", color: "white", marginTop: "10px" }}>
                 Registrarse

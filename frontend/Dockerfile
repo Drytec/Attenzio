@@ -1,20 +1,26 @@
-# Usa una imagen base de Node.js
+# Usa una imagen base que tenga Node.js
 FROM node:16
 
-# Establecer el directorio de trabajo
+# Establece el directorio de trabajo en /app
 WORKDIR /app
 
-# Copiar los archivos del frontend al contenedor
-COPY . .
+# Copia el archivo package.json y package-lock.json
+COPY package*.json ./
 
-# Instalar las dependencias del proyecto
+# Instala las dependencias del proyecto
 RUN npm install
 
-# Si es una SPA (por ejemplo, React), construimos los archivos estáticos
+# Copia el código fuente del proyecto en el contenedor
+COPY . .
+
+# Construye la aplicación (esto genera la carpeta "build")
 RUN npm run build
 
-# Exponer el puerto en el que queremos servir la aplicación
+# Instala 'serve' globalmente para poder usarlo para servir la app
+RUN npm install -g serve
+
+# Expone el puerto en el que se va a servir la app
 EXPOSE 3000
 
-# Iniciar un servidor estático con serve (o el comando adecuado para tu framework)
-CMD ["npx", "serve", "build", "-s", "-l", "3000"]
+# Comando para servir la aplicación usando serve
+CMD ["serve", "-s", "build", "-l", "3000"]
