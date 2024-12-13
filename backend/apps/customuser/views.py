@@ -1,30 +1,10 @@
-
-from django.contrib import messages
 from django.shortcuts import render
-
-import json
-from django.contrib.auth import logout
-from django.contrib.auth.decorators import user_passes_test
-from django.contrib.auth.hashers import make_password
-from django.http import JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
-from django.utils.crypto import get_random_string
-from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import logout
 from django.shortcuts import redirect
-
-from .forms import BaseRegisterForm, StudentRegisterForm, TeacherRegisterForm
-from django.db import IntegrityError
-from django.utils import timezone
-import pytz
-from .models import CustomUser
-
-from ..session.forms import SessionForm
-
+from .forms import StudentRegisterForm, TeacherRegisterForm
 
 def home(request):
     return render(request, 'core/home.html')

@@ -1,28 +1,14 @@
-import pytz
 from django.contrib.auth import logout
-from django.core.checks import messages
-from django.core.serializers import json
-from django.forms import modelformset_factory
-
 from .models import Session, MaterialSession, Question, Material, Option
-import json
-from django.http import JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
 from .forms import SessionForm, QuestionForm, MaterialForm, OptionForm
-from django.db import IntegrityError
-from django.utils import timezone
 from django.shortcuts import render, redirect
-from django.contrib.auth import login
-
-from ..course.models import Course
-from ..customusercourse.models import CustomUserCourse
+from ..course.models import Course, CustomUserCourse
 
 
 # Create your views here.
-
-@login_required
+# @login_required
 def show_session(request, session_id):
     session = get_object_or_404(Session, session_id=session_id)
     materials = Material.objects.filter(materialsession__session_id=session_id)

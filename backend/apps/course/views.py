@@ -1,26 +1,12 @@
-import pytz
-from django.contrib import messages
-from django.contrib.auth import logout
-from django.core.serializers import json
-from .models import Course
-import json
-from django.http import JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
+from .models import Course, CustomUserCourse
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
 from .forms import CourseForm
 from ..session.models import Session
-from django.db import IntegrityError
-from django.utils import timezone
 from django.shortcuts import render, redirect
-from django.contrib.auth import login
-
-from ..customusercourse.models import CustomUserCourse
 
 
 # Create your views here.
-# a este metodo de renderizado le falta la verificacion de la fecha la que esta aun no funciona
-
 @login_required
 def student_courses(request):
     if not request.user.isStudent:
@@ -71,7 +57,6 @@ def admin_courses(request):
 @login_required
 def create_course(request):
     if not request.user.isTeacher and not request.user.isAdmin:
-        messages.error(request, "No tienes permiso para crear una sesión.")
         return redirect('student_courses')
 
     if request.method == 'GET':
