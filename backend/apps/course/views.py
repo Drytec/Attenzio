@@ -84,11 +84,9 @@ class ShowCourseView(APIView):
         course = get_object_or_404(Course, pk=course_id)
         sessions = Session.objects.filter(course_id=course_id)
 
-        # Obtener el CustomUserCourse y el profesor
         custom_user_course = CustomUserCourse.objects.filter(course_id=course_id).first()
         teacher = custom_user_course.custom_user_id if custom_user_course else None
 
-        # Serializar los datos
         course_data = CourseSerializer(course).data
         sessions_data = SessionSerializer(sessions, many=True).data
         teacher_data = CustomUserCourseSerializer(teacher).data if teacher else None
