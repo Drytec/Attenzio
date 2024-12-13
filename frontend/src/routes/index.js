@@ -2,7 +2,7 @@ import {
     Routes, Route, BrowserRouter as Router
   } from 'react-router-dom';
   
-  import { Home, Login, SelectTypeUser, TeacherRegister, StudentRegister } from '../pages';
+  import { Home, Login, SelectTypeUser, TeacherRegister, StudentRegister, Courses } from '../pages';
   
   const Approutes = () => {
     return (
@@ -13,6 +13,7 @@ import {
               <Route path="/select_type_user" element={<SelectTypeUser/>}></Route>
               <Route path="/users/student_register" element={<StudentRegister/>}></Route>
               <Route path="/users/teacher_register" element={<TeacherRegister/>}></Route>
+              <Route path="/courses" element={<Courses/>}></Route>
           </Routes>
       </div>
     )

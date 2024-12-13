@@ -43,11 +43,7 @@ export const logoutUser = async () => {
  */
 export const registerUser = async (userData) => {
     try {
-        const response = await apiClient.post('users/register/', userData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
+        const response = await apiClient.post('users/register/', userData);
         return response.data;
     } catch (error) {
         console.error('Error registering user:', error);

@@ -8,55 +8,14 @@ from .serializers import CourseSerializer, CustomUserCourseSerializer
 from ..session.models import Session
 from ..session.serializers import SessionSerializer
 
-class StudentCoursesView(APIView):
+class GetCoursesView(APIView):
     """
-    Vista que devuelve los cursos asociados a un estudiante.
+    Vista que devuelve los cursos asociados a un usuario.
 
-    Requiere que el usuario esté autenticado y sea un estudiante.
-
-    Respuesta:
-        - 200 OK: Devuelve una lista de cursos y los profesores asociados.
-        - 403 Forbidden: Si el usuario no es un estudiante.
-    """
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        """
-        Obtiene la lista de cursos del estudiante autenticado.
-
-        Parámetros:
-            request (Request): Objeto de solicitud HTTP que contiene la información del usuario autenticado.
-
-        Respuesta:
-            - Response: Devuelve una lista de cursos con sus profesores si el usuario es un estudiante.
-        """
-        if not request.user.isStudent:
-            return Response({'error': 'Acción no permitida'}, status=403)
-
-        course_ids = CustomUserCourse.objects.filter(custom_user_id=request.user.custom_user_id).values_list(
-            'course_id', flat=True)
-        courses = Course.objects.filter(course_id__in=course_ids)
-        serializer = CourseSerializer(courses, many=True)
-
-        course_teachers = []
-        for course in courses:
-            teacher = CustomUserCourse.objects.filter(course_id=course.course_id,
-                                                      custom_user_id__is_teacher=True).select_related(
-                'custom_user_id').first()
-            course_teachers.append(teacher.custom_user_id if teacher else None)
-
-        return Response({'courses': serializer.data, 'teachers': course_teachers})
-
-
-class TeacherCoursesView(APIView):
-    """
-    Vista que devuelve los cursos asociados a un profesor.
-
-    Requiere que el usuario esté autenticado y sea un profesor.
+    Requiere que el usuario esté autenticado.
 
     Respuesta:
         - 200 OK: Devuelve una lista de cursos.
-        - 403 Forbidden: Si el usuario no es un profesor.
     """
     permission_classes = [IsAuthenticated]
 
@@ -70,51 +29,13 @@ class TeacherCoursesView(APIView):
         Respuesta:
             - Response: Devuelve una lista de cursos si el usuario es un profesor.
         """
-        if not request.user.isTeacher:
-            return Response({'error': 'Acción no permitida'}, status=403)
 
-        # Obtener cursos asociados al profesor
         course_ids = CustomUserCourse.objects.filter(custom_user_id=request.user.custom_user_id).values_list(
             'course_id', flat=True)
         courses = Course.objects.filter(course_id__in=course_ids)
         serializer = CourseSerializer(courses, many=True)
 
         return Response({'courses': serializer.data})
-
-
-class AdminCoursesView(APIView):
-    """
-    Vista que devuelve los cursos asociados a un administrador.
-
-    Requiere que el usuario esté autenticado y sea un administrador.
-
-    Respuesta:
-        - 200 OK: Devuelve una lista de cursos.
-        - 403 Forbidden: Si el usuario no es un administrador.
-    """
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        """
-        Obtiene la lista de cursos del administrador autenticado.
-
-        Parámetros:
-            request (Request): Objeto de solicitud HTTP que contiene la información del usuario autenticado.
-
-        Respuesta:
-            - Response: Devuelve una lista de cursos si el usuario es un administrador.
-        """
-        if not request.user.isAdmin:
-            return Response({'error': 'Acción no permitida'}, status=403)
-
-        # Obtener cursos asociados al administrador
-        course_ids = CustomUserCourse.objects.filter(custom_user_id=request.user.custom_user_id).values_list(
-            'course_id', flat=True)
-        courses = Course.objects.filter(course_id__in=course_ids)
-        serializer = CourseSerializer(courses, many=True)
-
-        return Response({'courses': serializer.data})
-
 
 class CreateCourseView(APIView):
     """

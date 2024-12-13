@@ -1,15 +1,6 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
 from .models import CustomUser, Rol
-from PIL import Image
-import io
-import base64
-
-from rest_framework import serializers
-from .models import CustomUser, Rol
-import base64
-from PIL import Image
-import io
 
 class RegisterSerializer(serializers.ModelSerializer):
     """
@@ -23,7 +14,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     document = serializers.CharField(max_length=20)
     phone = serializers.CharField(max_length=30, required=False)
     address = serializers.CharField(max_length=100, required=False)
-    media = serializers.ImageField(required=False)
+    media = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
         model = CustomUser
@@ -40,16 +31,15 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """
-        Crea un nuevo usuario y guarda la imagen en base64 si es proporcionada.
+        Crea un nuevo usuario, asigna el rol y guarda la URL de la imagen si es proporcionada.
         """
         user_type = validated_data.pop('user_type')
+        password = validated_data.pop('password')
         media = validated_data.pop('media', None)
 
         if media:
-            image_base64 = self.image_to_base64(media)
-            validated_data['media'] = image_base64
+            validated_data['media'] = media
 
-        password = validated_data.pop('password')
         user = CustomUser(**validated_data)
         user.set_password(password)
 
@@ -62,16 +52,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
-
-    def image_to_base64(self, image):
-        """
-        Convierte una imagen a una cadena codificada en Base64.
-        """
-        image_file = io.BytesIO()
-        img = Image.open(image)
-        img.save(image_file, format=img.format)
-        image_file.seek(0)
-        return base64.b64encode(image_file.read()).decode('utf-8')
 
 
 class LoginSerializer(serializers.Serializer):

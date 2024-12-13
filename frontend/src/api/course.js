@@ -1,17 +1,14 @@
 import apiClient from './apiClient';
-export const getStudentCourses = async () => {
-    try {
-        const response = await apiClient.get('courses/student_courses/');
-        return response.data.courses;
-    } catch (error) {
-        console.error('Error fetching student courses:', error);
-        throw error;
-    }
-};
 
-export const getTeacherCourses = async () => {
+/**
+ * Función para permitir a un estudiante unirse a un curso.
+ *
+ * @param {number} courseId - ID del curso al que el estudiante desea unirse.
+ * @returns {object} - Respuesta del servidor con el mensaje de éxito o error.
+ */
+export const getCourses = async () => {
     try {
-        const response = await apiClient.get('courses/teacher_courses/');
+        const response = await apiClient.get('courses/get_courses/');
         return response.data.courses;
     } catch (error) {
         console.error('Error fetching teacher courses:', error);
@@ -31,15 +28,6 @@ export const joinCourse = async (courseId) => {
         return response.data;  // Devuelve el mensaje de éxito.
     } catch (error) {
         console.error('Error joining course:', error);
-        throw error;
-    }
-};
-export const getAdminCourses = async () => {
-    try {
-        const response = await apiClient.get('courses/admin_courses/');
-        return response.data.courses;
-    } catch (error) {
-        console.error('Error fetching admin courses:', error);
         throw error;
     }
 };

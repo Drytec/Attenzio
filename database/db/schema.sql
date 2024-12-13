@@ -10,7 +10,7 @@ CREATE TABLE customUser (
     full_name VARCHAR(100) NOT NULL,
     document VARCHAR(20) UNIQUE NOT NULL,
     address VARCHAR(100),
-    media TEXT,
+    media VARCHAR(300),
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(128) NOT NULL,
     phone VARCHAR(30),
