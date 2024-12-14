@@ -1,7 +1,7 @@
 from django.contrib.auth import login, authenticate
 from django.contrib.auth import logout
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import LoginSerializer, RegisterSerializer
@@ -24,6 +24,8 @@ class LoginView(APIView):
         - 200 OK: Si el inicio de sesión es exitoso, con los datos del usuario.
         - 400 Bad Request: Si las credenciales son incorrectas o el serializador es inválido.
     """
+
+    permission_classes = [AllowAny]
 
     def post(self, request):
         """
@@ -89,6 +91,8 @@ class RegisterView(APIView):
     Vista para manejar el registro de un nuevo usuario.
     """
 
+    permission_classes = [AllowAny]
+
     def post(self, request):
         """
         Crea un nuevo usuario con los datos proporcionados en la solicitud.
@@ -103,7 +107,7 @@ class RegisterView(APIView):
                 'user': {
                     'email': user.email,
                     'full_name': user.full_name,
-                    'role': user.rol_id.name
+                    'role': user.rol_id.rol_name
                 }
             }, status=status.HTTP_201_CREATED)
 
