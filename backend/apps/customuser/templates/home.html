@@ -1,12 +1,10 @@
-{% extends 'core/base.html' %}
+{% extends 'base.html' %}
 {% block content %}
 <h3>Inicio</h3>
-    <h3>Ratilan</h3>
     {% if request.user.is_authenticated %}
         <hr>
         <h4>
             {{ user| upper }}, bienvenido
         </h4>
     {% endif %}
-
 {% endblock %}

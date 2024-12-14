@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 style="text-align: center; margin-bottom: 20px;">Preguntas de la Sesión</h2>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
+    {% if questions %}
+    {% for question in questions %}
+    <div style="
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            width: 280px;
+            background-color: #f7f7f7;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-family: 'Arial', sans-serif;
+            font-size: 14px;
+            color: #333;">
+        <p style="font-weight: bold; color: #007bff;">Pregunta número: {{ forloop.counter }}</p>
+        <p style="margin-bottom: 15px; color: #555;">{{ question.question_text }}</p>
+        <a href="{% url 'show_options' session.session_id question.question_id %}" style="
+                display: inline-block;
+                text-decoration: none;
+                background-color: #007bff;
+                color: white;
+                padding: 12px 25px;
+                border-radius: 6px;
+                text-align: center;
+                font-weight: bold;
+                transition: background-color 0.3s ease;">
+            Ver Opciones
+        </a>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p>No hay preguntas para esta sesión.</p>
+    {% endif %}
+</div>
+{% endblock %}
+

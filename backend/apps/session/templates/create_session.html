@@ -1,8 +1,8 @@
-{% extends 'core/base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
-    <h1> Crear Nueva Sesion</h1>
-    <form action="/session/create/" method="POST">
+    <h1> Crear Nueva session </h1>
+    <form action= "{% url 'create_session' course.course_id %}" method="POST">
         {% csrf_token %}
         {{ form.as_p }}
         <button>

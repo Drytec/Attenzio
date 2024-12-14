@@ -1,17 +1,78 @@
-{% extends 'core/base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
-<h2>Sesiones</h2>
+<h2 class="session-header">Sesiones</h2>
 
-<ul>
+<ul class="session-list">
     {% for session in sessions %}
-    <li>
-        <strong>Sesión:</strong> {{ session.session_name }}<br>
-        <strong>Fecha:</strong> {{ session.date }}<br>
-        <a href="{% url 'show_session' aula_id=session.session_id %}">Detalles</a>
+    <li class="session-item">
+        <p><strong>Sesión:</strong> {{ session.session_name }}</p>
+        <p><strong>Fecha:</strong> {{ session.date }}</p>
+        <a href="{% url 'show_session' session_id=session.session_id %}" class="btn-session">Detalles</a>
     </li>
     {% empty %}
-    <li>No hay sesiones disponibles para este curso.</li>
+    <li class="no-sessions">No hay sesiones disponibles para este curso.</li>
     {% endfor %}
 </ul>
+
+<style>
+    .session-header {
+        font-size: 2em;
+        text-align: center;
+        margin-bottom: 20px;
+        color: #4caf50;
+    }
+
+    .session-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 auto;
+        max-width: 600px;
+    }
+
+    .session-item {
+        background-color: #1e1e1e;
+        border: 1px solid #4caf50;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        color: #f5f5f5;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .session-item:hover {
+        transform: scale(1.02);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .btn-session {
+        display: inline-block;
+        text-decoration: none;
+        background-color: #4caf50;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 4px;
+        text-align: center;
+        font-size: 1em;
+        font-weight: bold;
+        transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+    .btn-session:hover {
+        background-color: #2e7d32;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .no-sessions {
+        text-align: center;
+        font-size: 1.2em;
+        color: #f5f5f5;
+        background-color: #1e1e1e;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid #4caf50;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+</style>
 {% endblock %}

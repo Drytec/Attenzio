@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+    <h3>Matricúlate en un curso</h3>
+
+    {% if messages %}
+    <div class="alert alert-info">
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <form action="{% url 'join_course' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Matricular</button>
+    </form>
+</div>
+{% endblock %}
+

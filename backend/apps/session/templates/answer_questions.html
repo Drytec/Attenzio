@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Responder Preguntas</h2>
+
+{% if questions %}
+<form method="POST">
+    {% csrf_token %}
+
+    {% for question in questions %}
+    <div class="question">
+        <p><strong>{{ question.question_text }}</strong></p>
+
+        <div class="options-container">
+            {% for option in question.question.all %}
+            <div class="option">
+                <input type="radio" name="question_{{ question.question_id }}" value="{{ option.option_id }}">
+                <label>{{ option.option_text }}</label>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary">Enviar respuestas</button>
+</form>
+{% else %}
+<p>No hay preguntas disponibles para esta sesión.</p>
+{% endif %}
+
+{% endblock %}
+
+{% block styles %}
+<style>
+    .options-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .option {
+        display: flex;
+        align-items: center;
+    }
+
+    .option input {
+        margin-right: 8px;
+    }
+</style>
+{% endblock %}

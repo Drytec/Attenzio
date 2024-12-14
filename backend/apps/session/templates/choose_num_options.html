@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Elegir número de opciones para la Pregunta: {{ question.question_text }}</h1>
+
+<form action="{% url 'choose_num_options' session_id=session.session_id question_id=question.question_id %}" method="POST">
+    {% csrf_token %}
+    <label for="num_options">Número de opciones:</label>
+    <input type="number" name="num_options" id="num_options" value="4" min="1" max="10" required />
+    <button type="submit">Continuar</button>
+</form>
+
+{% endblock %}
