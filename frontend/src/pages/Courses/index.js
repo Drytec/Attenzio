@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getStudentCourses, getTeacherCourses, joinCourse, createCourse } from '../../api/course';
+import { getCourses, joinCourse, createCourse } from '../../api/course';
 import './styles.css';
 
 const Courses = ({ userRole }) => {
@@ -7,22 +7,10 @@ const Courses = ({ userRole }) => {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [error, setError] = useState(null);
 
-  const userId = 1; 
-  const authToken = 'tu-token-de-autenticacion'; 
-
   const fetchCourses = async () => {
     try {
-      const headers = {
-        Authorization: `Bearer ${authToken}`,
-      };
-
-     
-      const response =
-        userRole === 'student'
-          ? await getStudentCourses(userId, headers)
-          : await getTeacherCourses(userId, headers);
-
-      setCourses(response);
+      const fetchedCourses = await getCourses();
+      setCourses(fetchedCourses);
     } catch (error) {
       console.error('Error al obtener los cursos:', error);
       setError('No se pudieron cargar los cursos.');
@@ -31,15 +19,15 @@ const Courses = ({ userRole }) => {
 
   useEffect(() => {
     fetchCourses();
-  }, [userRole]);
+  }, []);
 
   const handleAction = async () => {
     if (userRole === 'student') {
-      
       if (selectedCourse) {
         try {
           await joinCourse(selectedCourse.course_id);
           alert('Te has matriculado con éxito.');
+          fetchCourses(); 
         } catch (error) {
           console.error('Error al matricularse en el curso:', error);
           alert('Error al matricularse en el curso.');
@@ -48,7 +36,6 @@ const Courses = ({ userRole }) => {
         alert('Selecciona un curso para matricularte.');
       }
     } else if (userRole === 'teacher') {
-      
       const courseName = prompt('Introduce el nombre del curso:');
       const courseSchedule = prompt('Introduce el horario del curso:');
 
