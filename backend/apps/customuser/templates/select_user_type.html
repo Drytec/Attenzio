@@ -1,12 +1,71 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="signup-form">
+<div class="signup-form-container">
     <h2>¿Cómo deseas registrarte?</h2>
-    <form method="POST" action="{% url 'select_user_type' %}">
+    <form method="POST" action="{% url 'select_user_type' %}" class="signup-form">
         {% csrf_token %}
-        <button type="submit" name="user_type" value="student" class="btn">Registrar como Estudiante</button>
-        <button type="submit" name="user_type" value="teacher" class="btn">Registrar como Profesor</button>
+        <button type="submit" name="user_type" value="student" class="btn-signup">Registrar como Estudiante</button>
+        <button type="submit" name="user_type" value="teacher" class="btn-signup">Registrar como Profesor</button>
     </form>
 </div>
+
+<style>
+    .signup-form-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 50px auto;
+        padding: 20px;
+        max-width: 500px;
+        background-color: #1e1e1e;
+        color: #f5f5f5;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        text-align: center;
+    }
+
+    .signup-form-container h2 {
+        margin-bottom: 20px;
+        font-size: 1.8em;
+        color: #4caf50;
+    }
+
+    .signup-form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+    }
+
+    .btn-signup {
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        padding: 12px 20px;
+        font-size: 1.1em;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .btn-signup:hover {
+        background-color: #2e7d32;
+        transform: scale(1.05);
+    }
+
+    @media (max-width: 600px) {
+        .signup-form-container {
+            margin: 20px;
+            padding: 15px;
+        }
+
+        .btn-signup {
+            font-size: 1em;
+            padding: 10px;
+        }
+    }
+</style>
 {% endblock %}
