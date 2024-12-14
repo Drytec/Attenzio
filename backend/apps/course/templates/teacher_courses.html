@@ -1,23 +1,68 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-<h3>Cursos Creados</h3>
-<div style="display: flex; flex-wrap: wrap; margin-bottom: 10px;">
+<h3 style="text-align: center; color: #f5f5f5;">Cursos Creados</h3>
+<div class="courses-container">
     {% for course in courses %}
-    <div style="margin-right: 20px; margin-bottom: 10px;">
-        <p><strong>{{ course.course_name }}</strong></p>
+    <div class="course-card">
+        <p class="course-title">{{ course.course_name }}</p>
         <p><strong>ID del Curso:</strong> {{ course.course_id }}</p>
-        <a href="{% url 'show_course' course.course_id %}" style="
-            display: inline-block;
-            text-decoration: none;
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 4px;
-            text-align: center;">
-            Entrar
-        </a>
+        <a href="{% url 'show_course' course.course_id %}" class="btn-enter">Entrar</a>
     </div>
     {% endfor %}
 </div>
+
+<style>
+    body {
+        background-color: #1e1e1e;
+        color: #f5f5f5;
+        font-family: Arial, sans-serif;
+    }
+
+    .courses-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .course-card {
+        background-color: #2c2c2c;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        width: 250px;
+        text-align: center;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .course-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .course-title {
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .btn-enter {
+        display: inline-block;
+        text-decoration: none;
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 1em;
+        font-weight: bold;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .btn-enter:hover {
+        background-color: #2e7d32;
+        transform: scale(1.05);
+    }
+</style>
 {% endblock %}

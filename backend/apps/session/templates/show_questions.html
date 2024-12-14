@@ -1,39 +1,74 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-<h2 style="text-align: center; margin-bottom: 20px;">Preguntas de la Sesión</h2>
-<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
-    {% if questions %}
-    {% for question in questions %}
-    <div style="
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 20px;
-            width: 280px;
-            background-color: #f7f7f7;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            font-family: 'Arial', sans-serif;
-            font-size: 14px;
-            color: #333;">
-        <p style="font-weight: bold; color: #007bff;">Pregunta número: {{ forloop.counter }}</p>
-        <p style="margin-bottom: 15px; color: #555;">{{ question.question_text }}</p>
-        <a href="{% url 'show_options' session.session_id question.question_id %}" style="
-                display: inline-block;
-                text-decoration: none;
-                background-color: #007bff;
-                color: white;
-                padding: 12px 25px;
-                border-radius: 6px;
-                text-align: center;
-                font-weight: bold;
-                transition: background-color 0.3s ease;">
-            Ver Opciones
-        </a>
+<h2 style="text-align: center; color: #f5f5f5; margin-bottom: 20px;">Opciones de la Pregunta</h2>
+<div class="options-container">
+    {% if options %}
+    {% for option in options %}
+    <div class="option-card">
+        <p class="option-number">Opcion número: {{ forloop.counter }}</p>
+        <p class="option-text">{{ option.option_text }}</p>
+        {% if option.is_correct %}
+        <p class="option-correct">Esta es la opción correcta.</p>
+        {% endif %}
     </div>
     {% endfor %}
     {% else %}
-    <p>No hay preguntas para esta sesión.</p>
+    <p class="no-options">No hay opciones para esta pregunta.</p>
     {% endif %}
 </div>
+
+<style>
+    body {
+        background-color: #1e1e1e;
+        color: #f5f5f5;
+        font-family: Arial, sans-serif;
+    }
+
+    h2 {
+        font-size: 1.8em;
+    }
+
+    .options-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .option-card {
+        border: 1px solid #3c3c3c;
+        border-radius: 10px;
+        padding: 20px;
+        width: 280px;
+        background-color: #2c2c2c;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        color: #f5f5f5;
+        text-align: center;
+    }
+
+    .option-number {
+        font-weight: bold;
+        color: #4caf50;
+        margin-bottom: 10px;
+    }
+
+    .option-text {
+        margin-bottom: 15px;
+        color: #cccccc;
+    }
+
+    .option-correct {
+        font-weight: bold;
+        color: #4caf50;
+    }
+
+    .no-options {
+        font-size: 1.2em;
+        color: #ff4d4d;
+        text-align: center;
+    }
+</style>
 {% endblock %}
 

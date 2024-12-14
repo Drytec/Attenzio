@@ -1,56 +1,111 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-<h2>Detalles de la Sesión</h2>
+<h2 style="text-align: center; color: #f5f5f5; margin-bottom: 20px;">Detalles de la Sesión</h2>
 
-<h3>{{ session.session_name }}</h3>
+<div class="session-details">
+    <h3 class="session-title">{{ session.session_name }}</h3>
 
-<p><strong>Descripción:</strong> {{ session.session_description }}</p>
-<p><strong>Fecha de inicio:</strong> {{ session.session_date_start }}</p>
-<p><strong>Fecha de fin:</strong> {{ session.session_date_end }}</p>
+    <p><strong>Descripción:</strong> {{ session.session_description }}</p>
+    <p><strong>Fecha de inicio:</strong> {{ session.session_date_start }}</p>
+    <p><strong>Fecha de fin:</strong> {{ session.session_date_end }}</p>
 
-{% if materials %}
-<p><strong>Material:</strong></p>
-<ul>
-    {% for material in materials %}
-    <li><a href="{{ material.material_link }}" target="_blank">Ver material</a></li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>No hay material asociado para esta sesión.</p>
-{% endif %}
+    {% if materials %}
+    <p><strong>Material:</strong></p>
+    <ul class="material-list">
+        {% for material in materials %}
+        <li><a href="{{ material.material_link }}" target="_blank" class="material-link">Ver material</a></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="no-material">No hay material asociado para esta sesión.</p>
+    {% endif %}
 
-<a href="{% url 'create_material' session.session_id %}" style="
-            display: inline-block;
-            text-decoration: none;
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 4px;
-            text-align: center;">
-    Crear Material
-</a>
+    <div class="session-actions">
+        <a href="{% url 'create_material' session.session_id %}" class="action-button">Crear Material</a>
+        <a href="{% url 'create_question' session.session_id %}" class="action-button">Crear Pregunta</a>
+        <a href="{% url 'show_questions' session.session_id %}" class="action-button">Ver Preguntas</a>
+    </div>
+</div>
 
-<a href="{% url 'create_question' session.session_id %}" style="
-            display: inline-block;
-            text-decoration: none;
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 4px;
-            text-align: center;">
-    Crear Pregunta
-</a>
+<style>
+    body {
+        background-color: #1e1e1e;
+        color: #f5f5f5;
+        font-family: Arial, sans-serif;
+    }
 
-<a href="{% url 'show_questions' session.session_id %}" style="
-            display: inline-block;
-            text-decoration: none;
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 4px;
-            text-align: center;">
-    Ver Preguntas
-</a>
+    h2 {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+    }
 
+    .session-details {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #2c2c2c;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .session-title {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+        color: #4caf50;
+    }
+
+    p {
+        margin-bottom: 10px;
+        color: #cccccc;
+    }
+
+    .material-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .material-list li {
+        margin-bottom: 8px;
+    }
+
+    .material-link {
+        color: #4caf50;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .material-link:hover {
+        color: #81c784;
+    }
+
+    .no-material {
+        font-size: 1.1em;
+        color: #ff4d4d;
+        text-align: center;
+    }
+
+    .session-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .action-button {
+        display: inline-block;
+        text-decoration: none;
+        background-color: #4caf50;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-weight: bold;
+        text-align: center;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .action-button:hover {
+        background-color: #2e7d32;
+        transform: scale(1.05);
+    }
+</style>
 {% endblock %}

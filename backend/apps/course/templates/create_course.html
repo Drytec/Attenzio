@@ -1,12 +1,73 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-<h1> Crear Nuevo curso </h1>
-<form action="{% url 'create_course' %}" method="POST">
+<h1 class="form-header">Crear Nuevo Curso</h1>
+<form action="{% url 'create_course' %}" method="POST" class="course-form">
     {% csrf_token %}
     {{ form.as_p }}
-    <button>
-        Guardar
-    </button>
+    <button type="submit" class="btn-submit">Guardar</button>
 </form>
+
+<style>
+    .form-header {
+        font-size: 2em;
+        text-align: center;
+        margin-bottom: 20px;
+        color: #4caf50;
+    }
+
+    .course-form {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #1e1e1e;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        color: #f5f5f5;
+    }
+
+    .course-form label {
+        font-weight: bold;
+        color: #4caf50;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .course-form input, .course-form select, .course-form textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #4caf50;
+        border-radius: 4px;
+        background-color: #2e2e2e;
+        color: #f5f5f5;
+        font-size: 1em;
+    }
+
+    .course-form input:focus, .course-form select:focus, .course-form textarea:focus {
+        outline: none;
+        border-color: #81c784;
+        box-shadow: 0 0 5px #81c784;
+    }
+
+    .btn-submit {
+        display: inline-block;
+        text-decoration: none;
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 4px;
+        text-align: center;
+        font-size: 1em;
+        font-weight: bold;
+        transition: background-color 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+        border: none;
+    }
+
+    .btn-submit:hover {
+        background-color: #2e7d32;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+</style>
 {% endblock %}
